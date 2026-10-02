@@ -724,3 +724,25 @@ body.world-open #world {
 
   filter: blur(0);
 }
+
+/* =========================
+   THREE.JS 3D AREA
+========================= */
+
+#vrCanvas {
+  width: 320px;
+  height: 220px;
+
+  margin: 20px auto;
+
+  position: relative;
+
+  cursor: grab;
+}
+
+#vrCanvas canvas {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+}
