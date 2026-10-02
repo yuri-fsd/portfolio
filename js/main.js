@@ -1,28 +1,128 @@
-const vrHeadset = document.getElementById("vrHeadset");
+// ========================================
+// MAIN.JS
+//
+// Three.js側から送られてくるイベントを受け取り、
+// ページ全体の画面遷移を担当する
+// ========================================
 
-let isEntering = false;
 
-vrHeadset.addEventListener("click", function () {
+// ========================================
+// 状態管理
+// ========================================
 
-  if (isEntering) return;
-  isEntering = true;
+let transitionStarted = false;
 
-  // ゴーグルを掴んでこちらへ
-  document.body.classList.add("entering");
 
-  // 最後の一瞬だけフラッシュ
-  setTimeout(function () {
-    document.body.classList.add("vr-flash");
-  }, 1050);
+// ========================================
+// VR装着開始
+// ========================================
 
-  // すぐVR世界を表示
-  setTimeout(function () {
-    document.body.classList.add("world-open");
-  }, 1150);
+window.addEventListener(
+  "vr-enter-start",
+  function () {
 
-  // 0.2秒程度で光を消す
-  setTimeout(function () {
-    document.body.classList.remove("vr-flash");
-  }, 1350);
+    document.body.classList.add(
+      "entering"
+    );
 
-});
+  }
+);
+
+
+// ========================================
+// VR装着完了
+// ========================================
+
+window.addEventListener(
+  "vr-enter-complete",
+  function () {
+
+    // 二重実行防止
+    if (transitionStarted) {
+      return;
+    }
+
+    transitionStarted = true;
+
+
+    // ========================================
+    // ① 黒へフェード
+    // ========================================
+
+    document.body.classList.add(
+      "vr-blackout"
+    );
+
+
+    // ========================================
+    // ② 完全に暗くなるまで待つ
+    //
+    // CSS側の暗転時間 350ms より
+    // 少し長く待つ
+    // ========================================
+
+    setTimeout(
+      function () {
+
+        // ========================================
+        // ③ 黒画面の裏側で
+        // VR WORLDへ切り替える
+        // ========================================
+
+        document.body.classList.add(
+          "world-open"
+        );
+
+
+        // ========================================
+        // ④ 完全な黒を少し維持
+        //
+        // 「装着した」感を出すため
+        // 650ms待つ
+        // ========================================
+
+        setTimeout(
+          function () {
+
+            // ========================================
+            // ⑤ 徐々に明るくする
+            // ========================================
+
+            document.body.classList.add(
+              "vr-reveal"
+            );
+
+
+            // ========================================
+            // ⑥ 明転終了後
+            // blackoutを完全解除
+            // ========================================
+
+            setTimeout(
+              function () {
+
+                document.body.classList.remove(
+                  "vr-blackout"
+                );
+
+                document.body.classList.remove(
+                  "vr-reveal"
+                );
+
+              },
+
+              1200
+            );
+
+          },
+
+          650
+        );
+
+      },
+
+      400
+    );
+
+  }
+);

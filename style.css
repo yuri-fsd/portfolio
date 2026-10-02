@@ -1,25 +1,49 @@
+/* ========================================
+   RESET
+======================================== */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+
+/* ========================================
+   HTML / BODY
+======================================== */
+
+html,
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+
   overflow: hidden;
+
   color: #443b50;
+  background: #ffffff;
 }
 
 
-/* =========================
+/* ========================================
    ENTRANCE
-========================= */
+======================================== */
 
 #entrance {
+  position: relative;
+
   width: 100vw;
   height: 100vh;
-
-  position: relative;
+  min-height: 100svh;
 
   display: flex;
   justify-content: center;
@@ -28,28 +52,39 @@ body {
   overflow: hidden;
 
   background:
-    radial-gradient(circle at 50% 40%, #fff 0%, #fff8fc 35%, #eee8ff 100%);
-
-  transition:
-    opacity 1s ease,
-    transform 1.3s cubic-bezier(.7, 0, .2, 1);
+    radial-gradient(
+      circle at 50% 40%,
+      #ffffff 0%,
+      #fff8fc 35%,
+      #eee8ff 100%
+    );
 }
 
 
-/* 光 */
+/* ========================================
+   BACKGROUND GLOW
+======================================== */
 
 .glow {
   position: absolute;
 
-  width: 500px;
-  height: 500px;
+  width: clamp(
+    350px,
+    38vw,
+    650px
+  );
+
+  aspect-ratio: 1 / 1;
 
   border-radius: 50%;
 
   filter: blur(100px);
 
   opacity: 0.45;
+
+  pointer-events: none;
 }
+
 
 .glow-1 {
   background: #ffc5e4;
@@ -57,6 +92,7 @@ body {
   top: -200px;
   right: -100px;
 }
+
 
 .glow-2 {
   background: #c9baff;
@@ -66,38 +102,115 @@ body {
 }
 
 
-/* =========================
+/* ========================================
    HERO
-========================= */
+======================================== */
 
 .hero {
   position: relative;
+
   z-index: 10;
 
+  width: 100%;
+  height: 100%;
+
   text-align: center;
+
+  pointer-events: none;
 }
 
-.welcome {
-  font-size: 12px;
 
-  letter-spacing: 6px;
+/* ========================================
+   WELCOME
+======================================== */
+
+.welcome {
+  position: absolute;
+
+  top: clamp(
+    15%,
+    18vh,
+    22%
+  );
+
+  left: 50%;
+
+  transform:
+    translateX(-50%);
+
+  z-index: 20;
+
+  font-size:
+    clamp(
+      13px,
+      1vw,
+      18px
+    );
+
+  letter-spacing:
+    clamp(
+      5px,
+      0.5vw,
+      8px
+    );
 
   color: #aa9caf;
 
-  margin-bottom: 15px;
+  white-space: nowrap;
+
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
+
+/* ========================================
+   MAIN TITLE
+======================================== */
+
 h1 {
-  font-size: clamp(55px, 8vw, 110px);
+  position: absolute;
 
-  line-height: 0.85;
+  top: clamp(
+    20%,
+    23vh,
+    27%
+  );
 
-  letter-spacing: -5px;
+  left: 50%;
+
+  transform:
+    translateX(-50%);
+
+  z-index: 20;
+
+  font-size:
+    clamp(
+      72px,
+      8vw,
+      145px
+    );
+
+  line-height: 0.84;
+
+  letter-spacing:
+    clamp(
+      -7px,
+      -0.35vw,
+      -4px
+    );
 
   font-weight: 700;
 
   color: #332c3b;
+
+  white-space: nowrap;
+
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
+
 
 h1 span {
   display: block;
@@ -107,317 +220,461 @@ h1 span {
   color: #d59bbb;
 }
 
-.description {
-  margin-top: 25px;
 
-  font-size: 14px;
+/* ========================================
+   DESCRIPTION
+======================================== */
+
+.description {
+  position: absolute;
+
+  top: clamp(
+    40%,
+    43vh,
+    46%
+  );
+
+  left: 50%;
+
+  transform:
+    translateX(-50%);
+
+  z-index: 20;
+
+  font-size:
+    clamp(
+      14px,
+      1.05vw,
+      19px
+    );
 
   color: #9b8fa0;
 
   letter-spacing: 1px;
+
+  white-space: nowrap;
+
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 
-/* =========================
-   VR HEADSET
-========================= */
+/* ========================================
+   THREE.JS AREA
 
-.vr-wrapper {
-  margin: 45px auto 35px;
+   Canvas自体は最初から
+   ブラウザ画面いっぱい。
 
-  width: 310px;
-  height: 170px;
+   これによって装着アニメーション時に
+   ゴーグルを画面外まで拡大できる。
+======================================== */
 
-  position: relative;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  animation: floating 4s ease-in-out infinite;
-
-  /* 追加 */
-  cursor: pointer;
-  transition: filter 0.3s ease;
-}
-
-.vr-wrapper:hover {
-  filter:
-    drop-shadow(0 0 15px rgba(255, 190, 225, 0.6))
-    drop-shadow(0 0 30px rgba(200, 185, 255, 0.4));
-}
-
-.vr-wrapper:hover .vr-body {
-  transform: scale(1.04);
-}
-
-.vr-body {
-  transition: transform 0.3s ease;
-}
-
-
-.vr-headset {
-  position: relative;
-
-  width: 260px;
-  height: 110px;
-}
-
-
-.vr-body {
-  width: 260px;
-  height: 110px;
-
+#vrCanvas {
   position: absolute;
 
-  z-index: 2;
+  inset: 0;
 
-  border-radius: 60px 60px 48px 48px;
+  width: 100vw;
+  height: 100vh;
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(255,255,255,0.95),
-      rgba(231,225,242,0.9)
-    );
-
-  border: 1px solid rgba(255,255,255,0.9);
-
-  box-shadow:
-    0 30px 60px rgba(104, 83, 120, 0.22),
-    inset 0 2px 4px white;
-}
-
-
-.lens {
-  width: 13px;
-  height: 13px;
-
-  position: absolute;
-
-  top: 49px;
-
-  border-radius: 50%;
-
-  background: #b8a8d0;
-
-  box-shadow:
-    0 0 15px #d8c5ff;
-}
-
-.lens-left {
-  left: 55px;
-}
-
-.lens-right {
-  right: 55px;
-}
-
-
-.vr-light {
-  position: absolute;
-
-  width: 80px;
-  height: 3px;
-
-  left: 90px;
-  bottom: 13px;
-
-  border-radius: 20px;
-
-  background: linear-gradient(
-    90deg,
-    transparent,
-    #ffb9db,
-    #cdbaff,
-    transparent
-  );
-
-  box-shadow: 0 0 12px #ffb9db;
-}
-
-
-.strap {
-  position: absolute;
-
-  width: 310px;
-  height: 55px;
-
-  top: 25px;
-  left: -25px;
-
-  border: 13px solid #ddd6e7;
-
-  border-radius: 50%;
-
-  z-index: 1;
-}
-
-
-.shadow {
-  position: absolute;
-
-  bottom: 0;
-
-  width: 190px;
-  height: 20px;
-
-  border-radius: 50%;
-
-  background: rgba(91, 70, 105, 0.15);
-
-  filter: blur(12px);
-
-  animation: shadow 4s ease-in-out infinite;
-}
-
-
-/* =========================
-   BUTTON
-========================= */
-
-#enterButton {
-  border: 1px solid rgba(100, 80, 110, 0.15);
-
-  background: rgba(255,255,255,0.6);
-
-  backdrop-filter: blur(20px);
-
-  padding: 17px 26px;
-
-  border-radius: 50px;
-
-  color: #55465d;
-
-  font-size: 12px;
-
-  letter-spacing: 3px;
+  z-index: 15;
 
   cursor: pointer;
 
-  transition: 0.3s;
+  outline: none;
+
+  pointer-events: auto;
 }
 
-#enterButton:hover {
-  transform: translateY(-3px);
 
-  background: white;
+#vrCanvas canvas {
+  width: 100%;
+  height: 100%;
 
-  box-shadow:
-    0 15px 40px rgba(136, 99, 130, 0.15);
+  display: block;
 }
 
-.arrow {
-  margin-left: 15px;
-}
 
+/* ========================================
+   CLICK HINT
+
+   今回ここを修正。
+
+   ・以前より下へ配置
+   ・文字を大きく
+   ・グレーを濃く
+======================================== */
 
 .hint {
-  margin-top: 14px;
+  position: absolute;
 
-  font-size: 11px;
+  left: 50%;
 
-  color: #baaeba;
+  bottom:
+    clamp(
+      3.5%,
+      5vh,
+      7%
+    );
+
+  transform:
+    translateX(-50%);
+
+  z-index: 30;
+
+  font-size:
+    clamp(
+      14px,
+      1vw,
+      18px
+    );
+
+  font-weight: 400;
+
+  color: #8f818f;
+
+  letter-spacing: 0.6px;
+
+  white-space: nowrap;
+
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
 }
 
 
-/* =========================
+/* ========================================
    STARS
-========================= */
+======================================== */
+
+.stars {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 5;
+
+  pointer-events: none;
+
+  transition:
+    opacity 0.4s ease;
+}
+
 
 .stars span {
   position: absolute;
 
   color: #d9acd0;
 
-  animation: sparkle 3s infinite ease-in-out;
+  animation:
+    sparkle
+    3s
+    infinite
+    ease-in-out;
 }
+
 
 .stars span:nth-child(1) {
   top: 15%;
   left: 15%;
+
+  font-size:
+    clamp(
+      18px,
+      1.5vw,
+      28px
+    );
 }
+
 
 .stars span:nth-child(2) {
   top: 25%;
   right: 17%;
 
-  font-size: 28px;
+  font-size:
+    clamp(
+      26px,
+      2vw,
+      36px
+    );
 }
+
 
 .stars span:nth-child(3) {
   bottom: 20%;
   left: 20%;
 
-  font-size: 30px;
+  font-size:
+    clamp(
+      28px,
+      2.2vw,
+      40px
+    );
 }
+
 
 .stars span:nth-child(4) {
   bottom: 15%;
   right: 18%;
+
+  font-size:
+    clamp(
+      18px,
+      1.5vw,
+      28px
+    );
 }
+
 
 .stars span:nth-child(5) {
   top: 12%;
   right: 35%;
 
-  font-size: 18px;
+  font-size:
+    clamp(
+      18px,
+      1.4vw,
+      26px
+    );
 }
 
 
-/* =========================
-   WORLD
-========================= */
+/* ========================================
+   ENTERING
+
+   VR装着開始時に
+   テキスト・星を消す
+======================================== */
+
+body.entering .welcome,
+body.entering h1,
+body.entering .description,
+body.entering .hint {
+  opacity: 0;
+}
+
+
+body.entering .welcome,
+body.entering h1,
+body.entering .description {
+  transform:
+    translateX(-50%)
+    translateY(-10px);
+}
+
+
+body.entering .hint {
+  transform:
+    translateX(-50%)
+    translateY(10px);
+}
+
+
+body.entering .stars {
+  opacity: 0;
+}
+
+
+/* ========================================
+   BLACKOUT
+======================================== */
+
+#vrBlackout {
+  position: fixed;
+
+  inset: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  background: #000000;
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  pointer-events: none;
+
+  z-index: 99999;
+}
+
+
+/* ========================================
+   暗転
+
+   ゴーグル装着後、
+   黒いレイヤーを表示する
+======================================== */
+
+body.vr-blackout #vrBlackout {
+  visibility: visible;
+
+  opacity: 1;
+
+  transition:
+    opacity 0.4s ease;
+}
+
+
+/* ========================================
+   明転
+
+   黒いレイヤーを徐々に透明にして
+   VR WORLDを見せる
+======================================== */
+
+body.vr-blackout.vr-reveal #vrBlackout {
+  opacity: 0;
+
+  transition:
+    opacity 1.1s ease;
+}
+
+
+/* ========================================
+   VR WORLD
+======================================== */
 
 #world {
   position: fixed;
 
   inset: 0;
 
-  z-index: 20;
+  width: 100vw;
+  height: 100vh;
+
+  z-index: 100;
 
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
   justify-content: center;
 
   opacity: 0;
+
   visibility: hidden;
 
-  background:
-    radial-gradient(circle at center, #fff8fd, #ded5f5);
+  pointer-events: none;
 
-  transition: opacity 1.2s ease;
+  background:
+    radial-gradient(
+      circle at 50% 40%,
+      #ffffff 0%,
+      #fff8fc 40%,
+      #e8e0fa 100%
+    );
+
+  transform:
+    scale(1.025);
+
+  filter:
+    blur(7px);
+
+  transition:
+    opacity 1s ease,
+    transform 1.1s ease,
+    filter 1.1s ease;
 }
 
+
+/* ========================================
+   WORLD OPEN
+======================================== */
+
+body.world-open #world {
+  visibility: visible;
+
+  opacity: 1;
+
+  pointer-events: auto;
+
+  transform:
+    scale(1);
+
+  filter:
+    blur(0);
+}
+
+
+/* ========================================
+   WORLD表示後
+
+   黒い画面の裏側で
+   ENTRANCEを非表示にする
+======================================== */
+
+body.world-open #entrance {
+  visibility: hidden;
+
+  pointer-events: none;
+}
+
+
+/* ========================================
+   WORLD TITLE
+======================================== */
 
 .world-title {
   text-align: center;
 
-  margin-bottom: 55px;
+  margin-bottom:
+    clamp(
+      35px,
+      5vh,
+      65px
+    );
 }
 
-.world-title p {
-  font-size: 11px;
 
-  letter-spacing: 5px;
+.world-title p {
+  font-size:
+    clamp(
+      12px,
+      0.9vw,
+      16px
+    );
+
+  letter-spacing:
+    clamp(
+      4px,
+      0.4vw,
+      7px
+    );
 
   color: #aa8fa7;
 }
 
-.world-title h2 {
-  margin-top: 10px;
 
-  font-size: 30px;
+.world-title h2 {
+  margin-top: 12px;
+
+  font-size:
+    clamp(
+      25px,
+      2.4vw,
+      40px
+    );
 
   font-weight: 400;
 }
 
 
+/* ========================================
+   APPS
+======================================== */
+
 .apps {
   display: flex;
 
-  gap: 35px;
+  gap:
+    clamp(
+      25px,
+      2.5vw,
+      45px
+    );
 
   perspective: 1000px;
 }
@@ -425,6 +682,7 @@ h1 span {
 
 .app {
   border: none;
+
   background: none;
 
   cursor: pointer;
@@ -432,28 +690,71 @@ h1 span {
   color: #67596c;
 }
 
+
 .app-icon {
-  width: 105px;
-  height: 105px;
+  width:
+    clamp(
+      90px,
+      7.5vw,
+      125px
+    );
+
+  aspect-ratio: 1 / 1;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
-  border-radius: 28px;
+  border-radius:
+    clamp(
+      24px,
+      2vw,
+      32px
+    );
 
-  background: rgba(255,255,255,0.55);
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.55
+    );
 
-  backdrop-filter: blur(25px);
+  backdrop-filter:
+    blur(25px);
 
-  border: 1px solid rgba(255,255,255,0.9);
+  -webkit-backdrop-filter:
+    blur(25px);
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.9
+    );
 
   box-shadow:
-    0 20px 45px rgba(100, 75, 120, 0.12);
+    0 20px 45px
+    rgba(
+      100,
+      75,
+      120,
+      0.12
+    );
 
-  font-size: 32px;
+  font-size:
+    clamp(
+      28px,
+      2.3vw,
+      38px
+    );
 
-  transition: 0.35s;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
 }
 
 
@@ -463,286 +764,373 @@ h1 span {
     scale(1.08);
 
   box-shadow:
-    0 30px 60px rgba(130, 90, 130, 0.2);
+    0 30px 60px
+    rgba(
+      130,
+      90,
+      130,
+      0.2
+    );
 }
 
 
 .app p {
   margin-top: 13px;
 
-  font-size: 10px;
+  font-size:
+    clamp(
+      10px,
+      0.75vw,
+      13px
+    );
 
   letter-spacing: 2px;
 }
 
 
-/* =========================
-   ENTER ANIMATION
-========================= */
-
-body.world-open #entrance {
-  display: none;
-}
-
-body.world-open #world {
-  opacity: 1;
-  visibility: visible;
-}
-
-
-/* =========================
-   ANIMATIONS
-========================= */
-
-@keyframes floating {
-
-  0%, 100% {
-    transform: translateY(0px) rotate(-1deg);
-  }
-
-  50% {
-    transform: translateY(-15px) rotate(1deg);
-  }
-
-}
-
-
-@keyframes shadow {
-
-  0%, 100% {
-    transform: scale(1);
-    opacity: 0.5;
-  }
-
-  50% {
-    transform: scale(0.8);
-    opacity: 0.25;
-  }
-
-}
-
+/* ========================================
+   SPARKLE ANIMATION
+======================================== */
 
 @keyframes sparkle {
 
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.3;
-    transform: scale(0.8);
+
+    transform:
+      scale(0.8);
   }
+
 
   50% {
     opacity: 1;
-    transform: scale(1.3);
+
+    transform:
+      scale(1.3);
   }
 
 }
 
 
-/* =========================
-   MOBILE
-========================= */
+/* ========================================
+   LARGE DESKTOP
 
-@media (max-width: 700px) {
+   大型PCでは文字も大きくする
+======================================== */
+
+@media (min-width: 1400px) {
+
+  .welcome {
+    top: 15%;
+
+    font-size: 17px;
+  }
+
+
+  h1 {
+    top: 20%;
+
+    font-size:
+      clamp(
+        105px,
+        8vw,
+        155px
+      );
+  }
+
+
+  .description {
+    top: 42%;
+
+    font-size: 18px;
+  }
+
+
+  .hint {
+    bottom: 4.5%;
+
+    font-size: 17px;
+
+    letter-spacing: 0.7px;
+  }
+
+}
+
+
+/* ========================================
+   TABLET / iPad
+======================================== */
+
+@media (max-width: 900px) {
+
+  .welcome {
+    top: 13%;
+  }
+
+
+  h1 {
+    top: 18%;
+
+    font-size:
+      clamp(
+        64px,
+        12vw,
+        100px
+      );
+  }
+
+
+  .description {
+    top: 39%;
+  }
+
+
+  .hint {
+    bottom: 4.5%;
+
+    font-size:
+      clamp(
+        13px,
+        1.6vw,
+        16px
+      );
+  }
+
+
+  .apps {
+    gap: 25px;
+  }
+
+}
+
+
+/* ========================================
+   SMARTPHONE
+======================================== */
+
+@media (max-width: 600px) {
+
+  .welcome {
+    top: 10%;
+
+    font-size: 10px;
+
+    letter-spacing: 5px;
+  }
+
+
+  h1 {
+    top: 15%;
+
+    font-size:
+      clamp(
+        50px,
+        18vw,
+        72px
+      );
+
+    letter-spacing: -3px;
+  }
+
+
+  .description {
+    top: 35%;
+
+    font-size: 12px;
+  }
+
+
+  /* ----------------------------------------
+     スマホではPCほど大きくしすぎない
+  ---------------------------------------- */
+
+  .hint {
+    bottom: 4%;
+
+    font-size: 12px;
+
+    font-weight: 400;
+
+    color: #8f818f;
+
+    letter-spacing: 0.4px;
+  }
+
+
+  .glow {
+    width: 320px;
+
+    filter:
+      blur(80px);
+  }
+
+
+  .stars span:nth-child(1) {
+    left: 8%;
+  }
+
+
+  .stars span:nth-child(2) {
+    right: 8%;
+  }
+
+
+  .stars span:nth-child(3) {
+    left: 10%;
+  }
+
+
+  .stars span:nth-child(4) {
+    right: 10%;
+  }
+
+
+  .world-title {
+    width: 90%;
+
+    margin-bottom: 35px;
+  }
+
+
+  .world-title p {
+    font-size: 9px;
+
+    letter-spacing: 4px;
+  }
+
+
+  .world-title h2 {
+    font-size: 22px;
+  }
+
 
   .apps {
     display: grid;
 
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns:
+      repeat(
+        2,
+        1fr
+      );
 
-    gap: 25px;
+    gap:
+      25px
+      35px;
   }
+
 
   .app-icon {
-    width: 90px;
-    height: 90px;
+    width: 85px;
+
+    border-radius: 24px;
+
+    font-size: 27px;
   }
+
+
+  .app p {
+    font-size: 10px;
+  }
+
+}
+
+
+/* ========================================
+   SMALL SMARTPHONE
+======================================== */
+
+@media (max-width: 400px) {
+
+  .welcome {
+    letter-spacing: 4px;
+  }
+
 
   h1 {
-    letter-spacing: -3px;
+    font-size:
+      clamp(
+        46px,
+        17vw,
+        64px
+      );
+  }
+
+
+  .description {
+    font-size: 11px;
+  }
+
+
+  .hint {
+    bottom: 3.5%;
+
+    font-size: 11px;
+  }
+
+
+  .apps {
+    gap:
+      20px
+      25px;
+  }
+
+
+  .app-icon {
+    width: 78px;
+
+    border-radius: 22px;
   }
 
 }
 
-/* ========================================
-   VR HEADSET INTERACTION
-======================================== */
-
-.vr-wrapper {
-  cursor: pointer;
-
-  transition:
-    transform 0.35s ease,
-    filter 0.35s ease;
-}
-
-
-/* マウスを乗せたとき */
-
-.vr-wrapper:hover {
-  filter:
-    drop-shadow(0 0 18px rgba(255, 188, 220, 0.55))
-    drop-shadow(0 0 35px rgba(190, 175, 255, 0.35));
-}
-
-
-.vr-wrapper:hover .vr-body {
-  transform: scale(1.04);
-}
-
-
-.vr-body {
-  transition:
-    transform 0.35s ease,
-    filter 0.35s ease;
-}
-
 
 /* ========================================
-   ゴーグル装着アニメーション
+   SHORT DESKTOP
+
+   MacBookなど
+   画面の高さが小さいPC用
 ======================================== */
 
-body.entering .vr-wrapper {
+@media (max-height: 750px) and (min-width: 601px) {
 
-  /*
-   * 元のfloatingアニメーションを停止
-   */
-  animation: none;
-
-  /*
-   * ゴーグルを画面いっぱいまで接近させる
-   */
-  transform: scale(12);
-
-  /*
-   * 接近すると少しぼやける
-   */
-  filter: blur(1px);
-
-  /*
-   * VR装着っぽい加速
-   */
-  transition:
-    transform 1.15s cubic-bezier(.65, 0, .15, 1),
-    filter 0.8s ease;
-
-  z-index: 100;
-}
+  .welcome {
+    top: 8%;
+  }
 
 
-/*
- * ゴーグル以外の文字を消す
- */
+  h1 {
+    top: 13%;
 
-body.entering .welcome,
-body.entering h1,
-body.entering .description,
-body.entering .hint,
-body.entering .stars {
-
-  opacity: 0;
-
-  transition: opacity 0.35s ease;
-}
+    font-size:
+      clamp(
+        62px,
+        10vh,
+        92px
+      );
+  }
 
 
-/* ========================================
-   VR FLASH
-======================================== */
-
-#vrFlash {
-
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 999;
-
-  pointer-events: none;
-
-  opacity: 0;
-
-  background:
-    radial-gradient(
-      circle at center,
-      #ffffff 0%,
-      #fff8fc 45%,
-      #eadfff 100%
-    );
-
-  filter: blur(8px);
-
-  transition:
-    opacity 0.4s ease,
-    filter 0.6s ease;
-}
+  .description {
+    top: 34%;
+  }
 
 
-/*
- * ゴーグルを装着した瞬間
- */
+  /* ----------------------------------------
+     高さが小さいPCでも
+     Questと文字が近づきすぎないよう
+     下側へ配置
+  ---------------------------------------- */
 
-body.vr-flash #vrFlash {
+  .hint {
+    bottom: 2.5%;
 
-  opacity: 1;
+    font-size:
+      clamp(
+        13px,
+        1vw,
+        16px
+      );
+  }
 
-  filter: blur(0px);
-}
-
-
-/* ========================================
-   VR WORLD
-======================================== */
-
-#world {
-
-  opacity: 0;
-
-  visibility: hidden;
-
-  transform: scale(1.08);
-
-  filter: blur(15px);
-
-  transition:
-    opacity 1s ease,
-    transform 1.2s ease,
-    filter 1.2s ease;
-}
-
-
-body.world-open #entrance {
-  display: none;
-}
-
-
-body.world-open #world {
-
-  visibility: visible;
-
-  opacity: 1;
-
-  transform: scale(1);
-
-  filter: blur(0);
-}
-
-/* =========================
-   THREE.JS 3D AREA
-========================= */
-
-#vrCanvas {
-  width: 320px;
-  height: 220px;
-
-  margin: 20px auto;
-
-  position: relative;
-
-  cursor: grab;
-}
-
-#vrCanvas canvas {
-  width: 100%;
-  height: 100%;
-
-  display: block;
 }

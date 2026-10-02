@@ -1,129 +1,204 @@
 <!DOCTYPE html>
 <html lang="ja">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <title>MY | Portfolio</title>
+<head>
+  <meta charset="UTF-8">
 
-        <link rel="stylesheet" href="style.css">
-    </head>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-    <body>
-        <!-- VR装着時の光 -->
-        <div id="vrFlash"></div>
-        <main id="entrance">
+  <title>MY | Portfolio</title>
 
-            <!-- 背景の光 -->
-            <div class="glow glow-1"></div>
-            <div class="glow glow-2"></div>
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
+</head>
 
-            <!-- 星 -->
-            <div class="stars">
-                <span>✦</span>
-                <span>✧</span>
-                <span>⋆</span>
-                <span>✦</span>
-                <span>♡</span>
-            </div>
 
-            <!-- メイン -->
-            <section class="hero">
+<body>
 
-                <p class="welcome">WELCOME TO</p>
+  <!-- =====================================
+       VR装着時の暗転
+  ====================================== -->
 
-                <h1>
-                    MY
-                    <span>WORLD</span>
-                </h1>
+  <div id="vrBlackout"></div>
 
-                <p class="description">
-                    Step into my portfolio.
-                </p>
 
-                <!-- Three.jsの3D表示エリア -->
-                <div id="vrCanvas"></div>
+  <!-- =====================================
+       ENTRANCE
+  ====================================== -->
 
-                <!-- VRゴーグル -->
-                <div class="vr-wrapper" id="vrHeadset">
+  <main id="entrance">
 
-                    <div class="vr-headset">
+    <!-- 背景の光 -->
 
-                        <div class="vr-body">
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
 
-                            <div class="lens lens-left"></div>
-                            <div class="lens lens-right"></div>
 
-                            <div class="vr-light"></div>
+    <!-- 星 -->
 
-                        </div>
+    <div class="stars">
 
-                        <div class="strap"></div>
+      <span>✦</span>
+      <span>✧</span>
+      <span>⋆</span>
+      <span>✦</span>
+      <span>♡</span>
 
-                    </div>
+    </div>
 
-                    <div class="shadow"></div>
 
-                </div>
+    <!-- メイン -->
 
-                <p class="hint">
-                    click the headset to enter ♡
-                </p>
+    <section class="hero">
 
-            </section>
+      <p class="welcome">
+        WELCOME TO
+      </p>
 
-        </main>
 
-        <!-- VR世界 -->
-        <section id="world">
+      <h1>
+        MY
+        <span>WORLD</span>
+      </h1>
 
-            <div class="world-title">
-                <p>YURIA'S SPACE</p>
-                <h2>What would you like to know?</h2>
-            </div>
 
-            <div class="apps">
+      <p class="description">
+        Step into my portfolio.
+      </p>
 
-                <button class="app">
-                    <div class="app-icon">♡</div>
-                    <p>PROFILE</p>
-                </button>
 
-                <button class="app">
-                    <div class="app-icon">&lt;/&gt;</div>
-                    <p>SKILLS</p>
-                </button>
+      <!-- Three.js -->
 
-                <button class="app">
-                    <div class="app-icon">✦</div>
-                    <p>WORKS</p>
-                </button>
+      <div
+        id="vrCanvas"
+        tabindex="0"
+        role="button"
+        aria-label="Enter my VR world"
+      ></div>
 
-                <button class="app">
-                    <div class="app-icon">♬</div>
-                    <p>HOBBY</p>
-                </button>
 
-                <button class="app">
-                    <div class="app-icon">♟</div>
-                    <p>GAMES</p>
-                </button>
+      <p class="hint">
+        click the headset to enter ♡
+      </p>
 
-            </div>
+    </section>
 
-        </section>
+  </main>
 
-        <script type="importmap">
-            {
-                "imports": {
-                    "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
-                    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
-                }
-            }
-        </script>
 
-        <script src="./js/main.js"></script>
-        <script type="module" src="./js/vr.js"></script>
+  <!-- =====================================
+       VR WORLD
+  ====================================== -->
 
-    </body>
+  <section id="world">
+
+    <div class="world-title">
+
+      <p>
+        YURIA'S SPACE
+      </p>
+
+      <h2>
+        What would you like to know?
+      </h2>
+
+    </div>
+
+
+    <div class="apps">
+
+      <button class="app">
+
+        <div class="app-icon">
+          ♡
+        </div>
+
+        <p>PROFILE</p>
+
+      </button>
+
+
+      <button class="app">
+
+        <div class="app-icon">
+          &lt;/&gt;
+        </div>
+
+        <p>SKILLS</p>
+
+      </button>
+
+
+      <button class="app">
+
+        <div class="app-icon">
+          ✦
+        </div>
+
+        <p>WORKS</p>
+
+      </button>
+
+
+      <button class="app">
+
+        <div class="app-icon">
+          ♬
+        </div>
+
+        <p>HOBBY</p>
+
+      </button>
+
+
+      <button class="app">
+
+        <div class="app-icon">
+          ♟
+        </div>
+
+        <p>GAMES</p>
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================
+       THREE.JS IMPORT MAP
+  ====================================== -->
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three":
+        "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+
+      "three/addons/":
+        "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+    }
+  }
+  </script>
+
+
+  <!-- =====================================
+       JAVASCRIPT
+  ====================================== -->
+
+  <script src="./js/main.js"></script>
+
+  <script
+    type="module"
+    src="./js/vr.js"
+  ></script>
+
+</body>
+
 </html>

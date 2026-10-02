@@ -1,107 +1,125 @@
 import * as THREE from "three";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+import {
+  GLTFLoader
+} from "three/addons/loaders/GLTFLoader.js";
 
 
 // ========================================
-// 1. HTMLの3D表示エリア
+// 1. HTML
 // ========================================
 
-const container = document.getElementById("vrCanvas");
-
-
-// ========================================
-// 2. Scene
-// 3Dオブジェクトを置く世界
-// ========================================
-
-const scene = new THREE.Scene();
+const container =
+  document.getElementById("vrCanvas");
 
 
 // ========================================
-// 3. Camera
-// 3D世界を見る視点
+// 2. SCENE
 // ========================================
 
-const camera = new THREE.PerspectiveCamera(
-  45,
-  container.clientWidth / container.clientHeight,
-  0.1,
-  100
+const scene =
+  new THREE.Scene();
+
+
+// ========================================
+// 3. CAMERA
+// ========================================
+
+const camera =
+  new THREE.PerspectiveCamera(
+    45,
+    window.innerWidth / window.innerHeight,
+    0.01,
+    100
+  );
+
+camera.position.set(
+  0,
+  0,
+  4.3
 );
 
-// 正面から見る
-camera.position.set(0, 0, 5);
-
 
 // ========================================
-// 4. Renderer
-// 3D世界をブラウザに描画する
+// 4. RENDERER
 // ========================================
 
-const renderer = new THREE.WebGLRenderer({
-  alpha: true,
-  antialias: true
-});
-
-renderer.setSize(
-  container.clientWidth,
-  container.clientHeight
-);
+const renderer =
+  new THREE.WebGLRenderer({
+    alpha: true,
+    antialias: true
+  });
 
 renderer.setPixelRatio(
-  Math.min(window.devicePixelRatio, 2)
+  Math.min(
+    window.devicePixelRatio,
+    2
+  )
 );
 
-renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.outputColorSpace =
+  THREE.SRGBColorSpace;
 
-// 背景透明
-renderer.setClearColor(0x000000, 0);
+renderer.setClearColor(
+  0x000000,
+  0
+);
 
-container.appendChild(renderer.domElement);
-
-
-// ========================================
-// 5. OrbitControls
-//
-// 今は手とゴーグルの位置確認用。
-// 完成版では削除する予定。
-// ========================================
-
-const controls = new OrbitControls(
-  camera,
+container.appendChild(
   renderer.domElement
 );
 
-controls.enableDamping = true;
-controls.dampingFactor = 0.06;
 
-controls.enableZoom = true;
-controls.enablePan = false;
+// ========================================
+// 5. RENDERER SIZE
+// ========================================
 
-controls.target.set(0, 0, 0);
+function resizeRenderer() {
 
-controls.update();
+  const width =
+    window.innerWidth;
+
+  const height =
+    window.innerHeight;
+
+
+  camera.aspect =
+    width / height;
+
+  camera.updateProjectionMatrix();
+
+
+  renderer.setSize(
+    width,
+    height,
+    false
+  );
+
+}
+
+resizeRenderer();
 
 
 // ========================================
-// 6. Light
+// 6. LIGHT
 // ========================================
 
-// 全体を柔らかく照らす
-const ambientLight = new THREE.AmbientLight(
-  0xffffff,
-  2.5
+const ambientLight =
+  new THREE.AmbientLight(
+    0xffffff,
+    2.5
+  );
+
+scene.add(
+  ambientLight
 );
 
-scene.add(ambientLight);
 
-
-// 右上から白い光
-const mainLight = new THREE.DirectionalLight(
-  0xffffff,
-  4
-);
+const mainLight =
+  new THREE.DirectionalLight(
+    0xffffff,
+    4
+  );
 
 mainLight.position.set(
   4,
@@ -109,14 +127,16 @@ mainLight.position.set(
   5
 );
 
-scene.add(mainLight);
-
-
-// 左側から淡いピンクの光
-const pinkLight = new THREE.DirectionalLight(
-  0xffd4e8,
-  2
+scene.add(
+  mainLight
 );
+
+
+const pinkLight =
+  new THREE.DirectionalLight(
+    0xffd4e8,
+    2
+  );
 
 pinkLight.position.set(
   -4,
@@ -124,71 +144,251 @@ pinkLight.position.set(
   3
 );
 
-scene.add(pinkLight);
+scene.add(
+  pinkLight
+);
 
 
 // ========================================
-// 7. GLTFLoader
-// GLBファイルを読み込む
+// 7. GLTF LOADER
 // ========================================
 
-const loader = new GLTFLoader();
+const loader =
+  new GLTFLoader();
 
 
 // ========================================
-// 8. VR全体をまとめるGroup
+// 8. VR GROUP
 //
-// ゴーグルと左右の手をまとめて入れる。
-//
-// 後で装着アニメーションを作るときに
-// vrGroupごとカメラへ近づけられる。
+// ゴーグル＋左右の手を
+// 最終的にまとめて動かす親Group
 // ========================================
 
-const vrGroup = new THREE.Group();
+const vrGroup =
+  new THREE.Group();
 
-scene.add(vrGroup);
+scene.add(
+  vrGroup
+);
 
 
 // ========================================
-// 9. VRゴーグル
+// 9. VARIABLES
 // ========================================
 
-let headset;
 let headsetPivot;
 
+let leftHandPivot;
+let rightHandPivot;
+
+let headsetReady = false;
+let handsReady = false;
+
+let isEntering = false;
+
+let enterCompleteSent = false;
+
+let enterStartTime = 0;
+
+
+// ========================================
+// 10. ANIMATION SETTINGS
+// ========================================
+
+
+// ========================================
+// ゴーグルをY軸で180°回転
+//
+// 上下を反転させず、
+// 鼻のくぼみを下に保ったまま
+// 内側をこちらへ向ける
+// ========================================
+
+const WEAR_ROTATION_Y =
+  Math.PI;
+
+
+// ========================================
+// 装着時の画面中央
+//
+// x = 0
+// y = 0
+//
+// これで画面の中央へ近づく
+// ========================================
+
+const WEAR_POSITION_X =
+  0;
+
+const WEAR_POSITION_Y =
+  0;
+
+
+// ========================================
+// カメラへの最終接近位置
+// ========================================
+
+const WEAR_POSITION_Z =
+  3.35;
+
+
+// ========================================
+// 最終拡大サイズ
+//
+// 初期表示のサイズに関係なく
+// 最低でも6.5まで大きくする
+// ========================================
+
+const MIN_FINAL_SCALE =
+  6.5;
+
+
+// ========================================
+// 11. RESPONSIVE SETTINGS
+//
+// 通常表示時だけ
+// 画面サイズに応じて調整する
+// ========================================
+
+function getResponsiveSettings() {
+
+  const width =
+    window.innerWidth;
+
+  const height =
+    window.innerHeight;
+
+
+  // ========================================
+  // SMARTPHONE
+  // ========================================
+
+  if (width <= 600) {
+
+    return {
+      scale: 0.64,
+      y: -0.42
+    };
+
+  }
+
+
+  // ========================================
+  // TABLET / iPad
+  // ========================================
+
+  if (width <= 1000) {
+
+    return {
+      scale: 0.70,
+      y: -0.45
+    };
+
+  }
+
+
+  // ========================================
+  // 高さが小さいPC
+  // MacBookなど
+  // ========================================
+
+  if (height <= 750) {
+
+    return {
+      scale: 0.68,
+      y: -0.43
+    };
+
+  }
+
+
+  // ========================================
+  // NORMAL DESKTOP
+  // ========================================
+
+  if (width < 1500) {
+
+    return {
+      scale: 0.83,
+      y: -0.50
+    };
+
+  }
+
+
+  // ========================================
+  // LARGE DESKTOP
+  // ========================================
+
+  return {
+    scale: 0.94,
+    y: -0.55
+  };
+
+}
+
+
+// ========================================
+// CURRENT RESPONSIVE SETTINGS
+// ========================================
+
+let responsiveSettings =
+  getResponsiveSettings();
+
+
+let normalScale =
+  responsiveSettings.scale;
+
+
+let normalY =
+  responsiveSettings.y;
+
+
+vrGroup.scale.setScalar(
+  normalScale
+);
+
+
+vrGroup.position.set(
+  0,
+  normalY,
+  0
+);
+
+
+// ========================================
+// 12. HEADSET MODEL
+// ========================================
 
 loader.load(
 
   "./assets/models/headset.glb",
 
-
-  // ========================================
-  // 読み込み成功
-  // ========================================
-
   function (gltf) {
 
-    headset = gltf.scene;
+    const headset =
+      gltf.scene;
 
 
-    // ----------------------------------------
-    // モデル本来のサイズを取得
-    // ----------------------------------------
+    // ========================================
+    // MODEL SIZE
+    // ========================================
 
     const box =
-      new THREE.Box3().setFromObject(
-        headset
-      );
+      new THREE.Box3()
+        .setFromObject(
+          headset
+        );
+
 
     const size =
       new THREE.Vector3();
 
-    box.getSize(size);
 
+    box.getSize(
+      size
+    );
 
-    // ----------------------------------------
-    // 一番大きい辺を取得
-    // ----------------------------------------
 
     const maxDimension =
       Math.max(
@@ -198,39 +398,41 @@ loader.load(
       );
 
 
-    // ----------------------------------------
-    // ゴーグルのサイズを調整
-    // ----------------------------------------
+    // ========================================
+    // HEADSET BASE SIZE
+    // ========================================
 
-    const targetSize = 2.2;
+    const targetSize =
+      2.2;
+
 
     const scale =
-      targetSize / maxDimension;
+      targetSize /
+      maxDimension;
+
 
     headset.scale.setScalar(
       scale
     );
 
 
-    // ----------------------------------------
-    // スケール変更後に中心を再計算
-    // ----------------------------------------
+    // ========================================
+    // CENTER MODEL
+    // ========================================
 
     box.setFromObject(
       headset
     );
 
+
     const center =
       new THREE.Vector3();
+
 
     box.getCenter(
       center
     );
 
-
-    // ----------------------------------------
-    // モデルの中心を原点へ移動
-    // ----------------------------------------
 
     headset.position.set(
       -center.x,
@@ -240,18 +442,18 @@ loader.load(
 
 
     // ========================================
-    // ゴーグル用Pivot
+    // HEADSET PIVOT
     // ========================================
 
     headsetPivot =
       new THREE.Group();
+
 
     headsetPivot.add(
       headset
     );
 
 
-    // ゴーグルは中央
     headsetPivot.position.set(
       0,
       0,
@@ -259,7 +461,6 @@ loader.load(
     );
 
 
-    // 正面向き
     headsetPivot.rotation.set(
       0,
       0,
@@ -272,43 +473,24 @@ loader.load(
     );
 
 
+    headsetReady =
+      true;
+
+
     console.log(
-      "🥽 Headset loaded!"
+      "🥽 Headset ready"
     );
 
   },
 
 
-  // ========================================
-  // 読み込み中
-  // ========================================
+  undefined,
 
-  function (progress) {
-
-    if (progress.total) {
-
-      const percent =
-        progress.loaded /
-        progress.total *
-        100;
-
-      console.log(
-        `Headset loading: ${percent.toFixed(0)}%`
-      );
-
-    }
-
-  },
-
-
-  // ========================================
-  // 読み込み失敗
-  // ========================================
 
   function (error) {
 
     console.error(
-      "Headset could not be loaded:",
+      "Headset error:",
       error
     );
 
@@ -318,28 +500,12 @@ loader.load(
 
 
 // ========================================
-// 10. 手モデル
-// ========================================
-
-let leftHand;
-let rightHand;
-
-let leftHandPivot;
-let rightHandPivot;
-
-
-// ========================================
-// 11. hand.glb を読み込む
+// 13. HAND MODEL
 // ========================================
 
 loader.load(
 
   "./assets/models/hand.glb",
-
-
-  // ========================================
-  // 読み込み成功
-  // ========================================
 
   function (gltf) {
 
@@ -347,32 +513,25 @@ loader.load(
       gltf.scene;
 
 
-    // ----------------------------------------
-    // 手モデル本来のサイズを取得
-    // ----------------------------------------
+    // ========================================
+    // HAND SIZE
+    // ========================================
 
     const box =
-      new THREE.Box3().setFromObject(
-        originalHand
-      );
+      new THREE.Box3()
+        .setFromObject(
+          originalHand
+        );
+
 
     const size =
       new THREE.Vector3();
+
 
     box.getSize(
       size
     );
 
-
-    console.log(
-      "Original hand size:",
-      size
-    );
-
-
-    // ----------------------------------------
-    // 一番大きい辺を取得
-    // ----------------------------------------
 
     const maxDimension =
       Math.max(
@@ -382,207 +541,17 @@ loader.load(
       );
 
 
-    // ----------------------------------------
-    // 手のサイズ
-    // ----------------------------------------
+    const targetSize =
+      1.6;
 
-    const targetSize = 1.6;
 
     const scale =
-      targetSize / maxDimension;
+      targetSize /
+      maxDimension;
 
 
     // ========================================
-    // 左手
-    // ========================================
-
-    leftHand =
-      originalHand.clone(true);
-
-
-    leftHand.scale.setScalar(
-      scale
-    );
-
-
-    // ----------------------------------------
-    // 左手の中心を取得
-    // ----------------------------------------
-
-    const leftBox =
-      new THREE.Box3().setFromObject(
-        leftHand
-      );
-
-    const leftCenter =
-      new THREE.Vector3();
-
-    leftBox.getCenter(
-      leftCenter
-    );
-
-
-    // ----------------------------------------
-    // 左手モデルの中心を原点へ
-    // ----------------------------------------
-
-    leftHand.position.set(
-      -leftCenter.x,
-      -leftCenter.y,
-      -leftCenter.z
-    );
-
-
-    // ========================================
-    // 左手用Pivot
-    // ========================================
-
-    leftHandPivot =
-      new THREE.Group();
-
-    leftHandPivot.add(
-      leftHand
-    );
-
-
-    // ========================================
-    // 左手の位置
-    //
-    // 前よりゴーグル側へ寄せる
-    //
-    // X : 左右
-    // Y : 上下
-    // Z : 前後
-    //
-    // Zをプラスにすると
-    // カメラ側（手前）に来る
-    // ========================================
-
-    leftHandPivot.position.set(
-      -1.15,
-      -0.12,
-      0.55
-    );
-
-
-    // ========================================
-    // 左手の角度
-    //
-    // 真横からではなく、
-    // 少し手前からゴーグルへ
-    // 添えるような角度にする
-    // ========================================
-
-    leftHandPivot.rotation.set(
-      -0.25,
-      0.75,
-      -1.05
-    );
-
-
-    vrGroup.add(
-      leftHandPivot
-    );
-
-
-    // ========================================
-    // 右手
-    // ========================================
-
-    rightHand =
-      originalHand.clone(true);
-
-
-    rightHand.scale.setScalar(
-      scale
-    );
-
-
-    // ----------------------------------------
-    // 右手の中心を取得
-    // ----------------------------------------
-
-    const rightBox =
-      new THREE.Box3().setFromObject(
-        rightHand
-      );
-
-    const rightCenter =
-      new THREE.Vector3();
-
-    rightBox.getCenter(
-      rightCenter
-    );
-
-
-    // ----------------------------------------
-    // 右手モデルの中心を原点へ
-    // ----------------------------------------
-
-    rightHand.position.set(
-      -rightCenter.x,
-      -rightCenter.y,
-      -rightCenter.z
-    );
-
-
-    // ========================================
-    // 右手用Pivot
-    // ========================================
-
-    rightHandPivot =
-      new THREE.Group();
-
-    rightHandPivot.add(
-      rightHand
-    );
-
-
-    // ========================================
-    // 右手の位置
-    // ========================================
-
-    rightHandPivot.position.set(
-      1.15,
-      -0.12,
-      0.55
-    );
-
-
-    // ========================================
-    // 右手を左右反転
-    //
-    // 1つのhand.glbから
-    // 左右対称の手を作る
-    // ========================================
-
-    rightHandPivot.scale.x =
-      -1;
-
-
-    // ========================================
-    // 右手の角度
-    //
-    // 左手と左右対称になるようにする
-    // ========================================
-
-    rightHandPivot.rotation.set(
-      -0.25,
-      -0.75,
-      1.05
-    );
-
-
-    vrGroup.add(
-      rightHandPivot
-    );
-
-
-    // ========================================
-    // 12. 肌色
-    //
-    // 色白だけど
-    // 真っ白すぎない色
+    // SKIN COLOR
     // ========================================
 
     const skinColor =
@@ -592,7 +561,45 @@ loader.load(
 
 
     // ========================================
-    // 左手のマテリアル
+    // LEFT HAND
+    // ========================================
+
+    const leftHand =
+      originalHand.clone(
+        true
+      );
+
+
+    leftHand.scale.setScalar(
+      scale
+    );
+
+
+    const leftBox =
+      new THREE.Box3()
+        .setFromObject(
+          leftHand
+        );
+
+
+    const leftCenter =
+      new THREE.Vector3();
+
+
+    leftBox.getCenter(
+      leftCenter
+    );
+
+
+    leftHand.position.set(
+      -leftCenter.x,
+      -leftCenter.y,
+      -leftCenter.z
+    );
+
+
+    // ========================================
+    // LEFT HAND MATERIAL
     // ========================================
 
     leftHand.traverse(
@@ -601,18 +608,14 @@ loader.load(
 
         if (child.isMesh) {
 
-          // 元モデルのマテリアルを
-          // 直接変更しないようコピー
           child.material =
             child.material.clone();
 
 
-          // 肌色
           child.material.color =
             skinColor;
 
 
-          // テカテカしすぎないようにする
           child.material.roughness =
             0.65;
 
@@ -624,7 +627,96 @@ loader.load(
 
 
     // ========================================
-    // 右手のマテリアル
+    // LEFT HAND PIVOT
+    // ========================================
+
+    leftHandPivot =
+      new THREE.Group();
+
+
+    leftHandPivot.add(
+      leftHand
+    );
+
+
+    // ========================================
+    // 最初は画面外側に置く
+    // ========================================
+
+    leftHandPivot.position.set(
+      -2.20,
+      -0.31,
+      0.48
+    );
+
+
+    // ========================================
+    // 親指が上側に来る向き
+    // ========================================
+
+    leftHandPivot.rotation.set(
+      -0.45,
+      0.82,
+      1.02
+    );
+
+
+    // ========================================
+    // ★最初は非表示
+    //
+    // ゴーグルが回転し終わってから
+    // 表示する
+    // ========================================
+
+    leftHandPivot.visible =
+      false;
+
+
+    vrGroup.add(
+      leftHandPivot
+    );
+
+
+    // ========================================
+    // RIGHT HAND
+    // ========================================
+
+    const rightHand =
+      originalHand.clone(
+        true
+      );
+
+
+    rightHand.scale.setScalar(
+      scale
+    );
+
+
+    const rightBox =
+      new THREE.Box3()
+        .setFromObject(
+          rightHand
+        );
+
+
+    const rightCenter =
+      new THREE.Vector3();
+
+
+    rightBox.getCenter(
+      rightCenter
+    );
+
+
+    rightHand.position.set(
+      -rightCenter.x,
+      -rightCenter.y,
+      -rightCenter.z
+    );
+
+
+    // ========================================
+    // RIGHT HAND MATERIAL
     // ========================================
 
     rightHand.traverse(
@@ -651,43 +743,81 @@ loader.load(
     );
 
 
+    // ========================================
+    // RIGHT HAND PIVOT
+    // ========================================
+
+    rightHandPivot =
+      new THREE.Group();
+
+
+    rightHandPivot.add(
+      rightHand
+    );
+
+
+    // ========================================
+    // 左手モデルを左右反転して
+    // 右手として使用
+    // ========================================
+
+    rightHandPivot.scale.x =
+      -1;
+
+
+    // ========================================
+    // 最初は画面外側
+    // ========================================
+
+    rightHandPivot.position.set(
+      2.20,
+      -0.31,
+      0.48
+    );
+
+
+    // ========================================
+    // 親指が上側に来る向き
+    // ========================================
+
+    rightHandPivot.rotation.set(
+      -0.45,
+      -0.82,
+      -1.02
+    );
+
+
+    // ========================================
+    // ★最初は非表示
+    // ========================================
+
+    rightHandPivot.visible =
+      false;
+
+
+    vrGroup.add(
+      rightHandPivot
+    );
+
+
+    handsReady =
+      true;
+
+
     console.log(
-      "🤲 Hands loaded!"
+      "🤲 Hands ready"
     );
 
   },
 
 
-  // ========================================
-  // 読み込み中
-  // ========================================
+  undefined,
 
-  function (progress) {
-
-    if (progress.total) {
-
-      const percent =
-        progress.loaded /
-        progress.total *
-        100;
-
-      console.log(
-        `Hand loading: ${percent.toFixed(0)}%`
-      );
-
-    }
-
-  },
-
-
-  // ========================================
-  // 読み込み失敗
-  // ========================================
 
   function (error) {
 
     console.error(
-      "Hand could not be loaded:",
+      "Hands error:",
       error
     );
 
@@ -697,8 +827,236 @@ loader.load(
 
 
 // ========================================
-// 13. Animation
+// 14. EASING
 // ========================================
+
+function easeInOutCubic(t) {
+
+  if (t < 0.5) {
+
+    return (
+      4 *
+      t *
+      t *
+      t
+    );
+
+  }
+
+
+  return (
+    1 -
+    Math.pow(
+      -2 * t + 2,
+      3
+    ) / 2
+  );
+
+}
+
+
+// ========================================
+// ZOOM EASING
+//
+// ズームは最初ゆっくり
+// 最後にしっかり近づく
+// ========================================
+
+function easeInQuart(t) {
+
+  return (
+    t *
+    t *
+    t *
+    t
+  );
+
+}
+
+
+// ========================================
+// CLAMP
+// ========================================
+
+function clamp01(value) {
+
+  return THREE.MathUtils.clamp(
+    value,
+    0,
+    1
+  );
+
+}
+
+
+// ========================================
+// 15. START VR ENTER
+// ========================================
+
+function startVREnter() {
+
+  // ========================================
+  // 二重クリック防止
+  // ========================================
+
+  if (isEntering) {
+    return;
+  }
+
+
+  // ========================================
+  // モデル読み込み前は開始しない
+  // ========================================
+
+  if (
+    !headsetReady ||
+    !handsReady
+  ) {
+    return;
+  }
+
+
+  isEntering =
+    true;
+
+
+  enterCompleteSent =
+    false;
+
+
+  enterStartTime =
+    performance.now();
+
+
+  // ========================================
+  // HEADSETを初期状態へ
+  // ========================================
+
+  headsetPivot.position.set(
+    0,
+    0,
+    0
+  );
+
+
+  headsetPivot.rotation.set(
+    0,
+    0,
+    0
+  );
+
+
+  // ========================================
+  // VR GROUP初期状態
+  // ========================================
+
+  vrGroup.position.set(
+    0,
+    normalY,
+    0
+  );
+
+
+  vrGroup.rotation.set(
+    0,
+    0,
+    0
+  );
+
+
+  vrGroup.scale.setScalar(
+    normalScale
+  );
+
+
+  // ========================================
+  // 手はまだ見せない
+  // ========================================
+
+  leftHandPivot.visible =
+    false;
+
+
+  rightHandPivot.visible =
+    false;
+
+
+  // ========================================
+  // 手を左右外側へ戻しておく
+  // ========================================
+
+  leftHandPivot.position.set(
+    -2.20,
+    -0.31,
+    0.48
+  );
+
+
+  rightHandPivot.position.set(
+    2.20,
+    -0.31,
+    0.48
+  );
+
+
+  // ========================================
+  // main.jsへ開始通知
+  // ========================================
+
+  window.dispatchEvent(
+
+    new CustomEvent(
+      "vr-enter-start"
+    )
+
+  );
+
+}
+
+
+// ========================================
+// 16. CLICK
+// ========================================
+
+container.addEventListener(
+  "click",
+  startVREnter
+);
+
+
+// ========================================
+// KEYBOARD
+// ========================================
+
+container.addEventListener(
+
+  "keydown",
+
+  function (event) {
+
+    if (
+      event.key === "Enter" ||
+      event.key === " "
+    ) {
+
+      event.preventDefault();
+
+      startVREnter();
+
+    }
+
+  }
+
+);
+
+
+// ========================================
+// 17. ANIMATION LOOP
+// ========================================
+
+const clock =
+  new THREE.Clock();
+
 
 function animate() {
 
@@ -707,11 +1065,632 @@ function animate() {
   );
 
 
-  // OrbitControlsを滑らかに動かす
-  controls.update();
+  const elapsed =
+    clock.getElapsedTime();
 
 
-  // Sceneを描画
+  // ========================================
+  // NORMAL STATE
+  //
+  // ★最初はゴーグルだけ
+  // ========================================
+
+  if (
+    !isEntering &&
+    headsetReady
+  ) {
+
+    // ========================================
+    // ゴーグルを少し浮かせる
+    // ========================================
+
+    headsetPivot.position.y =
+      Math.sin(
+        elapsed * 1.5
+      ) * 0.035;
+
+
+    // ========================================
+    // 正面固定
+    // ========================================
+
+    headsetPivot.rotation.set(
+      0,
+      0,
+      0
+    );
+
+
+    vrGroup.rotation.set(
+      0,
+      0,
+      0
+    );
+
+
+    // ========================================
+    // 手は通常時は完全非表示
+    // ========================================
+
+    if (leftHandPivot) {
+
+      leftHandPivot.visible =
+        false;
+
+    }
+
+
+    if (rightHandPivot) {
+
+      rightHandPivot.visible =
+        false;
+
+    }
+
+  }
+
+
+  // ========================================
+  // VR ENTER ANIMATION
+  // ========================================
+
+  if (
+    isEntering &&
+    headsetReady &&
+    handsReady
+  ) {
+
+    const now =
+      performance.now();
+
+
+    const time =
+      now -
+      enterStartTime;
+
+
+    // ========================================
+    // PHASE 1
+    //
+    // 0 ～ 300ms
+    //
+    // クリック後ほんの少し間を作る
+    // ========================================
+
+    if (time <= 300) {
+
+      leftHandPivot.visible =
+        false;
+
+
+      rightHandPivot.visible =
+        false;
+
+
+      vrGroup.rotation.set(
+        0,
+        0,
+        0
+      );
+
+
+      vrGroup.position.set(
+        0,
+        normalY,
+        0
+      );
+
+
+      vrGroup.scale.setScalar(
+        normalScale
+      );
+
+    }
+
+
+    // ========================================
+    // PHASE 2
+    //
+    // 300 ～ 1500ms
+    //
+    // ★ゴーグルだけY軸180°回転
+    //
+    // 手はまだ出さない
+    // ========================================
+
+    else if (time <= 1500) {
+
+      const progress =
+        easeInOutCubic(
+          clamp01(
+            (
+              time - 300
+            ) / 1200
+          )
+        );
+
+
+      leftHandPivot.visible =
+        false;
+
+
+      rightHandPivot.visible =
+        false;
+
+
+      // ========================================
+      // X軸は回さない
+      // ========================================
+
+      vrGroup.rotation.x =
+        0;
+
+
+      // ========================================
+      // Y軸だけ180°
+      //
+      // 鼻のくぼみは下のまま
+      // 内側をこちらへ向ける
+      // ========================================
+
+      vrGroup.rotation.y =
+        THREE.MathUtils.lerp(
+          0,
+          WEAR_ROTATION_Y,
+          progress
+        );
+
+
+      // ========================================
+      // Z軸も固定
+      // ========================================
+
+      vrGroup.rotation.z =
+        0;
+
+
+      // ========================================
+      // 回転中は位置を動かさない
+      // ========================================
+
+      vrGroup.position.x =
+        0;
+
+
+      vrGroup.position.y =
+        normalY;
+
+
+      vrGroup.position.z =
+        0;
+
+
+      vrGroup.scale.setScalar(
+        normalScale
+      );
+
+    }
+
+
+    // ========================================
+    // PHASE 3
+    //
+    // 1500 ～ 2300ms
+    //
+    // ★回転完了後に手を表示
+    //
+    // 左右外側から
+    // ゴーグルへ寄せて掴む
+    // ========================================
+
+    else if (time <= 2300) {
+
+      const progress =
+        easeInOutCubic(
+          clamp01(
+            (
+              time - 1500
+            ) / 800
+          )
+        );
+
+
+      // ========================================
+      // ★ここで初めて手を表示
+      // ========================================
+
+      leftHandPivot.visible =
+        true;
+
+
+      rightHandPivot.visible =
+        true;
+
+
+      // ========================================
+      // LEFT HAND
+      //
+      // 左外側 → ゴーグル
+      // ========================================
+
+      leftHandPivot.position.x =
+        THREE.MathUtils.lerp(
+          -2.20,
+          -1.13,
+          progress
+        );
+
+
+      leftHandPivot.position.y =
+        THREE.MathUtils.lerp(
+          -0.31,
+          -0.31,
+          progress
+        );
+
+
+      leftHandPivot.position.z =
+        THREE.MathUtils.lerp(
+          0.48,
+          0.48,
+          progress
+        );
+
+
+      // ========================================
+      // RIGHT HAND
+      //
+      // 右外側 → ゴーグル
+      // ========================================
+
+      rightHandPivot.position.x =
+        THREE.MathUtils.lerp(
+          2.20,
+          1.13,
+          progress
+        );
+
+
+      rightHandPivot.position.y =
+        THREE.MathUtils.lerp(
+          -0.31,
+          -0.31,
+          progress
+        );
+
+
+      rightHandPivot.position.z =
+        THREE.MathUtils.lerp(
+          0.48,
+          0.48,
+          progress
+        );
+
+
+      // ========================================
+      // ゴーグルは内側を向いたまま固定
+      // ========================================
+
+      vrGroup.rotation.x =
+        0;
+
+
+      vrGroup.rotation.y =
+        WEAR_ROTATION_Y;
+
+
+      vrGroup.rotation.z =
+        0;
+
+
+      vrGroup.position.x =
+        0;
+
+
+      vrGroup.position.y =
+        normalY;
+
+
+      vrGroup.position.z =
+        0;
+
+
+      vrGroup.scale.setScalar(
+        normalScale
+      );
+
+    }
+
+
+    // ========================================
+    // PHASE 4
+    //
+    // 2300 ～ 2600ms
+    //
+    // 掴んだ状態で0.3秒停止
+    // ========================================
+
+    else if (time <= 2600) {
+
+      leftHandPivot.visible =
+        true;
+
+
+      rightHandPivot.visible =
+        true;
+
+
+      leftHandPivot.position.set(
+        -1.13,
+        -0.31,
+        0.48
+      );
+
+
+      rightHandPivot.position.set(
+        1.13,
+        -0.31,
+        0.48
+      );
+
+
+      vrGroup.rotation.set(
+        0,
+        WEAR_ROTATION_Y,
+        0
+      );
+
+
+      vrGroup.position.set(
+        0,
+        normalY,
+        0
+      );
+
+
+      vrGroup.scale.setScalar(
+        normalScale
+      );
+
+    }
+
+
+    // ========================================
+    // PHASE 5
+    //
+    // 2600 ～ 4300ms
+    //
+    // ★手＋ゴーグルを
+    // 画面中央へ移動させながら
+    // 画面いっぱいまで近づける
+    // ========================================
+
+    else if (time <= 4300) {
+
+      const rawProgress =
+        clamp01(
+          (
+            time - 2600
+          ) / 1700
+        );
+
+
+      const moveProgress =
+        easeInOutCubic(
+          rawProgress
+        );
+
+
+      const zoomProgress =
+        easeInQuart(
+          rawProgress
+        );
+
+
+      // ========================================
+      // 手は表示したまま
+      // ========================================
+
+      leftHandPivot.visible =
+        true;
+
+
+      rightHandPivot.visible =
+        true;
+
+
+      // ========================================
+      // ★X方向
+      //
+      // 必ず画面中央
+      // ========================================
+
+      vrGroup.position.x =
+        THREE.MathUtils.lerp(
+          0,
+          WEAR_POSITION_X,
+          moveProgress
+        );
+
+
+      // ========================================
+      // ★Y方向
+      //
+      // normalY
+      // ↓
+      // 0
+      //
+      // 画面の縦中央へ移動
+      // ========================================
+
+      vrGroup.position.y =
+        THREE.MathUtils.lerp(
+          normalY,
+          WEAR_POSITION_Y,
+          moveProgress
+        );
+
+
+      // ========================================
+      // Z方向
+      //
+      // カメラへ近づく
+      // ========================================
+
+      vrGroup.position.z =
+        THREE.MathUtils.lerp(
+          0,
+          WEAR_POSITION_Z,
+          zoomProgress
+        );
+
+
+      // ========================================
+      // FINAL SCALE
+      //
+      // 初期サイズに関係なく
+      // 最終的には画面いっぱい
+      // ========================================
+
+      const finalScale =
+        Math.max(
+          normalScale * 7.5,
+          MIN_FINAL_SCALE
+        );
+
+
+      const currentScale =
+        THREE.MathUtils.lerp(
+          normalScale,
+          finalScale,
+          zoomProgress
+        );
+
+
+      vrGroup.scale.setScalar(
+        currentScale
+      );
+
+
+      // ========================================
+      // ★近づいている間も
+      // 向きは完全固定
+      //
+      // 斜めにならない
+      // ========================================
+
+      vrGroup.rotation.x =
+        0;
+
+
+      vrGroup.rotation.y =
+        WEAR_ROTATION_Y;
+
+
+      vrGroup.rotation.z =
+        0;
+
+    }
+
+
+    // ========================================
+    // PHASE 6
+    //
+    // 4300 ～ 4650ms
+    //
+    // ★画面のど真ん中で
+    // 画面いっぱいの状態を
+    // 0.35秒キープ
+    // ========================================
+
+    else if (time <= 4650) {
+
+      const finalScale =
+        Math.max(
+          normalScale * 7.5,
+          MIN_FINAL_SCALE
+        );
+
+
+      leftHandPivot.visible =
+        true;
+
+
+      rightHandPivot.visible =
+        true;
+
+
+      // ========================================
+      // 完全に画面中央
+      // ========================================
+
+      vrGroup.position.set(
+        WEAR_POSITION_X,
+        WEAR_POSITION_Y,
+        WEAR_POSITION_Z
+      );
+
+
+      // ========================================
+      // 内側を向いたまま
+      // ========================================
+
+      vrGroup.rotation.set(
+        0,
+        WEAR_ROTATION_Y,
+        0
+      );
+
+
+      vrGroup.scale.setScalar(
+        finalScale
+      );
+
+    }
+
+
+    // ========================================
+    // PHASE 7
+    //
+    // 装着完了
+    //
+    // main.jsへ通知
+    //
+    // ↓
+    // 暗転
+    // ↓
+    // WORLDへ切替
+    // ↓
+    // 徐々に明るくなる
+    // ========================================
+
+    else {
+
+      if (!enterCompleteSent) {
+
+        enterCompleteSent =
+          true;
+
+
+        window.dispatchEvent(
+
+          new CustomEvent(
+            "vr-enter-complete"
+          )
+
+        );
+
+      }
+
+    }
+
+  }
+
+
+  // ========================================
+  // RENDER
+  // ========================================
+
   renderer.render(
     scene,
     camera
@@ -720,12 +1699,20 @@ function animate() {
 }
 
 
-// アニメーション開始
+// ========================================
+// START
+// ========================================
+
 animate();
 
 
 // ========================================
-// 14. ウィンドウサイズ変更対応
+// 18. RESIZE
+//
+// PC / iPad / Smartphone
+//
+// 画面サイズが変わった場合に
+// Canvasと通常表示を再計算
 // ========================================
 
 window.addEventListener(
@@ -734,25 +1721,66 @@ window.addEventListener(
 
   function () {
 
-    const width =
-      container.clientWidth;
-
-    const height =
-      container.clientHeight;
+    resizeRenderer();
 
 
-    // Cameraの縦横比を更新
-    camera.aspect =
-      width / height;
+    // ========================================
+    // 装着前だけ再計算
+    // ========================================
 
-    camera.updateProjectionMatrix();
+    if (!isEntering) {
+
+      responsiveSettings =
+        getResponsiveSettings();
 
 
-    // Canvasサイズを更新
-    renderer.setSize(
-      width,
-      height
-    );
+      normalScale =
+        responsiveSettings.scale;
+
+
+      normalY =
+        responsiveSettings.y;
+
+
+      vrGroup.scale.setScalar(
+        normalScale
+      );
+
+
+      vrGroup.position.set(
+        0,
+        normalY,
+        0
+      );
+
+
+      vrGroup.rotation.set(
+        0,
+        0,
+        0
+      );
+
+
+      // ========================================
+      // 通常時は手を隠す
+      // ========================================
+
+      if (leftHandPivot) {
+
+        leftHandPivot.visible =
+          false;
+
+      }
+
+
+      if (rightHandPivot) {
+
+        rightHandPivot.visible =
+          false;
+
+      }
+
+    }
 
   }
 
