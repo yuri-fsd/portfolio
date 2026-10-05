@@ -1134,3 +1134,418 @@ body.world-open #entrance {
   }
 
 }
+
+/* ========================================
+   PIXEL CAT
+======================================== */
+
+.pixel-cat {
+  position: absolute;
+
+  right: -140px;
+  bottom: 45px;
+
+  width: 100px;
+  height: 85px;
+
+  z-index: 500;
+
+  cursor: pointer;
+
+  user-select: none;
+
+  animation:
+    cat-walk-across
+    14s
+    linear
+    infinite;
+}
+
+
+/* ========================================
+   猫本体
+======================================== */
+
+.cat-sprite {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  image-rendering: pixelated;
+}
+
+
+/* ========================================
+   BODY
+======================================== */
+
+.cat-body {
+  position: absolute;
+
+  left: 25px;
+  bottom: 15px;
+
+  width: 55px;
+  height: 32px;
+
+  background: #f3c5d9;
+
+  box-shadow:
+    6px 0 0 #f3c5d9,
+    0 -6px 0 #f3c5d9;
+}
+
+
+/* ========================================
+   HEAD
+======================================== */
+
+.cat-head {
+  position: absolute;
+
+  left: -20px;
+  top: -13px;
+
+  width: 35px;
+  height: 35px;
+
+  background: #f7d0e1;
+
+  box-shadow:
+    -4px 4px 0 #e7abc7;
+}
+
+
+/* ========================================
+   EARS
+======================================== */
+
+.cat-ear {
+  position: absolute;
+
+  top: -9px;
+
+  width: 13px;
+  height: 15px;
+
+  background: #f7d0e1;
+}
+
+
+.cat-ear-left {
+  left: 1px;
+
+  clip-path:
+    polygon(
+      0 100%,
+      50% 0,
+      100% 100%
+    );
+}
+
+
+.cat-ear-right {
+  right: 1px;
+
+  clip-path:
+    polygon(
+      0 100%,
+      50% 0,
+      100% 100%
+    );
+}
+
+
+/* ========================================
+   EYES
+======================================== */
+
+.cat-eye {
+  position: absolute;
+
+  top: 15px;
+
+  width: 4px;
+  height: 4px;
+
+  background: #5f4b61;
+}
+
+
+.cat-eye-left {
+  left: 8px;
+}
+
+
+.cat-eye-right {
+  right: 8px;
+}
+
+
+/* ========================================
+   LEGS
+======================================== */
+
+.cat-leg {
+  position: absolute;
+
+  bottom: -12px;
+
+  width: 7px;
+  height: 15px;
+
+  background: #eebbd1;
+
+  transform-origin: top center;
+
+  animation:
+    cat-leg-walk
+    0.32s
+    steps(2)
+    infinite;
+}
+
+
+.cat-leg-1 {
+  left: 5px;
+}
+
+
+.cat-leg-2 {
+  left: 17px;
+
+  animation-delay: -0.16s;
+}
+
+
+.cat-leg-3 {
+  right: 17px;
+
+  animation-delay: -0.16s;
+}
+
+
+.cat-leg-4 {
+  right: 5px;
+}
+
+
+/* ========================================
+   TAIL
+======================================== */
+
+.cat-tail {
+  position: absolute;
+
+  right: 8px;
+  bottom: 30px;
+
+  width: 35px;
+  height: 8px;
+
+  background: #eebbd1;
+
+  transform-origin: left center;
+
+  animation:
+    cat-tail-move
+    0.7s
+    steps(3)
+    infinite;
+}
+
+
+/* ========================================
+   WALK ACROSS SCREEN
+
+   右 → 左
+======================================== */
+
+@keyframes cat-walk-across {
+
+  from {
+    right: -140px;
+  }
+
+  to {
+    right: calc(100% + 140px);
+  }
+
+}
+
+
+/* ========================================
+   LEG WALK
+======================================== */
+
+@keyframes cat-leg-walk {
+
+  0% {
+    transform:
+      translateY(0);
+  }
+
+  50% {
+    transform:
+      translateY(-5px);
+  }
+
+  100% {
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+/* ========================================
+   TAIL
+======================================== */
+
+@keyframes cat-tail-move {
+
+  0% {
+    transform:
+      rotate(-12deg);
+  }
+
+  50% {
+    transform:
+      rotate(15deg);
+  }
+
+  100% {
+    transform:
+      rotate(-12deg);
+  }
+
+}
+
+
+/* ========================================
+   猫を触っている間
+
+   横移動＋足を停止
+======================================== */
+
+.pixel-cat.is-petted {
+  animation-play-state:
+    paused;
+}
+
+
+.pixel-cat.is-petted .cat-leg {
+  animation-play-state:
+    paused;
+}
+
+
+/* ========================================
+   HEART AREA
+======================================== */
+
+.cat-hearts {
+  position: absolute;
+
+  left: 10px;
+  top: -10px;
+
+  width: 80px;
+  height: 60px;
+
+  pointer-events: none;
+}
+
+
+/* ========================================
+   HEART
+======================================== */
+
+.cat-heart {
+  position: absolute;
+
+  left: 50%;
+  bottom: 0;
+
+  color: #e78fb8;
+
+  font-size: 22px;
+
+  pointer-events: none;
+
+  animation:
+    cat-heart-pop
+    1s
+    ease-out
+    forwards;
+}
+
+
+/* ========================================
+   HEART POP
+======================================== */
+
+@keyframes cat-heart-pop {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, 0)
+      scale(0);
+  }
+
+
+  25% {
+    opacity: 1;
+
+    transform:
+      translate(-50%, -8px)
+      scale(1.35);
+  }
+
+
+  70% {
+    opacity: 1;
+
+    transform:
+      translate(
+        calc(-50% + var(--heart-x)),
+        -38px
+      )
+      scale(1);
+  }
+
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(
+        calc(-50% + var(--heart-x)),
+        -65px
+      )
+      scale(0.75);
+  }
+
+}
+
+
+/* ========================================
+   スマホ
+======================================== */
+
+@media (max-width: 600px) {
+
+  .pixel-cat {
+    bottom: 25px;
+
+    transform:
+      scale(0.8);
+
+    transform-origin:
+      bottom center;
+  }
+
+}

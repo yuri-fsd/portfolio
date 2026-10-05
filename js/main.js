@@ -126,3 +126,168 @@ window.addEventListener(
 
   }
 );
+
+// ========================================
+// PIXEL CAT
+// ========================================
+
+const pixelCat =
+  document.getElementById(
+    "pixelCat"
+  );
+
+
+const catHearts =
+  document.querySelector(
+    ".cat-hearts"
+  );
+
+
+let catPetTimer =
+  null;
+
+
+// ========================================
+// 猫を撫でる
+// ========================================
+
+function petCat() {
+
+  if (
+    !pixelCat ||
+    !catHearts
+  ) {
+    return;
+  }
+
+
+  // ========================================
+  // 猫を一時停止
+  // ========================================
+
+  pixelCat.classList.add(
+    "is-petted"
+  );
+
+
+  // ========================================
+  // HEARTを作る
+  // ========================================
+
+  const heart =
+    document.createElement(
+      "span"
+    );
+
+
+  heart.classList.add(
+    "cat-heart"
+  );
+
+
+  heart.textContent =
+    "♥";
+
+
+  // ========================================
+  // ハートが毎回少し違う方向へ
+  // ========================================
+
+  const randomX =
+    Math.floor(
+      Math.random() * 45
+    ) - 22;
+
+
+  heart.style.setProperty(
+    "--heart-x",
+    `${randomX}px`
+  );
+
+
+  catHearts.appendChild(
+    heart
+  );
+
+
+  // ========================================
+  // アニメーション終了後
+  // HEARTを削除
+  // ========================================
+
+  setTimeout(
+    function () {
+
+      heart.remove();
+
+    },
+
+    1000
+  );
+
+
+  // ========================================
+  // 連打された場合は
+  // 停止時間をリセット
+  // ========================================
+
+  clearTimeout(
+    catPetTimer
+  );
+
+
+  // ========================================
+  // 0.8秒後にまた歩き始める
+  // ========================================
+
+  catPetTimer =
+    setTimeout(
+      function () {
+
+        pixelCat.classList.remove(
+          "is-petted"
+        );
+
+      },
+
+      800
+    );
+
+}
+
+
+// ========================================
+// CLICK
+// ========================================
+
+if (pixelCat) {
+
+  pixelCat.addEventListener(
+    "click",
+    petCat
+  );
+
+
+  // ========================================
+  // キーボード操作
+  // ========================================
+
+  pixelCat.addEventListener(
+    "keydown",
+    function (event) {
+
+      if (
+        event.key === "Enter" ||
+        event.key === " "
+      ) {
+
+        event.preventDefault();
+
+        petCat();
+
+      }
+
+    }
+  );
+
+}
