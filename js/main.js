@@ -1,13 +1,14 @@
 // ========================================
 // MAIN.JS
 //
-// Three.js側から送られてくるイベントを受け取り、
-// ページ全体の画面遷移を担当する
+// VR装着後の画面遷移
+// ＋
+// ピクセル猫の制御
 // ========================================
 
 
 // ========================================
-// 状態管理
+// STATE
 // ========================================
 
 let transitionStarted = false;
@@ -37,16 +38,16 @@ window.addEventListener(
   "vr-enter-complete",
   function () {
 
-    // 二重実行防止
     if (transitionStarted) {
       return;
     }
+
 
     transitionStarted = true;
 
 
     // ========================================
-    // ① 黒へフェード
+    // ① 暗転開始
     // ========================================
 
     document.body.classList.add(
@@ -55,19 +56,11 @@ window.addEventListener(
 
 
     // ========================================
-    // ② 完全に暗くなるまで待つ
-    //
-    // CSS側の暗転時間 350ms より
-    // 少し長く待つ
+    // ② 黒くなったらWORLDを準備
     // ========================================
 
     setTimeout(
       function () {
-
-        // ========================================
-        // ③ 黒画面の裏側で
-        // VR WORLDへ切り替える
-        // ========================================
 
         document.body.classList.add(
           "world-open"
@@ -75,48 +68,66 @@ window.addEventListener(
 
 
         // ========================================
-        // ④ 完全な黒を少し維持
-        //
-        // 「装着した」感を出すため
-        // 650ms待つ
+        // ③ 黒画面を消して
+        //    昼背景を見せる
         // ========================================
 
         setTimeout(
           function () {
 
-            // ========================================
-            // ⑤ 徐々に明るくする
-            // ========================================
-
             document.body.classList.add(
               "vr-reveal"
             );
 
+          },
+
+          180
+        );
+
+
+        // ========================================
+        // ④ 昼背景のあとから
+        //    WORLD UIを表示
+        // ========================================
+
+        setTimeout(
+          function () {
+
+            document.body.classList.add(
+              "world-ui-open"
+            );
+
 
             // ========================================
-            // ⑥ 明転終了後
-            // blackoutを完全解除
+            // ⑤ 猫スタート
             // ========================================
 
-            setTimeout(
-              function () {
+            startCat();
 
-                document.body.classList.remove(
-                  "vr-blackout"
-                );
+          },
 
-                document.body.classList.remove(
-                  "vr-reveal"
-                );
+          850
+        );
 
-              },
 
-              1200
+        // ========================================
+        // ⑥ 暗転用クラスを掃除
+        // ========================================
+
+        setTimeout(
+          function () {
+
+            document.body.classList.remove(
+              "vr-blackout"
+            );
+
+            document.body.classList.remove(
+              "vr-reveal"
             );
 
           },
 
-          650
+          1500
         );
 
       },
@@ -127,13 +138,20 @@ window.addEventListener(
   }
 );
 
+
 // ========================================
-// PIXEL CAT
+// PIXEL CAT ELEMENTS
 // ========================================
 
 const pixelCat =
   document.getElementById(
     "pixelCat"
+  );
+
+
+const catSprite =
+  document.getElementById(
+    "catSprite"
   );
 
 
@@ -143,40 +161,244 @@ const catHearts =
   );
 
 
-let catPetTimer =
-  null;
+// ========================================
+// NORMAL CATS
+// ========================================
+
+const normalCats = [
+  "white",
+  "black",
+  "gray",
+  "orange",
+  "calico"
+];
 
 
 // ========================================
-// 猫を撫でる
+// CAT STATE
 // ========================================
 
-function petCat() {
+let catWalking = false;
+
+let catPetTimer = null;
+
+let catAnimation = null;
+
+let nextCatTimer = null;
+
+
+// ========================================
+// 猫を選ぶ
+//
+// ribbon = 5%
+// ========================================
+
+function chooseCat() {
+
+  const rareRoll =
+    Math.random();
+
+
+  if (rareRoll < 0.05) {
+
+    return "ribbon";
+
+  }
+
+
+  const randomIndex =
+    Math.floor(
+      Math.random() *
+      normalCats.length
+    );
+
+
+  return normalCats[
+    randomIndex
+  ];
+
+}
+
+
+// ========================================
+// 猫画像を変更
+// ========================================
+
+function setCatDesign(
+  catName
+) {
+
+  if (!catSprite) {
+    return;
+  }
+
+
+  catSprite.style.backgroundImage =
+    `url("./assets/cats/${catName}.png")`;
+
+}
+
+
+// ========================================
+// 猫を歩かせる
+// ========================================
+
+function startCat() {
 
   if (
     !pixelCat ||
-    !catHearts
+    !catSprite
   ) {
     return;
   }
 
 
+  if (catWalking) {
+    return;
+  }
+
+
+  catWalking = true;
+
+
+  // 前回のタイマーを消す
+
+  if (nextCatTimer) {
+
+    clearTimeout(
+      nextCatTimer
+    );
+
+    nextCatTimer = null;
+
+  }
+
+
   // ========================================
-  // 猫を一時停止
+  // 猫の種類を選ぶ
   // ========================================
 
-  pixelCat.classList.add(
-    "is-petted"
+  const nextCat =
+    chooseCat();
+
+
+  setCatDesign(
+    nextCat
   );
 
 
   // ========================================
-  // HEARTを作る
+  // 初期位置
+  //
+  // CSSで right:-130px なので
+  // translateX(0)で右外側から開始
   // ========================================
+
+  pixelCat.style.transform =
+    "translateX(0px)";
+
+
+  // ========================================
+  // 移動距離
+  // ========================================
+
+  const travelDistance =
+    window.innerWidth + 260;
+
+
+  // ========================================
+  // 右 → 左
+  //
+  // 12秒でゆっくり歩く
+  // ========================================
+
+  catAnimation =
+    pixelCat.animate(
+      [
+        {
+          transform:
+            "translateX(0px)"
+        },
+
+        {
+          transform:
+            `translateX(-${travelDistance}px)`
+        }
+      ],
+
+      {
+        duration: 12000,
+
+        easing: "linear",
+
+        fill: "forwards"
+      }
+    );
+
+
+  // ========================================
+  // 画面外まで歩いたあと
+  // ========================================
+
+  catAnimation.onfinish =
+    function () {
+
+      catWalking = false;
+
+      catAnimation = null;
+
+
+      pixelCat.classList.remove(
+        "is-petted"
+      );
+
+
+      pixelCat.style.transform =
+        "translateX(0px)";
+
+
+      // ========================================
+      // 次の猫
+      //
+      // 0.2〜0.6秒後にすぐ登場
+      // ========================================
+
+      const nextDelay =
+        200 +
+        Math.random() *
+        400;
+
+
+      nextCatTimer =
+        setTimeout(
+          function () {
+
+            startCat();
+
+          },
+
+          nextDelay
+        );
+
+    };
+
+}
+
+
+// ========================================
+// HEARTを作る
+// ========================================
+
+function createHeart() {
+
+  if (!catHearts) {
+    return;
+  }
+
 
   const heart =
     document.createElement(
-      "span"
+      "img"
     );
 
 
@@ -185,18 +407,22 @@ function petCat() {
   );
 
 
-  heart.textContent =
-    "♥";
+  heart.src =
+    "./assets/cats/heart.png";
+
+
+  heart.alt =
+    "";
 
 
   // ========================================
-  // ハートが毎回少し違う方向へ
+  // ハートを左右ランダムに飛ばす
   // ========================================
 
   const randomX =
     Math.floor(
-      Math.random() * 45
-    ) - 22;
+      Math.random() * 55
+    ) - 27;
 
 
   heart.style.setProperty(
@@ -211,8 +437,7 @@ function petCat() {
 
 
   // ========================================
-  // アニメーション終了後
-  // HEARTを削除
+  // 1秒後に削除
   // ========================================
 
   setTimeout(
@@ -225,20 +450,52 @@ function petCat() {
     1000
   );
 
+}
+
+
+// ========================================
+// 猫を撫でる
+// ========================================
+
+function petCat() {
+
+  if (
+    !pixelCat ||
+    !catWalking ||
+    !catAnimation
+  ) {
+    return;
+  }
+
 
   // ========================================
-  // 連打された場合は
-  // 停止時間をリセット
+  // ハート
+  // ========================================
+
+  createHeart();
+
+
+  // ========================================
+  // 猫を停止
+  // ========================================
+
+  pixelCat.classList.add(
+    "is-petted"
+  );
+
+
+  catAnimation.pause();
+
+
+  // ========================================
+  // 連打されたら
+  // 800msを最初から数え直す
   // ========================================
 
   clearTimeout(
     catPetTimer
   );
 
-
-  // ========================================
-  // 0.8秒後にまた歩き始める
-  // ========================================
 
   catPetTimer =
     setTimeout(
@@ -247,6 +504,13 @@ function petCat() {
         pixelCat.classList.remove(
           "is-petted"
         );
+
+
+        if (catAnimation) {
+
+          catAnimation.play();
+
+        }
 
       },
 
@@ -257,19 +521,27 @@ function petCat() {
 
 
 // ========================================
-// CLICK
+// CAT CLICK
 // ========================================
 
 if (pixelCat) {
 
   pixelCat.addEventListener(
     "click",
-    petCat
+    function (event) {
+
+      event.preventDefault();
+
+      event.stopPropagation();
+
+      petCat();
+
+    }
   );
 
 
   // ========================================
-  // キーボード操作
+  // KEYBOARD
   // ========================================
 
   pixelCat.addEventListener(
@@ -282,6 +554,8 @@ if (pixelCat) {
       ) {
 
         event.preventDefault();
+
+        event.stopPropagation();
 
         petCat();
 

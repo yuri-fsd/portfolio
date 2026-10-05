@@ -30,12 +30,14 @@ body {
   overflow: hidden;
 
   color: #443b50;
-  background: #ffffff;
+
+  background: #000;
 }
 
 
 /* ========================================
    ENTRANCE
+   夜の背景
 ======================================== */
 
 #entrance {
@@ -51,54 +53,14 @@ body {
 
   overflow: hidden;
 
-  background:
-    radial-gradient(
-      circle at 50% 40%,
-      #ffffff 0%,
-      #fff8fc 35%,
-      #eee8ff 100%
-    );
-}
+  background-image:
+    url("./assets/images/entrance-bg.png");
 
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 
-/* ========================================
-   BACKGROUND GLOW
-======================================== */
-
-.glow {
-  position: absolute;
-
-  width: clamp(
-    350px,
-    38vw,
-    650px
-  );
-
-  aspect-ratio: 1 / 1;
-
-  border-radius: 50%;
-
-  filter: blur(100px);
-
-  opacity: 0.45;
-
-  pointer-events: none;
-}
-
-
-.glow-1 {
-  background: #ffc5e4;
-
-  top: -200px;
-  right: -100px;
-}
-
-
-.glow-2 {
-  background: #c9baff;
-
-  bottom: -250px;
-  left: -100px;
+  image-rendering: pixelated;
 }
 
 
@@ -121,7 +83,7 @@ body {
 
 
 /* ========================================
-   WELCOME
+   WELCOME TO
 ======================================== */
 
 .welcome {
@@ -154,9 +116,15 @@ body {
       8px
     );
 
-  color: #aa9caf;
+  color: #f7efff;
+
+  font-weight: 500;
 
   white-space: nowrap;
+
+  text-shadow:
+    0 2px 8px rgba(16, 30, 70, 0.9),
+    0 0 14px rgba(190, 200, 255, 0.35);
 
   transition:
     opacity 0.4s ease,
@@ -165,7 +133,7 @@ body {
 
 
 /* ========================================
-   MAIN TITLE
+   MY WORLD
 ======================================== */
 
 h1 {
@@ -202,9 +170,13 @@ h1 {
 
   font-weight: 700;
 
-  color: #332c3b;
+  color: #fff4cf;
 
   white-space: nowrap;
+
+  text-shadow:
+    0 3px 0 rgba(50, 65, 120, 0.4),
+    0 5px 18px rgba(10, 25, 70, 0.65);
 
   transition:
     opacity 0.4s ease,
@@ -217,7 +189,7 @@ h1 span {
 
   font-weight: 300;
 
-  color: #d59bbb;
+  color: #e4d7ff;
 }
 
 
@@ -248,11 +220,16 @@ h1 span {
       19px
     );
 
-  color: #9b8fa0;
+  color: #f6f0ff;
+
+  font-weight: 500;
 
   letter-spacing: 1px;
 
   white-space: nowrap;
+
+  text-shadow:
+    0 2px 7px rgba(15, 28, 70, 0.9);
 
   transition:
     opacity 0.4s ease,
@@ -262,12 +239,6 @@ h1 span {
 
 /* ========================================
    THREE.JS AREA
-
-   Canvas自体は最初から
-   ブラウザ画面いっぱい。
-
-   これによって装着アニメーション時に
-   ゴーグルを画面外まで拡大できる。
 ======================================== */
 
 #vrCanvas {
@@ -289,21 +260,15 @@ h1 span {
 
 
 #vrCanvas canvas {
+  display: block;
+
   width: 100%;
   height: 100%;
-
-  display: block;
 }
 
 
 /* ========================================
    CLICK HINT
-
-   今回ここを修正。
-
-   ・以前より下へ配置
-   ・文字を大きく
-   ・グレーを濃く
 ======================================== */
 
 .hint {
@@ -311,12 +276,8 @@ h1 span {
 
   left: 50%;
 
-  bottom:
-    clamp(
-      3.5%,
-      5vh,
-      7%
-    );
+  /* 前より少し上 */
+  bottom: 9%;
 
   transform:
     translateX(-50%);
@@ -330,13 +291,16 @@ h1 span {
       18px
     );
 
-  font-weight: 400;
+  font-weight: 500;
 
-  color: #8f818f;
+  color: #fff1c7;
 
   letter-spacing: 0.6px;
 
   white-space: nowrap;
+
+  text-shadow:
+    0 2px 7px rgba(15, 28, 70, 0.9);
 
   transition:
     opacity 0.4s ease,
@@ -345,106 +309,8 @@ h1 span {
 
 
 /* ========================================
-   STARS
-======================================== */
-
-.stars {
-  position: absolute;
-
-  inset: 0;
-
-  z-index: 5;
-
-  pointer-events: none;
-
-  transition:
-    opacity 0.4s ease;
-}
-
-
-.stars span {
-  position: absolute;
-
-  color: #d9acd0;
-
-  animation:
-    sparkle
-    3s
-    infinite
-    ease-in-out;
-}
-
-
-.stars span:nth-child(1) {
-  top: 15%;
-  left: 15%;
-
-  font-size:
-    clamp(
-      18px,
-      1.5vw,
-      28px
-    );
-}
-
-
-.stars span:nth-child(2) {
-  top: 25%;
-  right: 17%;
-
-  font-size:
-    clamp(
-      26px,
-      2vw,
-      36px
-    );
-}
-
-
-.stars span:nth-child(3) {
-  bottom: 20%;
-  left: 20%;
-
-  font-size:
-    clamp(
-      28px,
-      2.2vw,
-      40px
-    );
-}
-
-
-.stars span:nth-child(4) {
-  bottom: 15%;
-  right: 18%;
-
-  font-size:
-    clamp(
-      18px,
-      1.5vw,
-      28px
-    );
-}
-
-
-.stars span:nth-child(5) {
-  top: 12%;
-  right: 35%;
-
-  font-size:
-    clamp(
-      18px,
-      1.4vw,
-      26px
-    );
-}
-
-
-/* ========================================
    ENTERING
-
-   VR装着開始時に
-   テキスト・星を消す
+   ゴーグルを押したら文字を消す
 ======================================== */
 
 body.entering .welcome,
@@ -471,11 +337,6 @@ body.entering .hint {
 }
 
 
-body.entering .stars {
-  opacity: 0;
-}
-
-
 /* ========================================
    BLACKOUT
 ======================================== */
@@ -488,24 +349,18 @@ body.entering .stars {
   width: 100vw;
   height: 100vh;
 
-  background: #000000;
+  z-index: 99999;
+
+  background: #000;
 
   opacity: 0;
-
   visibility: hidden;
 
   pointer-events: none;
-
-  z-index: 99999;
 }
 
 
-/* ========================================
-   暗転
-
-   ゴーグル装着後、
-   黒いレイヤーを表示する
-======================================== */
+/* 暗転開始 */
 
 body.vr-blackout #vrBlackout {
   visibility: visible;
@@ -517,12 +372,7 @@ body.vr-blackout #vrBlackout {
 }
 
 
-/* ========================================
-   明転
-
-   黒いレイヤーを徐々に透明にして
-   VR WORLDを見せる
-======================================== */
+/* WORLDを見せる */
 
 body.vr-blackout.vr-reveal #vrBlackout {
   opacity: 0;
@@ -543,40 +393,21 @@ body.vr-blackout.vr-reveal #vrBlackout {
 
   width: 100vw;
   height: 100vh;
+  min-height: 100svh;
 
   z-index: 100;
 
-  display: flex;
-
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: center;
-
-  opacity: 0;
+  overflow: hidden;
 
   visibility: hidden;
+  opacity: 0;
 
   pointer-events: none;
 
-  background:
-    radial-gradient(
-      circle at 50% 40%,
-      #ffffff 0%,
-      #fff8fc 40%,
-      #e8e0fa 100%
-    );
-
-  transform:
-    scale(1.025);
-
-  filter:
-    blur(7px);
+  background: #000;
 
   transition:
-    opacity 1s ease,
-    transform 1.1s ease,
-    filter 1.1s ease;
+    opacity 0.35s ease;
 }
 
 
@@ -590,26 +421,108 @@ body.world-open #world {
   opacity: 1;
 
   pointer-events: auto;
-
-  transform:
-    scale(1);
-
-  filter:
-    blur(0);
 }
 
 
-/* ========================================
-   WORLD表示後
-
-   黒い画面の裏側で
-   ENTRANCEを非表示にする
-======================================== */
+/* 黒画面の裏で入口を消す */
 
 body.world-open #entrance {
   visibility: hidden;
 
   pointer-events: none;
+}
+
+
+/* ========================================
+   昼のピクセル背景
+======================================== */
+
+.world-background {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 0;
+
+  background-image:
+    url("./assets/images/world-bg.png");
+
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  image-rendering: pixelated;
+
+  opacity: 0;
+
+  transform:
+    scale(1.06);
+
+  transition:
+    opacity 1.15s ease,
+    transform 1.8s ease;
+}
+
+
+/* WORLDが開いたら
+   まず昼背景を出す */
+
+body.world-open .world-background {
+  opacity: 1;
+
+  transform:
+    scale(1);
+}
+
+
+/* ========================================
+   WORLD UI
+======================================== */
+
+.world-ui {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 20;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+
+  transform:
+    translateY(18px)
+    scale(0.98);
+
+  filter:
+    blur(5px);
+
+  transition:
+    opacity 0.8s ease,
+    transform 0.9s ease,
+    filter 0.9s ease;
+}
+
+
+/* 背景のあとからUIを出す */
+
+body.world-ui-open .world-ui {
+  opacity: 1;
+
+  transform:
+    translateY(0)
+    scale(1);
+
+  filter:
+    blur(0);
 }
 
 
@@ -626,6 +539,10 @@ body.world-open #entrance {
       5vh,
       65px
     );
+
+  text-shadow:
+    0 2px 10px
+    rgba(255, 255, 255, 0.55);
 }
 
 
@@ -644,7 +561,9 @@ body.world-open #entrance {
       7px
     );
 
-  color: #aa8fa7;
+  color: #665d87;
+
+  font-weight: 600;
 }
 
 
@@ -659,6 +578,8 @@ body.world-open #entrance {
     );
 
   font-weight: 400;
+
+  color: #51496e;
 }
 
 
@@ -687,7 +608,7 @@ body.world-open #entrance {
 
   cursor: pointer;
 
-  color: #67596c;
+  color: #5d5578;
 }
 
 
@@ -718,14 +639,14 @@ body.world-open #entrance {
       255,
       255,
       255,
-      0.55
+      0.62
     );
 
   backdrop-filter:
-    blur(25px);
+    blur(18px);
 
   -webkit-backdrop-filter:
-    blur(25px);
+    blur(18px);
 
   border:
     1px solid
@@ -739,10 +660,10 @@ body.world-open #entrance {
   box-shadow:
     0 20px 45px
     rgba(
-      100,
+      70,
       75,
-      120,
-      0.12
+      130,
+      0.18
     );
 
   font-size:
@@ -754,7 +675,8 @@ body.world-open #entrance {
 
   transition:
     transform 0.35s ease,
-    box-shadow 0.35s ease;
+    box-shadow 0.35s ease,
+    background 0.35s ease;
 }
 
 
@@ -763,13 +685,21 @@ body.world-open #entrance {
     translateY(-12px)
     scale(1.08);
 
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.78
+    );
+
   box-shadow:
     0 30px 60px
     rgba(
+      70,
+      75,
       130,
-      90,
-      130,
-      0.2
+      0.25
     );
 }
 
@@ -784,30 +714,197 @@ body.world-open #entrance {
       13px
     );
 
+  font-weight: 600;
+
   letter-spacing: 2px;
+
+  text-shadow:
+    0 1px 6px
+    rgba(255, 255, 255, 0.8);
 }
 
 
 /* ========================================
-   SPARKLE ANIMATION
+   PIXEL CAT
 ======================================== */
 
-@keyframes sparkle {
+.pixel-cat {
+  position: absolute;
 
-  0%,
-  100% {
-    opacity: 0.3;
+  right: -130px;
+  bottom: 42px;
+
+  width: 96px;
+  height: 82px;
+
+  z-index: 500;
+
+  cursor: pointer;
+
+  user-select: none;
+
+  visibility: hidden;
+
+  touch-action: manipulation;
+}
+
+
+/* UIが出てから猫も表示 */
+
+body.world-ui-open .pixel-cat {
+  visibility: visible;
+}
+
+
+/* ========================================
+   CAT SPRITE
+======================================== */
+
+.cat-sprite {
+  position: absolute;
+
+  left: 16px;
+  bottom: 0;
+
+  width: 64px;
+  height: 64px;
+
+  background-image:
+    url("./assets/cats/white.png");
+
+  background-repeat: no-repeat;
+
+  background-position: 0 0;
+
+  background-size:
+    256px
+    64px;
+
+  image-rendering: pixelated;
+
+  animation:
+    cat-sprite-walk
+    0.55s
+    steps(4)
+    infinite;
+}
+
+
+/* ========================================
+   CAT WALK SPRITE
+======================================== */
+
+@keyframes cat-sprite-walk {
+
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: -256px 0;
+  }
+
+}
+
+
+/* 撫でている間は足も止める */
+
+.pixel-cat.is-petted .cat-sprite {
+  animation-play-state: paused;
+}
+
+
+/* ========================================
+   HEART AREA
+======================================== */
+
+.cat-hearts {
+  position: absolute;
+
+  left: 8px;
+  top: -18px;
+
+  width: 80px;
+  height: 75px;
+
+  z-index: 10;
+
+  pointer-events: none;
+}
+
+
+/* ========================================
+   HEART
+======================================== */
+
+.cat-heart {
+  position: absolute;
+
+  left: 50%;
+  bottom: 0;
+
+  width: 32px;
+  height: 32px;
+
+  object-fit: contain;
+
+  image-rendering: pixelated;
+
+  pointer-events: none;
+
+  animation:
+    cat-heart-pop
+    1s
+    ease-out
+    forwards;
+}
+
+
+/* ========================================
+   HEART ANIMATION
+======================================== */
+
+@keyframes cat-heart-pop {
+
+  0% {
+    opacity: 0;
 
     transform:
-      scale(0.8);
+      translate(-50%, 0)
+      scale(0);
   }
 
 
-  50% {
+  20% {
     opacity: 1;
 
     transform:
-      scale(1.3);
+      translate(-50%, -8px)
+      scale(1.35);
+  }
+
+
+  70% {
+    opacity: 1;
+
+    transform:
+      translate(
+        calc(-50% + var(--heart-x)),
+        -42px
+      )
+      scale(1);
+  }
+
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(
+        calc(-50% + var(--heart-x)),
+        -72px
+      )
+      scale(0.7);
   }
 
 }
@@ -815,8 +912,6 @@ body.world-open #entrance {
 
 /* ========================================
    LARGE DESKTOP
-
-   大型PCでは文字も大きくする
 ======================================== */
 
 @media (min-width: 1400px) {
@@ -848,11 +943,9 @@ body.world-open #entrance {
 
 
   .hint {
-    bottom: 4.5%;
+    bottom: 9%;
 
     font-size: 17px;
-
-    letter-spacing: 0.7px;
   }
 
 }
@@ -887,7 +980,7 @@ body.world-open #entrance {
 
 
   .hint {
-    bottom: 4.5%;
+    bottom: 8%;
 
     font-size:
       clamp(
@@ -941,48 +1034,10 @@ body.world-open #entrance {
   }
 
 
-  /* ----------------------------------------
-     スマホではPCほど大きくしすぎない
-  ---------------------------------------- */
-
   .hint {
-    bottom: 4%;
+    bottom: 7%;
 
     font-size: 12px;
-
-    font-weight: 400;
-
-    color: #8f818f;
-
-    letter-spacing: 0.4px;
-  }
-
-
-  .glow {
-    width: 320px;
-
-    filter:
-      blur(80px);
-  }
-
-
-  .stars span:nth-child(1) {
-    left: 8%;
-  }
-
-
-  .stars span:nth-child(2) {
-    right: 8%;
-  }
-
-
-  .stars span:nth-child(3) {
-    left: 10%;
-  }
-
-
-  .stars span:nth-child(4) {
-    right: 10%;
   }
 
 
@@ -1033,6 +1088,25 @@ body.world-open #entrance {
     font-size: 10px;
   }
 
+
+  .pixel-cat {
+    bottom: 25px;
+
+    width: 82px;
+    height: 70px;
+  }
+
+
+  .cat-sprite {
+    left: 9px;
+
+    transform:
+      scale(0.9);
+
+    transform-origin:
+      bottom center;
+  }
+
 }
 
 
@@ -1063,7 +1137,7 @@ body.world-open #entrance {
 
 
   .hint {
-    bottom: 3.5%;
+    bottom: 6%;
 
     font-size: 11px;
   }
@@ -1087,9 +1161,6 @@ body.world-open #entrance {
 
 /* ========================================
    SHORT DESKTOP
-
-   MacBookなど
-   画面の高さが小さいPC用
 ======================================== */
 
 @media (max-height: 750px) and (min-width: 601px) {
@@ -1116,14 +1187,8 @@ body.world-open #entrance {
   }
 
 
-  /* ----------------------------------------
-     高さが小さいPCでも
-     Questと文字が近づきすぎないよう
-     下側へ配置
-  ---------------------------------------- */
-
   .hint {
-    bottom: 2.5%;
+    bottom: 7%;
 
     font-size:
       clamp(
@@ -1131,421 +1196,6 @@ body.world-open #entrance {
         1vw,
         16px
       );
-  }
-
-}
-
-/* ========================================
-   PIXEL CAT
-======================================== */
-
-.pixel-cat {
-  position: absolute;
-
-  right: -140px;
-  bottom: 45px;
-
-  width: 100px;
-  height: 85px;
-
-  z-index: 500;
-
-  cursor: pointer;
-
-  user-select: none;
-
-  animation:
-    cat-walk-across
-    14s
-    linear
-    infinite;
-}
-
-
-/* ========================================
-   猫本体
-======================================== */
-
-.cat-sprite {
-  position: relative;
-
-  width: 100%;
-  height: 100%;
-
-  image-rendering: pixelated;
-}
-
-
-/* ========================================
-   BODY
-======================================== */
-
-.cat-body {
-  position: absolute;
-
-  left: 25px;
-  bottom: 15px;
-
-  width: 55px;
-  height: 32px;
-
-  background: #f3c5d9;
-
-  box-shadow:
-    6px 0 0 #f3c5d9,
-    0 -6px 0 #f3c5d9;
-}
-
-
-/* ========================================
-   HEAD
-======================================== */
-
-.cat-head {
-  position: absolute;
-
-  left: -20px;
-  top: -13px;
-
-  width: 35px;
-  height: 35px;
-
-  background: #f7d0e1;
-
-  box-shadow:
-    -4px 4px 0 #e7abc7;
-}
-
-
-/* ========================================
-   EARS
-======================================== */
-
-.cat-ear {
-  position: absolute;
-
-  top: -9px;
-
-  width: 13px;
-  height: 15px;
-
-  background: #f7d0e1;
-}
-
-
-.cat-ear-left {
-  left: 1px;
-
-  clip-path:
-    polygon(
-      0 100%,
-      50% 0,
-      100% 100%
-    );
-}
-
-
-.cat-ear-right {
-  right: 1px;
-
-  clip-path:
-    polygon(
-      0 100%,
-      50% 0,
-      100% 100%
-    );
-}
-
-
-/* ========================================
-   EYES
-======================================== */
-
-.cat-eye {
-  position: absolute;
-
-  top: 15px;
-
-  width: 4px;
-  height: 4px;
-
-  background: #5f4b61;
-}
-
-
-.cat-eye-left {
-  left: 8px;
-}
-
-
-.cat-eye-right {
-  right: 8px;
-}
-
-
-/* ========================================
-   LEGS
-======================================== */
-
-.cat-leg {
-  position: absolute;
-
-  bottom: -12px;
-
-  width: 7px;
-  height: 15px;
-
-  background: #eebbd1;
-
-  transform-origin: top center;
-
-  animation:
-    cat-leg-walk
-    0.32s
-    steps(2)
-    infinite;
-}
-
-
-.cat-leg-1 {
-  left: 5px;
-}
-
-
-.cat-leg-2 {
-  left: 17px;
-
-  animation-delay: -0.16s;
-}
-
-
-.cat-leg-3 {
-  right: 17px;
-
-  animation-delay: -0.16s;
-}
-
-
-.cat-leg-4 {
-  right: 5px;
-}
-
-
-/* ========================================
-   TAIL
-======================================== */
-
-.cat-tail {
-  position: absolute;
-
-  right: 8px;
-  bottom: 30px;
-
-  width: 35px;
-  height: 8px;
-
-  background: #eebbd1;
-
-  transform-origin: left center;
-
-  animation:
-    cat-tail-move
-    0.7s
-    steps(3)
-    infinite;
-}
-
-
-/* ========================================
-   WALK ACROSS SCREEN
-
-   右 → 左
-======================================== */
-
-@keyframes cat-walk-across {
-
-  from {
-    right: -140px;
-  }
-
-  to {
-    right: calc(100% + 140px);
-  }
-
-}
-
-
-/* ========================================
-   LEG WALK
-======================================== */
-
-@keyframes cat-leg-walk {
-
-  0% {
-    transform:
-      translateY(0);
-  }
-
-  50% {
-    transform:
-      translateY(-5px);
-  }
-
-  100% {
-    transform:
-      translateY(0);
-  }
-
-}
-
-
-/* ========================================
-   TAIL
-======================================== */
-
-@keyframes cat-tail-move {
-
-  0% {
-    transform:
-      rotate(-12deg);
-  }
-
-  50% {
-    transform:
-      rotate(15deg);
-  }
-
-  100% {
-    transform:
-      rotate(-12deg);
-  }
-
-}
-
-
-/* ========================================
-   猫を触っている間
-
-   横移動＋足を停止
-======================================== */
-
-.pixel-cat.is-petted {
-  animation-play-state:
-    paused;
-}
-
-
-.pixel-cat.is-petted .cat-leg {
-  animation-play-state:
-    paused;
-}
-
-
-/* ========================================
-   HEART AREA
-======================================== */
-
-.cat-hearts {
-  position: absolute;
-
-  left: 10px;
-  top: -10px;
-
-  width: 80px;
-  height: 60px;
-
-  pointer-events: none;
-}
-
-
-/* ========================================
-   HEART
-======================================== */
-
-.cat-heart {
-  position: absolute;
-
-  left: 50%;
-  bottom: 0;
-
-  color: #e78fb8;
-
-  font-size: 22px;
-
-  pointer-events: none;
-
-  animation:
-    cat-heart-pop
-    1s
-    ease-out
-    forwards;
-}
-
-
-/* ========================================
-   HEART POP
-======================================== */
-
-@keyframes cat-heart-pop {
-
-  0% {
-    opacity: 0;
-
-    transform:
-      translate(-50%, 0)
-      scale(0);
-  }
-
-
-  25% {
-    opacity: 1;
-
-    transform:
-      translate(-50%, -8px)
-      scale(1.35);
-  }
-
-
-  70% {
-    opacity: 1;
-
-    transform:
-      translate(
-        calc(-50% + var(--heart-x)),
-        -38px
-      )
-      scale(1);
-  }
-
-
-  100% {
-    opacity: 0;
-
-    transform:
-      translate(
-        calc(-50% + var(--heart-x)),
-        -65px
-      )
-      scale(0.75);
-  }
-
-}
-
-
-/* ========================================
-   スマホ
-======================================== */
-
-@media (max-width: 600px) {
-
-  .pixel-cat {
-    bottom: 25px;
-
-    transform:
-      scale(0.8);
-
-    transform-origin:
-      bottom center;
   }
 
 }
