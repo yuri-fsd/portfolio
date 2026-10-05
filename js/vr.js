@@ -6,15 +6,17 @@ import {
 
 
 // ========================================
-// 1. HTML
+// HTML
 // ========================================
 
 const container =
-  document.getElementById("vrCanvas");
+  document.getElementById(
+    "vrCanvas"
+  );
 
 
 // ========================================
-// 2. SCENE
+// SCENE
 // ========================================
 
 const scene =
@@ -22,16 +24,18 @@ const scene =
 
 
 // ========================================
-// 3. CAMERA
+// CAMERA
 // ========================================
 
 const camera =
   new THREE.PerspectiveCamera(
     45,
-    window.innerWidth / window.innerHeight,
+    window.innerWidth /
+      window.innerHeight,
     0.01,
     100
   );
+
 
 camera.position.set(
   0,
@@ -41,29 +45,49 @@ camera.position.set(
 
 
 // ========================================
-// 4. RENDERER
+// RENDERER
+//
+// スマホではpixelRatioを抑えて
+// 描画負荷を軽減
 // ========================================
 
 const renderer =
   new THREE.WebGLRenderer({
     alpha: true,
-    antialias: true
+    antialias: true,
+    powerPreference:
+      "high-performance"
   });
 
+
+function getPixelRatio() {
+
+  const mobile =
+    window.innerWidth <= 600;
+
+
+  return Math.min(
+    window.devicePixelRatio || 1,
+    mobile ? 1.5 : 2
+  );
+
+}
+
+
 renderer.setPixelRatio(
-  Math.min(
-    window.devicePixelRatio,
-    2
-  )
+  getPixelRatio()
 );
+
 
 renderer.outputColorSpace =
   THREE.SRGBColorSpace;
+
 
 renderer.setClearColor(
   0x000000,
   0
 );
+
 
 container.appendChild(
   renderer.domElement
@@ -71,7 +95,7 @@ container.appendChild(
 
 
 // ========================================
-// 5. RENDERER SIZE
+// RESIZE RENDERER
 // ========================================
 
 function resizeRenderer() {
@@ -79,13 +103,22 @@ function resizeRenderer() {
   const width =
     window.innerWidth;
 
+
   const height =
     window.innerHeight;
+
 
   camera.aspect =
     width / height;
 
+
   camera.updateProjectionMatrix();
+
+
+  renderer.setPixelRatio(
+    getPixelRatio()
+  );
+
 
   renderer.setSize(
     width,
@@ -95,11 +128,12 @@ function resizeRenderer() {
 
 }
 
+
 resizeRenderer();
 
 
 // ========================================
-// 6. LIGHT
+// LIGHT
 // ========================================
 
 const ambientLight =
@@ -107,6 +141,7 @@ const ambientLight =
     0xffffff,
     2.5
   );
+
 
 scene.add(
   ambientLight
@@ -119,11 +154,13 @@ const mainLight =
     4
   );
 
+
 mainLight.position.set(
   4,
   5,
   5
 );
+
 
 scene.add(
   mainLight
@@ -136,11 +173,13 @@ const pinkLight =
     2
   );
 
+
 pinkLight.position.set(
   -4,
   2,
   3
 );
+
 
 scene.add(
   pinkLight
@@ -148,7 +187,7 @@ scene.add(
 
 
 // ========================================
-// 7. GLTF LOADER
+// LOADER
 // ========================================
 
 const loader =
@@ -156,14 +195,12 @@ const loader =
 
 
 // ========================================
-// 8. VR GROUP
-//
-// ゴーグル＋左右の手を
-// まとめて動かす親Group
+// VR GROUP
 // ========================================
 
 const vrGroup =
   new THREE.Group();
+
 
 scene.add(
   vrGroup
@@ -171,16 +208,20 @@ scene.add(
 
 
 // ========================================
-// 9. VARIABLES
+// VARIABLES
 // ========================================
 
-let headsetPivot;
+let headsetPivot = null;
 
-let leftHandPivot;
-let rightHandPivot;
+let leftHandPivot = null;
+
+let rightHandPivot = null;
+
 
 let headsetReady = false;
+
 let handsReady = false;
+
 
 let isEntering = false;
 
@@ -190,51 +231,31 @@ let enterStartTime = 0;
 
 
 // ========================================
-// 10. ANIMATION SETTINGS
-// ========================================
-
-
-// ========================================
-// ゴーグルをY軸で180°回転
-//
-// 上下を反転させず
-// 鼻のくぼみを下に保ったまま
-// 内側をこちらへ向ける
+// SETTINGS
 // ========================================
 
 const WEAR_ROTATION_Y =
   Math.PI;
 
 
-// ========================================
-// 装着時の画面中央
-// ========================================
-
 const WEAR_POSITION_X =
   0;
+
 
 const WEAR_POSITION_Y =
   0;
 
 
-// ========================================
-// カメラへの最終接近位置
-// ========================================
-
 const WEAR_POSITION_Z =
   3.35;
 
-
-// ========================================
-// 最終拡大サイズ
-// ========================================
 
 const MIN_FINAL_SCALE =
   6.5;
 
 
 // ========================================
-// 11. RESPONSIVE SETTINGS
+// RESPONSIVE
 // ========================================
 
 function getResponsiveSettings() {
@@ -242,56 +263,70 @@ function getResponsiveSettings() {
   const width =
     window.innerWidth;
 
+
   const height =
     window.innerHeight;
 
 
-  // ========================================
-  // SMARTPHONE
-  // ========================================
+  const portrait =
+    height > width;
 
-  if (width <= 600) {
+
+  // Smartphone portrait
+
+  if (
+    width <= 600 &&
+    portrait
+  ) {
 
     return {
-      scale: 0.64,
+      scale: 0.58,
+      y: -0.38
+    };
+
+  }
+
+
+  // Smartphone landscape
+
+  if (
+    height <= 500 &&
+    width <= 950
+  ) {
+
+    return {
+      scale: 0.56,
+      y: -0.28
+    };
+
+  }
+
+
+  // Tablet
+
+  if (width <= 1000) {
+
+    return {
+      scale: 0.69,
       y: -0.42
     };
 
   }
 
 
-  // ========================================
-  // TABLET / iPad
-  // ========================================
+  // Short laptop
 
-  if (width <= 1000) {
-
-    return {
-      scale: 0.70,
-      y: -0.45
-    };
-
-  }
-
-
-  // ========================================
-  // 高さが小さいPC
-  // MacBookなど
-  // ========================================
-
-  if (height <= 750) {
+  if (height <= 760) {
 
     return {
       scale: 0.68,
-      y: -0.43
+      y: -0.42
     };
 
   }
 
 
-  // ========================================
-  // NORMAL DESKTOP
-  // ========================================
+  // Desktop
 
   if (width < 1500) {
 
@@ -303,9 +338,7 @@ function getResponsiveSettings() {
   }
 
 
-  // ========================================
-  // LARGE DESKTOP
-  // ========================================
+  // Large desktop
 
   return {
     scale: 0.94,
@@ -315,15 +348,13 @@ function getResponsiveSettings() {
 }
 
 
-// ========================================
-// CURRENT RESPONSIVE SETTINGS
-// ========================================
-
 let responsiveSettings =
   getResponsiveSettings();
 
+
 let normalScale =
   responsiveSettings.scale;
+
 
 let normalY =
   responsiveSettings.y;
@@ -333,6 +364,7 @@ vrGroup.scale.setScalar(
   normalScale
 );
 
+
 vrGroup.position.set(
   0,
   normalY,
@@ -341,12 +373,84 @@ vrGroup.position.set(
 
 
 // ========================================
-// 12. HEADSET MODEL
+// HELPER
+// Center + scale model
+// ========================================
+
+function prepareModel(
+  model,
+  targetSize
+) {
+
+  const box =
+    new THREE.Box3()
+      .setFromObject(
+        model
+      );
+
+
+  const size =
+    new THREE.Vector3();
+
+
+  box.getSize(
+    size
+  );
+
+
+  const maxDimension =
+    Math.max(
+      size.x,
+      size.y,
+      size.z
+    );
+
+
+  if (
+    maxDimension > 0
+  ) {
+
+    model.scale.setScalar(
+      targetSize /
+        maxDimension
+    );
+
+  }
+
+
+  const centeredBox =
+    new THREE.Box3()
+      .setFromObject(
+        model
+      );
+
+
+  const center =
+    new THREE.Vector3();
+
+
+  centeredBox.getCenter(
+    center
+  );
+
+
+  model.position.set(
+    -center.x,
+    -center.y,
+    -center.z
+  );
+
+}
+
+
+// ========================================
+// HEADSET
 // ========================================
 
 loader.load(
 
   "./assets/models/headset.glb",
+
 
   function (gltf) {
 
@@ -354,111 +458,39 @@ loader.load(
       gltf.scene;
 
 
-    // ========================================
-    // MODEL SIZE
-    // ========================================
-
-    const box =
-      new THREE.Box3()
-        .setFromObject(
-          headset
-        );
-
-    const size =
-      new THREE.Vector3();
-
-    box.getSize(
-      size
+    prepareModel(
+      headset,
+      2.2
     );
 
-    const maxDimension =
-      Math.max(
-        size.x,
-        size.y,
-        size.z
-      );
-
-
-    // ========================================
-    // HEADSET BASE SIZE
-    // ========================================
-
-    const targetSize =
-      2.2;
-
-    const scale =
-      targetSize /
-      maxDimension;
-
-    headset.scale.setScalar(
-      scale
-    );
-
-
-    // ========================================
-    // CENTER MODEL
-    // ========================================
-
-    box.setFromObject(
-      headset
-    );
-
-    const center =
-      new THREE.Vector3();
-
-    box.getCenter(
-      center
-    );
-
-    headset.position.set(
-      -center.x,
-      -center.y,
-      -center.z
-    );
-
-
-    // ========================================
-    // HEADSET PIVOT
-    // ========================================
 
     headsetPivot =
       new THREE.Group();
+
 
     headsetPivot.add(
       headset
     );
 
-    headsetPivot.position.set(
-      0,
-      0,
-      0
-    );
-
-    headsetPivot.rotation.set(
-      0,
-      0,
-      0
-    );
 
     vrGroup.add(
       headsetPivot
     );
 
+
     headsetReady =
       true;
 
-    console.log(
-      "🥽 Headset ready"
-    );
-
   },
 
+
   undefined,
+
 
   function (error) {
 
     console.error(
-      "Headset error:",
+      "Headset load error:",
       error
     );
 
@@ -468,12 +500,13 @@ loader.load(
 
 
 // ========================================
-// 13. HAND MODEL
+// HAND
 // ========================================
 
 loader.load(
 
   "./assets/models/hand.glb",
+
 
   function (gltf) {
 
@@ -481,41 +514,11 @@ loader.load(
       gltf.scene;
 
 
-    // ========================================
-    // HAND SIZE
-    // ========================================
-
-    const box =
-      new THREE.Box3()
-        .setFromObject(
-          originalHand
-        );
-
-    const size =
-      new THREE.Vector3();
-
-    box.getSize(
-      size
+    prepareModel(
+      originalHand,
+      1.6
     );
 
-    const maxDimension =
-      Math.max(
-        size.x,
-        size.y,
-        size.z
-      );
-
-    const targetSize =
-      1.6;
-
-    const scale =
-      targetSize /
-      maxDimension;
-
-
-    // ========================================
-    // SKIN COLOR
-    // ========================================
 
     const skinColor =
       new THREE.Color(
@@ -524,7 +527,7 @@ loader.load(
 
 
     // ========================================
-    // LEFT HAND
+    // LEFT
     // ========================================
 
     const leftHand =
@@ -532,67 +535,47 @@ loader.load(
         true
       );
 
-    leftHand.scale.setScalar(
-      scale
-    );
-
-
-    const leftBox =
-      new THREE.Box3()
-        .setFromObject(
-          leftHand
-        );
-
-    const leftCenter =
-      new THREE.Vector3();
-
-    leftBox.getCenter(
-      leftCenter
-    );
-
-    leftHand.position.set(
-      -leftCenter.x,
-      -leftCenter.y,
-      -leftCenter.z
-    );
-
-
-    // ========================================
-    // LEFT HAND MATERIAL
-    // ========================================
 
     leftHand.traverse(
-
       function (child) {
 
-        if (child.isMesh) {
+        if (
+          child.isMesh &&
+          child.material
+        ) {
 
           child.material =
             child.material.clone();
 
+
           child.material.color =
             skinColor;
 
-          child.material.roughness =
-            0.65;
+
+          if (
+            "roughness" in
+            child.material
+          ) {
+
+            child.material.roughness =
+              0.65;
+
+          }
 
         }
 
       }
-
     );
 
-
-    // ========================================
-    // LEFT HAND PIVOT
-    // ========================================
 
     leftHandPivot =
       new THREE.Group();
 
+
     leftHandPivot.add(
       leftHand
     );
+
 
     leftHandPivot.position.set(
       -2.20,
@@ -600,14 +583,17 @@ loader.load(
       0.48
     );
 
+
     leftHandPivot.rotation.set(
       -0.45,
       0.82,
       1.02
     );
 
+
     leftHandPivot.visible =
       false;
+
 
     vrGroup.add(
       leftHandPivot
@@ -615,7 +601,7 @@ loader.load(
 
 
     // ========================================
-    // RIGHT HAND
+    // RIGHT
     // ========================================
 
     const rightHand =
@@ -623,71 +609,47 @@ loader.load(
         true
       );
 
-    rightHand.scale.setScalar(
-      scale
-    );
-
-
-    const rightBox =
-      new THREE.Box3()
-        .setFromObject(
-          rightHand
-        );
-
-    const rightCenter =
-      new THREE.Vector3();
-
-    rightBox.getCenter(
-      rightCenter
-    );
-
-    rightHand.position.set(
-      -rightCenter.x,
-      -rightCenter.y,
-      -rightCenter.z
-    );
-
-
-    // ========================================
-    // RIGHT HAND MATERIAL
-    // ========================================
 
     rightHand.traverse(
-
       function (child) {
 
-        if (child.isMesh) {
+        if (
+          child.isMesh &&
+          child.material
+        ) {
 
           child.material =
             child.material.clone();
 
+
           child.material.color =
             skinColor;
 
-          child.material.roughness =
-            0.65;
+
+          if (
+            "roughness" in
+            child.material
+          ) {
+
+            child.material.roughness =
+              0.65;
+
+          }
 
         }
 
       }
-
     );
 
 
-    // ========================================
-    // RIGHT HAND PIVOT
-    // ========================================
-
     rightHandPivot =
       new THREE.Group();
+
 
     rightHandPivot.add(
       rightHand
     );
 
-
-    // 左手モデルを左右反転して
-    // 右手として使用
 
     rightHandPivot.scale.x =
       -1;
@@ -699,14 +661,17 @@ loader.load(
       0.48
     );
 
+
     rightHandPivot.rotation.set(
       -0.45,
       -0.82,
       -1.02
     );
 
+
     rightHandPivot.visible =
       false;
+
 
     vrGroup.add(
       rightHandPivot
@@ -716,18 +681,16 @@ loader.load(
     handsReady =
       true;
 
-    console.log(
-      "🤲 Hands ready"
-    );
-
   },
 
+
   undefined,
+
 
   function (error) {
 
     console.error(
-      "Hands error:",
+      "Hand load error:",
       error
     );
 
@@ -737,39 +700,32 @@ loader.load(
 
 
 // ========================================
-// 14. EASING
+// EASING
 // ========================================
 
-function easeInOutCubic(t) {
+function clamp01(value) {
 
-  if (t < 0.5) {
-
-    return (
-      4 *
-      t *
-      t *
-      t
-    );
-
-  }
-
-  return (
-    1 -
-    Math.pow(
-      -2 * t + 2,
-      3
-    ) / 2
+  return THREE.MathUtils.clamp(
+    value,
+    0,
+    1
   );
 
 }
 
 
-// ========================================
-// ZOOM EASING
-//
-// 最初はゆっくり
-// 最後にしっかり近づく
-// ========================================
+function easeInOutCubic(t) {
+
+  return t < 0.5
+    ? 4 * t * t * t
+    : 1 -
+      Math.pow(
+        -2 * t + 2,
+        3
+      ) / 2;
+
+}
+
 
 function easeInQuart(t) {
 
@@ -784,39 +740,15 @@ function easeInQuart(t) {
 
 
 // ========================================
-// CLAMP
-// ========================================
-
-function clamp01(value) {
-
-  return THREE.MathUtils.clamp(
-    value,
-    0,
-    1
-  );
-
-}
-
-
-// ========================================
-// 15. START VR ENTER
+// START VR ENTER
 // ========================================
 
 function startVREnter() {
-
-
-  // ========================================
-  // 二重クリック防止
-  // ========================================
 
   if (isEntering) {
     return;
   }
 
-
-  // ========================================
-  // モデル読み込み前は開始しない
-  // ========================================
 
   if (
     !headsetReady ||
@@ -829,22 +761,21 @@ function startVREnter() {
   isEntering =
     true;
 
+
   enterCompleteSent =
     false;
+
 
   enterStartTime =
     performance.now();
 
-
-  // ========================================
-  // HEADSETを初期状態へ
-  // ========================================
 
   headsetPivot.position.set(
     0,
     0,
     0
   );
+
 
   headsetPivot.rotation.set(
     0,
@@ -853,15 +784,12 @@ function startVREnter() {
   );
 
 
-  // ========================================
-  // VR GROUP初期状態
-  // ========================================
-
   vrGroup.position.set(
     0,
     normalY,
     0
   );
+
 
   vrGroup.rotation.set(
     0,
@@ -869,31 +797,26 @@ function startVREnter() {
     0
   );
 
+
   vrGroup.scale.setScalar(
     normalScale
   );
 
 
-  // ========================================
-  // 手はまだ見せない
-  // ========================================
-
   leftHandPivot.visible =
     false;
+
 
   rightHandPivot.visible =
     false;
 
-
-  // ========================================
-  // 手を左右外側へ戻す
-  // ========================================
 
   leftHandPivot.position.set(
     -2.20,
     -0.31,
     0.48
   );
+
 
   rightHandPivot.position.set(
     2.20,
@@ -902,23 +825,17 @@ function startVREnter() {
   );
 
 
-  // ========================================
-  // main.jsへ開始通知
-  // ========================================
-
   window.dispatchEvent(
-
     new CustomEvent(
       "vr-enter-start"
     )
-
   );
 
 }
 
 
 // ========================================
-// 16. CLICK
+// CLICK / KEYBOARD
 // ========================================
 
 container.addEventListener(
@@ -927,14 +844,8 @@ container.addEventListener(
 );
 
 
-// ========================================
-// KEYBOARD
-// ========================================
-
 container.addEventListener(
-
   "keydown",
-
   function (event) {
 
     if (
@@ -949,12 +860,11 @@ container.addEventListener(
     }
 
   }
-
 );
 
 
 // ========================================
-// 17. ANIMATION LOOP
+// ANIMATION
 // ========================================
 
 const clock =
@@ -973,9 +883,7 @@ function animate() {
 
 
   // ========================================
-  // NORMAL STATE
-  //
-  // 最初はゴーグルだけ
+  // NORMAL
   // ========================================
 
   if (
@@ -983,21 +891,18 @@ function animate() {
     headsetReady
   ) {
 
-    // 少し浮かせる
-
     headsetPivot.position.y =
       Math.sin(
         elapsed * 1.5
       ) * 0.035;
 
 
-    // 正面固定
-
     headsetPivot.rotation.set(
       0,
       0,
       0
     );
+
 
     vrGroup.rotation.set(
       0,
@@ -1006,14 +911,13 @@ function animate() {
     );
 
 
-    // 通常時は手を非表示
-
     if (leftHandPivot) {
 
       leftHandPivot.visible =
         false;
 
     }
+
 
     if (rightHandPivot) {
 
@@ -1026,7 +930,7 @@ function animate() {
 
 
   // ========================================
-  // VR ENTER ANIMATION
+  // ENTER
   // ========================================
 
   if (
@@ -1035,20 +939,14 @@ function animate() {
     handsReady
   ) {
 
-    const now =
-      performance.now();
-
     const time =
-      now -
+      performance.now() -
       enterStartTime;
 
 
     // ========================================
     // PHASE 1
-    //
-    // 0 ～ 300ms
-    //
-    // クリック直後の短い間
+    // WAIT
     // ========================================
 
     if (time <= 300) {
@@ -1056,8 +954,10 @@ function animate() {
       leftHandPivot.visible =
         false;
 
+
       rightHandPivot.visible =
         false;
+
 
       vrGroup.rotation.set(
         0,
@@ -1065,11 +965,13 @@ function animate() {
         0
       );
 
+
       vrGroup.position.set(
         0,
         normalY,
         0
       );
+
 
       vrGroup.scale.setScalar(
         normalScale
@@ -1080,10 +982,7 @@ function animate() {
 
     // ========================================
     // PHASE 2
-    //
-    // 300 ～ 1500ms
-    //
-    // ゴーグルだけY軸180°回転
+    // ROTATE HEADSET
     // ========================================
 
     else if (time <= 1500) {
@@ -1091,9 +990,8 @@ function animate() {
       const progress =
         easeInOutCubic(
           clamp01(
-            (
-              time - 300
-            ) / 1200
+            (time - 300) /
+              1200
           )
         );
 
@@ -1101,32 +999,28 @@ function animate() {
       leftHandPivot.visible =
         false;
 
+
       rightHandPivot.visible =
         false;
 
 
-      vrGroup.rotation.x =
-        0;
-
-      vrGroup.rotation.y =
+      vrGroup.rotation.set(
+        0,
         THREE.MathUtils.lerp(
           0,
           WEAR_ROTATION_Y,
           progress
-        );
+        ),
+        0
+      );
 
-      vrGroup.rotation.z =
-        0;
 
+      vrGroup.position.set(
+        0,
+        normalY,
+        0
+      );
 
-      vrGroup.position.x =
-        0;
-
-      vrGroup.position.y =
-        normalY;
-
-      vrGroup.position.z =
-        0;
 
       vrGroup.scale.setScalar(
         normalScale
@@ -1137,11 +1031,7 @@ function animate() {
 
     // ========================================
     // PHASE 3
-    //
-    // 1500 ～ 2300ms
-    //
-    // 回転完了後に手を表示
-    // 左右からゴーグルを掴む
+    // HANDS APPROACH
     // ========================================
 
     else if (time <= 2300) {
@@ -1149,9 +1039,8 @@ function animate() {
       const progress =
         easeInOutCubic(
           clamp01(
-            (
-              time - 1500
-            ) / 800
+            (time - 1500) /
+              800
           )
         );
 
@@ -1159,11 +1048,10 @@ function animate() {
       leftHandPivot.visible =
         true;
 
+
       rightHandPivot.visible =
         true;
 
-
-      // LEFT HAND
 
       leftHandPivot.position.x =
         THREE.MathUtils.lerp(
@@ -1172,14 +1060,6 @@ function animate() {
           progress
         );
 
-      leftHandPivot.position.y =
-        -0.31;
-
-      leftHandPivot.position.z =
-        0.48;
-
-
-      // RIGHT HAND
 
       rightHandPivot.position.x =
         THREE.MathUtils.lerp(
@@ -1188,33 +1068,36 @@ function animate() {
           progress
         );
 
+
+      leftHandPivot.position.y =
+        -0.31;
+
+
       rightHandPivot.position.y =
         -0.31;
+
+
+      leftHandPivot.position.z =
+        0.48;
+
 
       rightHandPivot.position.z =
         0.48;
 
 
-      // ゴーグルは内側を向いたまま
-
-      vrGroup.rotation.x =
-        0;
-
-      vrGroup.rotation.y =
-        WEAR_ROTATION_Y;
-
-      vrGroup.rotation.z =
-        0;
+      vrGroup.rotation.set(
+        0,
+        WEAR_ROTATION_Y,
+        0
+      );
 
 
-      vrGroup.position.x =
-        0;
+      vrGroup.position.set(
+        0,
+        normalY,
+        0
+      );
 
-      vrGroup.position.y =
-        normalY;
-
-      vrGroup.position.z =
-        0;
 
       vrGroup.scale.setScalar(
         normalScale
@@ -1225,16 +1108,14 @@ function animate() {
 
     // ========================================
     // PHASE 4
-    //
-    // 2300 ～ 2600ms
-    //
-    // 掴んだ状態で0.3秒停止
+    // HOLD
     // ========================================
 
     else if (time <= 2600) {
 
       leftHandPivot.visible =
         true;
+
 
       rightHandPivot.visible =
         true;
@@ -1245,6 +1126,7 @@ function animate() {
         -0.31,
         0.48
       );
+
 
       rightHandPivot.position.set(
         1.13,
@@ -1276,31 +1158,15 @@ function animate() {
 
     // ========================================
     // PHASE 5
-    //
-    // 2600 ～ 3800ms
-    //
-    // ★ゴーグル＋手を近づける
-    //
-    // ★完全に近づき切る前に終了
+    // PUT ON HEADSET
     // ========================================
 
-    else if (time <= 4100) {
-
-      // ========================================
-      // 重要！
-      //
-      // 本来4300msで100%になる計算を
-      // そのまま使用する。
-      //
-      // そのため3950msでは
-      // 約90%地点で終了する。
-      // ========================================
+    else if (time <= 4300) {
 
       const rawProgress =
         clamp01(
-          (
-            time - 2600
-          ) / 1700
+          (time - 2600) /
+            1700
         );
 
 
@@ -1316,16 +1182,20 @@ function animate() {
         );
 
 
+      const finalScale =
+        Math.max(
+          normalScale * 7.5,
+          MIN_FINAL_SCALE
+        );
+
+
       leftHandPivot.visible =
         true;
+
 
       rightHandPivot.visible =
         true;
 
-
-      // ========================================
-      // X方向
-      // ========================================
 
       vrGroup.position.x =
         THREE.MathUtils.lerp(
@@ -1335,10 +1205,6 @@ function animate() {
         );
 
 
-      // ========================================
-      // Y方向
-      // ========================================
-
       vrGroup.position.y =
         THREE.MathUtils.lerp(
           normalY,
@@ -1346,11 +1212,6 @@ function animate() {
           moveProgress
         );
 
-
-      // ========================================
-      // Z方向
-      // カメラへ近づける
-      // ========================================
 
       vrGroup.position.z =
         THREE.MathUtils.lerp(
@@ -1360,9 +1221,30 @@ function animate() {
         );
 
 
-      // ========================================
-      // 拡大
-      // ========================================
+      vrGroup.scale.setScalar(
+        THREE.MathUtils.lerp(
+          normalScale,
+          finalScale,
+          zoomProgress
+        )
+      );
+
+
+      vrGroup.rotation.set(
+        0,
+        WEAR_ROTATION_Y,
+        0
+      );
+
+    }
+
+
+    // ========================================
+    // PHASE 6
+    // FINAL HOLD
+    // ========================================
+
+    else if (time <= 4650) {
 
       const finalScale =
         Math.max(
@@ -1371,72 +1253,55 @@ function animate() {
         );
 
 
-      const currentScale =
-        THREE.MathUtils.lerp(
-          normalScale,
-          finalScale,
-          zoomProgress
-        );
+      leftHandPivot.visible =
+        true;
 
 
-      vrGroup.scale.setScalar(
-        currentScale
+      rightHandPivot.visible =
+        true;
+
+
+      vrGroup.position.set(
+        WEAR_POSITION_X,
+        WEAR_POSITION_Y,
+        WEAR_POSITION_Z
       );
 
 
-      // ========================================
-      // 向き固定
-      // ========================================
+      vrGroup.rotation.set(
+        0,
+        WEAR_ROTATION_Y,
+        0
+      );
 
-      vrGroup.rotation.x =
-        0;
 
-      vrGroup.rotation.y =
-        WEAR_ROTATION_Y;
-
-      vrGroup.rotation.z =
-        0;
+      vrGroup.scale.setScalar(
+        finalScale
+      );
 
     }
 
 
     // ========================================
-    // PHASE 6
-    //
-    // 3800ms～
-    //
-    // ★完全に近づき切る前に
-    // main.jsへ完了通知
-    //
-    // ここから暗転へ
+    // COMPLETE
     // ========================================
 
-    else {
+    else if (!enterCompleteSent) {
 
-      if (!enterCompleteSent) {
-
-        enterCompleteSent =
-          true;
+      enterCompleteSent =
+        true;
 
 
-        window.dispatchEvent(
-
-          new CustomEvent(
-            "vr-enter-complete"
-          )
-
-        );
-
-      }
+      window.dispatchEvent(
+        new CustomEvent(
+          "vr-enter-complete"
+        )
+      );
 
     }
 
   }
 
-
-  // ========================================
-  // RENDER
-  // ========================================
 
   renderer.render(
     scene,
@@ -1454,78 +1319,66 @@ animate();
 
 
 // ========================================
-// 18. RESIZE
-//
-// PC / iPad / Smartphone
+// RESIZE
 // ========================================
 
+let resizeTimer = null;
+
+
 window.addEventListener(
-
   "resize",
-
   function () {
 
-    resizeRenderer();
+    clearTimeout(
+      resizeTimer
+    );
 
 
-    // ========================================
-    // 装着前だけ再計算
-    // ========================================
+    resizeTimer =
+      setTimeout(
+        function () {
 
-    if (!isEntering) {
-
-      responsiveSettings =
-        getResponsiveSettings();
+          resizeRenderer();
 
 
-      normalScale =
-        responsiveSettings.scale;
+          if (!isEntering) {
+
+            responsiveSettings =
+              getResponsiveSettings();
 
 
-      normalY =
-        responsiveSettings.y;
+            normalScale =
+              responsiveSettings.scale;
 
 
-      vrGroup.scale.setScalar(
-        normalScale
+            normalY =
+              responsiveSettings.y;
+
+
+            vrGroup.scale.setScalar(
+              normalScale
+            );
+
+
+            vrGroup.position.set(
+              0,
+              normalY,
+              0
+            );
+
+
+            vrGroup.rotation.set(
+              0,
+              0,
+              0
+            );
+
+          }
+
+        },
+
+        80
       );
-
-
-      vrGroup.position.set(
-        0,
-        normalY,
-        0
-      );
-
-
-      vrGroup.rotation.set(
-        0,
-        0,
-        0
-      );
-
-
-      // ========================================
-      // 通常時は手を隠す
-      // ========================================
-
-      if (leftHandPivot) {
-
-        leftHandPivot.visible =
-          false;
-
-      }
-
-
-      if (rightHandPivot) {
-
-        rightHandPivot.visible =
-          false;
-
-      }
-
-    }
 
   }
-
 );

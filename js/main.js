@@ -1,10 +1,67 @@
 // ========================================
 // MAIN.JS
 //
-// VR装着後の画面遷移
-// ＋
-// ピクセル猫の制御
+// VR WORLD UI
+// Settings
+// Language
+// Text size
+// BGM
+// Clock
+// Pixel cat
 // ========================================
+
+
+// ========================================
+// ELEMENTS
+// ========================================
+
+const world =
+  document.getElementById("world");
+
+const libraryPanel =
+  document.getElementById("libraryPanel");
+
+const contentPanel =
+  document.getElementById("contentPanel");
+
+const contentTitle =
+  document.getElementById("contentTitle");
+
+const contentBody =
+  document.getElementById("contentBody");
+
+const backButton =
+  document.getElementById("backButton");
+
+const settingsPanel =
+  document.getElementById("settingsPanel");
+
+const settingsButton =
+  document.getElementById("settingsButton");
+
+const closeSettings =
+  document.getElementById("closeSettings");
+
+const homeButton =
+  document.getElementById("homeButton");
+
+const profileShortcut =
+  document.getElementById("profileShortcut");
+
+const soundButton =
+  document.getElementById("soundButton");
+
+const settingsSoundButton =
+  document.getElementById("settingsSoundButton");
+
+const volumeSlider =
+  document.getElementById("volumeSlider");
+
+const bgm =
+  document.getElementById("bgm");
+
+const currentTime =
+  document.getElementById("currentTime");
 
 
 // ========================================
@@ -13,9 +70,302 @@
 
 let transitionStarted = false;
 
+let currentLanguage = "en";
+
+let currentTextSize = "medium";
+
+let bgmPlaying = false;
+
 
 // ========================================
-// VR装着開始
+// TRANSLATIONS
+// ========================================
+
+const translations = {
+
+  en: {
+
+    library: "Library",
+
+    welcome: "Welcome",
+
+    choose:
+      "What would you like to know?",
+
+    profile: "Profile",
+
+    skills: "Skills",
+
+    hobby: "Hobby",
+
+    game: "Game",
+
+    settings: "Settings",
+
+    language: "Language",
+
+    languageDescription:
+      "Choose display language",
+
+    textSize: "Text Size",
+
+    textSizeDescription:
+      "Change interface text size",
+
+    bgm: "BGM",
+
+    bgmDescription:
+      "Background music",
+
+    volume: "Volume",
+
+    volumeDescription:
+      "Adjust music volume",
+
+    profileTitle: "Profile",
+
+    skillsTitle: "Skills",
+
+    hobbyTitle: "Hobby",
+
+    gameTitle: "Game",
+
+    profileHTML: `
+  <div class="content-card">
+
+    <h4>YURIA MORI</h4>
+
+    <p>
+      Welcome to my portfolio.
+    </p>
+
+    <p>
+      I'm interested in technology,
+      interaction design, VR,
+      and creating digital experiences.
+    </p>
+
+    <div class="profile-section">
+
+      <span class="profile-section-label">
+        MUSIC
+      </span>
+
+      <h4>rewind</h4>
+
+      <p>
+        Original BGM created by a friend
+        especially for this portfolio.
+      </p>
+
+      <div class="music-credit">
+        ♫ rewind — Original BGM
+      </div>
+
+    </div>
+
+  </div>
+`,
+
+    skillsHTML: `
+      <div class="content-card">
+        <h4>Skills</h4>
+
+        <p>
+          Technologies and tools I have
+          experience with.
+        </p>
+
+        <div class="skill-chips">
+          <span class="skill-chip">HTML</span>
+          <span class="skill-chip">CSS</span>
+          <span class="skill-chip">JavaScript</span>
+          <span class="skill-chip">Three.js</span>
+          <span class="skill-chip">Unity</span>
+          <span class="skill-chip">C#</span>
+          <span class="skill-chip">Git / GitHub</span>
+        </div>
+      </div>
+    `,
+
+    hobbyHTML: `
+      <div class="content-card">
+        <h4>Hobby</h4>
+
+        <p>
+          Music, games and creating things
+          are some of my favorite ways to
+          spend my time.
+        </p>
+
+        <p>
+          More content will be added here
+          as this world grows.
+        </p>
+      </div>
+    `,
+
+    gameHTML: `
+      <div class="content-card">
+        <h4>Game</h4>
+
+        <p>
+          🎮 Coming Soon...
+        </p>
+
+        <p>
+          I'm planning to add small games
+          and interactive experiences here.
+        </p>
+      </div>
+    `
+
+  },
+
+
+  ja: {
+
+    library: "ライブラリ",
+
+    welcome: "ようこそ",
+
+    choose:
+      "何について知りたいですか？",
+
+    profile: "自己紹介",
+
+    skills: "スキル",
+
+    hobby: "趣味",
+
+    game: "ゲーム",
+
+    settings: "設定",
+
+    language: "言語",
+
+    languageDescription:
+      "表示する言語を変更します",
+
+    textSize: "文字サイズ",
+
+    textSizeDescription:
+      "UIの文字サイズを変更します",
+
+    bgm: "BGM",
+
+    bgmDescription:
+      "背景音楽のON / OFF",
+
+    volume: "音量",
+
+    volumeDescription:
+      "BGMの音量を調整します",
+
+    profileTitle: "自己紹介",
+
+    skillsTitle: "スキル",
+
+    hobbyTitle: "趣味",
+
+    gameTitle: "ゲーム",
+
+    profileHTML: `
+  <div class="content-card">
+
+    <h4>森 由璃亜</h4>
+
+    <p>
+      私のポートフォリオへようこそ。
+    </p>
+
+    <p>
+      VRやインタラクション、
+      テクノロジーを使った
+      新しい体験づくりに興味があります。
+    </p>
+
+    <div class="profile-section">
+
+      <span class="profile-section-label">
+        MUSIC
+      </span>
+
+      <h4>rewind</h4>
+
+      <p>
+        このポートフォリオのために、
+        友人が制作してくれたオリジナルBGMです。
+      </p>
+
+      <div class="music-credit">
+        ♫ rewind — Original BGM
+      </div>
+
+    </div>
+
+  </div>
+`,
+
+    skillsHTML: `
+      <div class="content-card">
+        <h4>Skills</h4>
+
+        <p>
+          使用経験のある技術・ツールです。
+        </p>
+
+        <div class="skill-chips">
+          <span class="skill-chip">HTML</span>
+          <span class="skill-chip">CSS</span>
+          <span class="skill-chip">JavaScript</span>
+          <span class="skill-chip">Three.js</span>
+          <span class="skill-chip">Unity</span>
+          <span class="skill-chip">C#</span>
+          <span class="skill-chip">Git / GitHub</span>
+        </div>
+      </div>
+    `,
+
+    hobbyHTML: `
+      <div class="content-card">
+        <h4>趣味</h4>
+
+        <p>
+          音楽やゲーム、ものづくりなどが
+          好きです。
+        </p>
+
+        <p>
+          この世界と一緒に、これから
+          コンテンツも増やしていく予定です。
+        </p>
+      </div>
+    `,
+
+    gameHTML: `
+      <div class="content-card">
+        <h4>ゲーム</h4>
+
+        <p>
+          🎮 Coming Soon...
+        </p>
+
+        <p>
+          今後ここにミニゲームや
+          インタラクティブなコンテンツを
+          追加していく予定です。
+        </p>
+      </div>
+    `
+
+  }
+
+};
+
+
+// ========================================
+// VR TRANSITION
 // ========================================
 
 window.addEventListener(
@@ -30,10 +380,6 @@ window.addEventListener(
 );
 
 
-// ========================================
-// VR装着完了
-// ========================================
-
 window.addEventListener(
   "vr-enter-complete",
   function () {
@@ -46,31 +392,30 @@ window.addEventListener(
     transitionStarted = true;
 
 
-    // ========================================
-    // ① 暗転開始
-    // ========================================
+    // 黒へ
 
     document.body.classList.add(
       "vr-blackout"
     );
 
 
-    // ========================================
-    // ② 黒くなったらWORLDを準備
-    // ========================================
-
     setTimeout(
       function () {
+
+        // WORLD準備
 
         document.body.classList.add(
           "world-open"
         );
 
 
-        // ========================================
-        // ③ 黒画面を消して
-        //    昼背景を見せる
-        // ========================================
+        world.setAttribute(
+          "aria-hidden",
+          "false"
+        );
+
+
+        // 黒から昼背景へ
 
         setTimeout(
           function () {
@@ -81,14 +426,11 @@ window.addEventListener(
 
           },
 
-          180
+          160
         );
 
 
-        // ========================================
-        // ④ 昼背景のあとから
-        //    WORLD UIを表示
-        // ========================================
+        // UI登場
 
         setTimeout(
           function () {
@@ -98,21 +440,15 @@ window.addEventListener(
             );
 
 
-            // ========================================
-            // ⑤ 猫スタート
-            // ========================================
-
             startCat();
 
           },
 
-          850
+          800
         );
 
 
-        // ========================================
-        // ⑥ 暗転用クラスを掃除
-        // ========================================
+        // 暗転レイヤー掃除
 
         setTimeout(
           function () {
@@ -127,12 +463,12 @@ window.addEventListener(
 
           },
 
-          1500
+          1450
         );
 
       },
 
-      400
+      420
     );
 
   }
@@ -140,7 +476,543 @@ window.addEventListener(
 
 
 // ========================================
-// PIXEL CAT ELEMENTS
+// CLOCK
+// ========================================
+
+function updateClock() {
+
+  if (!currentTime) {
+    return;
+  }
+
+
+  const now =
+    new Date();
+
+
+  currentTime.textContent =
+    now.toLocaleTimeString(
+      currentLanguage === "ja"
+        ? "ja-JP"
+        : "en-US",
+      {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false
+      }
+    );
+
+}
+
+
+updateClock();
+
+setInterval(
+  updateClock,
+  1000
+);
+
+
+// ========================================
+// LANGUAGE
+// ========================================
+
+function setLanguage(language) {
+
+  if (
+    language !== "en" &&
+    language !== "ja"
+  ) {
+    return;
+  }
+
+
+  currentLanguage =
+    language;
+
+
+  document.documentElement.lang =
+    language;
+
+
+  document
+    .querySelectorAll(
+      "[data-i18n]"
+    )
+    .forEach(
+      function (element) {
+
+        const key =
+          element.dataset.i18n;
+
+
+        const value =
+          translations[language][key];
+
+
+        if (value) {
+
+          element.textContent =
+            value;
+
+        }
+
+      }
+    );
+
+
+  document
+    .querySelectorAll(
+      ".language-button"
+    )
+    .forEach(
+      function (button) {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.language ===
+            language
+        );
+
+      }
+    );
+
+
+  updateClock();
+
+}
+
+
+document
+  .querySelectorAll(
+    ".language-button"
+  )
+  .forEach(
+    function (button) {
+
+      button.addEventListener(
+        "click",
+        function () {
+
+          setLanguage(
+            button.dataset.language
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+// ========================================
+// TEXT SIZE
+// ========================================
+
+function setTextSize(size) {
+
+  const scales = {
+    small: 0.88,
+    medium: 1,
+    large: 1.16
+  };
+
+
+  if (!scales[size]) {
+    return;
+  }
+
+
+  currentTextSize =
+    size;
+
+
+  document.body.style.setProperty(
+    "--ui-scale",
+    scales[size]
+  );
+
+
+  document
+    .querySelectorAll(
+      ".text-size-button"
+    )
+    .forEach(
+      function (button) {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.size === size
+        );
+
+      }
+    );
+
+}
+
+
+document
+  .querySelectorAll(
+    ".text-size-button"
+  )
+  .forEach(
+    function (button) {
+
+      button.addEventListener(
+        "click",
+        function () {
+
+          setTextSize(
+            button.dataset.size
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+// ========================================
+// CONTENT
+// ========================================
+
+function openContent(type) {
+
+  const language =
+    translations[currentLanguage];
+
+
+  const contentMap = {
+
+    profile: {
+      title: language.profileTitle,
+      html: language.profileHTML
+    },
+
+    skills: {
+      title: language.skillsTitle,
+      html: language.skillsHTML
+    },
+
+    hobby: {
+      title: language.hobbyTitle,
+      html: language.hobbyHTML
+    },
+
+    game: {
+      title: language.gameTitle,
+      html: language.gameHTML
+    }
+
+  };
+
+
+  const content =
+    contentMap[type];
+
+
+  if (!content) {
+    return;
+  }
+
+
+  closeSettingsPanel();
+
+
+  contentTitle.textContent =
+    content.title;
+
+
+  contentBody.innerHTML =
+    content.html;
+
+
+  libraryPanel.classList.add(
+    "is-hidden"
+  );
+
+
+  contentPanel.classList.add(
+    "is-open"
+  );
+
+
+  contentPanel.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  homeButton.classList.remove(
+    "active"
+  );
+
+}
+
+
+function showLibrary() {
+
+  contentPanel.classList.remove(
+    "is-open"
+  );
+
+
+  contentPanel.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  libraryPanel.classList.remove(
+    "is-hidden"
+  );
+
+
+  closeSettingsPanel();
+
+
+  homeButton.classList.add(
+    "active"
+  );
+
+}
+
+
+document
+  .querySelectorAll(
+    ".vr-app"
+  )
+  .forEach(
+    function (button) {
+
+      button.addEventListener(
+        "click",
+        function () {
+
+          openContent(
+            button.dataset.panel
+          );
+
+        }
+      );
+
+    }
+  );
+
+
+backButton.addEventListener(
+  "click",
+  showLibrary
+);
+
+
+homeButton.addEventListener(
+  "click",
+  showLibrary
+);
+
+
+profileShortcut.addEventListener(
+  "click",
+  function () {
+
+    openContent(
+      "profile"
+    );
+
+  }
+);
+
+
+// ========================================
+// SETTINGS
+// ========================================
+
+function openSettingsPanel() {
+
+  settingsPanel.classList.add(
+    "is-open"
+  );
+
+
+  settingsPanel.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+
+  settingsButton.classList.add(
+    "active"
+  );
+
+}
+
+
+function closeSettingsPanel() {
+
+  settingsPanel.classList.remove(
+    "is-open"
+  );
+
+
+  settingsPanel.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+
+  settingsButton.classList.remove(
+    "active"
+  );
+
+}
+
+
+settingsButton.addEventListener(
+  "click",
+  function () {
+
+    if (
+      settingsPanel.classList.contains(
+        "is-open"
+      )
+    ) {
+
+      closeSettingsPanel();
+
+    }
+
+    else {
+
+      openSettingsPanel();
+
+    }
+
+  }
+);
+
+
+closeSettings.addEventListener(
+  "click",
+  closeSettingsPanel
+);
+
+
+// ========================================
+// BGM
+// ========================================
+
+function updateSoundUI() {
+
+  document.body.classList.toggle(
+    "bgm-playing",
+    bgmPlaying
+  );
+
+
+  settingsSoundButton.textContent =
+    bgmPlaying
+      ? "ON"
+      : "OFF";
+
+
+  settingsSoundButton.classList.toggle(
+    "active",
+    bgmPlaying
+  );
+
+}
+
+
+async function toggleBGM() {
+
+  if (!bgm) {
+    return;
+  }
+
+
+  if (bgmPlaying) {
+
+    bgm.pause();
+
+    bgmPlaying = false;
+
+    updateSoundUI();
+
+    return;
+
+  }
+
+
+  try {
+
+    bgm.volume =
+      Number(
+        volumeSlider.value
+      ) / 100;
+
+
+    await bgm.play();
+
+
+    bgmPlaying = true;
+
+  }
+
+  catch (error) {
+
+    console.log(
+      "BGM could not start:",
+      error
+    );
+
+
+    bgmPlaying = false;
+
+  }
+
+
+  updateSoundUI();
+
+}
+
+
+soundButton.addEventListener(
+  "click",
+  toggleBGM
+);
+
+
+settingsSoundButton.addEventListener(
+  "click",
+  toggleBGM
+);
+
+
+volumeSlider.addEventListener(
+  "input",
+  function () {
+
+    if (!bgm) {
+      return;
+    }
+
+
+    bgm.volume =
+      Number(
+        volumeSlider.value
+      ) / 100;
+
+  }
+);
+
+
+updateSoundUI();
+
+
+// ========================================
+// PIXEL CAT
 // ========================================
 
 const pixelCat =
@@ -148,22 +1020,16 @@ const pixelCat =
     "pixelCat"
   );
 
-
 const catSprite =
   document.getElementById(
     "catSprite"
   );
-
 
 const catHearts =
   document.querySelector(
     ".cat-hearts"
   );
 
-
-// ========================================
-// NORMAL CATS
-// ========================================
 
 const normalCats = [
   "white",
@@ -173,10 +1039,6 @@ const normalCats = [
   "calico"
 ];
 
-
-// ========================================
-// CAT STATE
-// ========================================
 
 let catWalking = false;
 
@@ -188,45 +1050,35 @@ let nextCatTimer = null;
 
 
 // ========================================
-// 猫を選ぶ
-//
-// ribbon = 5%
+// CHOOSE CAT
 // ========================================
 
 function chooseCat() {
 
-  const rareRoll =
-    Math.random();
+  // 5% ribbon
 
-
-  if (rareRoll < 0.05) {
+  if (Math.random() < 0.05) {
 
     return "ribbon";
 
   }
 
 
-  const randomIndex =
+  return normalCats[
     Math.floor(
       Math.random() *
       normalCats.length
-    );
-
-
-  return normalCats[
-    randomIndex
+    )
   ];
 
 }
 
 
 // ========================================
-// 猫画像を変更
+// CAT DESIGN
 // ========================================
 
-function setCatDesign(
-  catName
-) {
+function setCatDesign(catName) {
 
   if (!catSprite) {
     return;
@@ -240,28 +1092,36 @@ function setCatDesign(
 
 
 // ========================================
-// 猫を歩かせる
+// START CAT
 // ========================================
 
 function startCat() {
 
   if (
     !pixelCat ||
-    !catSprite
+    !catSprite ||
+    catWalking
   ) {
     return;
   }
 
 
-  if (catWalking) {
+  if (
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+  ) {
+
+    pixelCat.style.right =
+      "20px";
+
     return;
+
   }
 
 
   catWalking = true;
 
-
-  // 前回のタイマーを消す
 
   if (nextCatTimer) {
 
@@ -274,43 +1134,18 @@ function startCat() {
   }
 
 
-  // ========================================
-  // 猫の種類を選ぶ
-  // ========================================
-
-  const nextCat =
-    chooseCat();
-
-
   setCatDesign(
-    nextCat
+    chooseCat()
   );
 
-
-  // ========================================
-  // 初期位置
-  //
-  // CSSで right:-130px なので
-  // translateX(0)で右外側から開始
-  // ========================================
 
   pixelCat.style.transform =
     "translateX(0px)";
 
 
-  // ========================================
-  // 移動距離
-  // ========================================
-
   const travelDistance =
     window.innerWidth + 260;
 
-
-  // ========================================
-  // 右 → 左
-  //
-  // 12秒でゆっくり歩く
-  // ========================================
 
   catAnimation =
     pixelCat.animate(
@@ -325,7 +1160,6 @@ function startCat() {
             `translateX(-${travelDistance}px)`
         }
       ],
-
       {
         duration: 12000,
 
@@ -335,10 +1169,6 @@ function startCat() {
       }
     );
 
-
-  // ========================================
-  // 画面外まで歩いたあと
-  // ========================================
 
   catAnimation.onfinish =
     function () {
@@ -357,12 +1187,6 @@ function startCat() {
         "translateX(0px)";
 
 
-      // ========================================
-      // 次の猫
-      //
-      // 0.2〜0.6秒後にすぐ登場
-      // ========================================
-
       const nextDelay =
         200 +
         Math.random() *
@@ -371,12 +1195,7 @@ function startCat() {
 
       nextCatTimer =
         setTimeout(
-          function () {
-
-            startCat();
-
-          },
-
+          startCat,
           nextDelay
         );
 
@@ -386,7 +1205,7 @@ function startCat() {
 
 
 // ========================================
-// HEARTを作る
+// HEART
 // ========================================
 
 function createHeart() {
@@ -402,9 +1221,8 @@ function createHeart() {
     );
 
 
-  heart.classList.add(
-    "cat-heart"
-  );
+  heart.className =
+    "cat-heart";
 
 
   heart.src =
@@ -414,10 +1232,6 @@ function createHeart() {
   heart.alt =
     "";
 
-
-  // ========================================
-  // ハートを左右ランダムに飛ばす
-  // ========================================
 
   const randomX =
     Math.floor(
@@ -436,10 +1250,6 @@ function createHeart() {
   );
 
 
-  // ========================================
-  // 1秒後に削除
-  // ========================================
-
   setTimeout(
     function () {
 
@@ -454,7 +1264,7 @@ function createHeart() {
 
 
 // ========================================
-// 猫を撫でる
+// PET CAT
 // ========================================
 
 function petCat() {
@@ -468,16 +1278,8 @@ function petCat() {
   }
 
 
-  // ========================================
-  // ハート
-  // ========================================
-
   createHeart();
 
-
-  // ========================================
-  // 猫を停止
-  // ========================================
 
   pixelCat.classList.add(
     "is-petted"
@@ -486,11 +1288,6 @@ function petCat() {
 
   catAnimation.pause();
 
-
-  // ========================================
-  // 連打されたら
-  // 800msを最初から数え直す
-  // ========================================
 
   clearTimeout(
     catPetTimer
@@ -520,10 +1317,6 @@ function petCat() {
 }
 
 
-// ========================================
-// CAT CLICK
-// ========================================
-
 if (pixelCat) {
 
   pixelCat.addEventListener(
@@ -540,10 +1333,6 @@ if (pixelCat) {
   );
 
 
-  // ========================================
-  // KEYBOARD
-  // ========================================
-
   pixelCat.addEventListener(
     "keydown",
     function (event) {
@@ -555,8 +1344,6 @@ if (pixelCat) {
 
         event.preventDefault();
 
-        event.stopPropagation();
-
         petCat();
 
       }
@@ -565,3 +1352,16 @@ if (pixelCat) {
   );
 
 }
+
+
+// ========================================
+// INITIAL SETTINGS
+// ========================================
+
+setLanguage(
+  currentLanguage
+);
+
+setTextSize(
+  currentTextSize
+);
