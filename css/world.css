@@ -333,7 +333,7 @@ body.world-ui-open .quest-shell {
 .quest-panel {
   position: absolute;
 
-  top: 60dvh;
+  top: 50dvh;
   left: 50%;
 
   width:
@@ -1024,10 +1024,14 @@ body.world-ui-open .quest-shell {
 ========================================================= */
 
 .quest-dock {
-  position: absolute;
+  position: fixed;
 
   left: 50%;
+  bottom: 24px;
 
+  z-index: 100;
+
+  transform: translateX(-50%);
   /*
     中央パネルとは独立しているけど、
     画面下端から一定距離を維持
@@ -1141,17 +1145,12 @@ body.bgm-playing .sound-off-mark {
 ========================================================= */
 
 .pixel-cat {
-  position: absolute;
+  position: fixed;
 
-  right: -130px;
+  left: 0;
+  bottom: 18px;
 
-  bottom:
-    max(
-      4px,
-      env(safe-area-inset-bottom)
-    );
-
-  z-index: 200;
+  z-index: 30;
 
   width: 96px;
   height: 82px;
