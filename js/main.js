@@ -51,11 +51,35 @@ const profileShortcut =
 const soundButton =
   document.getElementById("soundButton");
 
-const settingsSoundButton =
-  document.getElementById("settingsSoundButton");
+const musicPanel =
+  document.getElementById(
+    "musicPanel"
+  );
 
-const volumeSlider =
-  document.getElementById("volumeSlider");
+const closeMusic =
+  document.getElementById(
+    "closeMusic"
+  );
+
+const musicSoundButton =
+  document.getElementById(
+    "musicSoundButton"
+  );
+
+const musicVolumeControl =
+  document.getElementById(
+    "musicVolumeControl"
+  );
+
+const musicVolumeSlider =
+  document.getElementById(
+    "musicVolumeSlider"
+  );
+
+const iosVolumeMessage =
+  document.getElementById(
+    "iosVolumeMessage"
+  );
 
 const bgm =
   document.getElementById("bgm");
@@ -614,7 +638,7 @@ function openContent(type) {
 
 }
 
-
+closeMusicPanel();
 function showLibrary() {
 
   contentPanel.classList.remove(
@@ -689,6 +713,8 @@ profileShortcut.addEventListener(
 // SETTINGS
 // ========================================
 
+closeMusicPanel();
+
 function openSettingsPanel() {
 
   settingsPanel.classList.add(
@@ -758,6 +784,122 @@ closeSettings.addEventListener(
 // ========================================
 // BGM
 // ========================================
+// ========================================
+// MUSIC PANEL
+// ========================================
+
+function openMusicPanel() {
+
+  closeSettingsPanel();
+
+  musicPanel.classList.add(
+    "is-open"
+  );
+
+  musicPanel.setAttribute(
+    "aria-hidden",
+    "false"
+  );
+
+  soundButton.classList.add(
+    "active"
+  );
+
+}
+
+
+function closeMusicPanel() {
+
+  musicPanel.classList.remove(
+    "is-open"
+  );
+
+  musicPanel.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  soundButton.classList.remove(
+    "active"
+  );
+
+}
+
+
+soundButton.addEventListener(
+  "click",
+  function () {
+
+    if (
+      musicPanel.classList.contains(
+        "is-open"
+      )
+    ) {
+
+      closeMusicPanel();
+
+    }
+
+    else {
+
+      openMusicPanel();
+
+    }
+
+  }
+);
+
+
+closeMusic.addEventListener(
+  "click",
+  closeMusicPanel
+);
+
+
+// ========================================
+// IOS / IPADOS CHECK
+// ========================================
+
+function isIOSDevice() {
+
+  const userAgent =
+    navigator.userAgent;
+
+  const platform =
+    navigator.platform;
+
+  const touchPoints =
+    navigator.maxTouchPoints || 0;
+
+
+  const normalIOS =
+    /iPhone|iPad|iPod/i.test(
+      userAgent
+    );
+
+
+  /*
+    iPadOSではSafariが
+    Macとして名乗る場合があるため、
+    Mac + タッチ対応もiPadとして扱う。
+  */
+
+  const iPadOS =
+    platform === "MacIntel" &&
+    touchPoints > 1;
+
+
+  return (
+    normalIOS ||
+    iPadOS
+  );
+
+}
+
+
+// ========================================
+// BGM UI
+// ========================================
 
 function updateSoundUI() {
 
@@ -766,12 +908,14 @@ function updateSoundUI() {
     bgmPlaying
   );
 
-  settingsSoundButton.textContent =
+
+  musicSoundButton.textContent =
     bgmPlaying
       ? "ON"
       : "OFF";
 
-  settingsSoundButton.classList.toggle(
+
+  musicSoundButton.classList.toggle(
     "active",
     bgmPlaying
   );
@@ -779,11 +923,16 @@ function updateSoundUI() {
 }
 
 
+// ========================================
+// BGM PLAY / PAUSE
+// ========================================
+
 async function toggleBGM() {
 
   if (!bgm) {
     return;
   }
+
 
   if (bgmPlaying) {
 
@@ -791,54 +940,62 @@ async function toggleBGM() {
 
     bgmPlaying = false;
 
-    updateSoundUI();
+  }
 
-    return;
+  else {
+
+    try {
+
+      await bgm.play();
+
+      bgmPlaying = true;
+
+    }
+
+    catch (error) {
+
+      console.warn(
+        "BGM could not start:",
+        error
+      );
+
+      bgmPlaying = false;
+
+    }
 
   }
 
-  try {
-
-    bgm.volume =
-      Number(
-        volumeSlider.value
-      ) / 100;
-
-    await bgm.play();
-
-    bgmPlaying = true;
-
-  }
-
-  catch (error) {
-
-    console.log(
-      "BGM could not start:",
-      error
-    );
-
-    bgmPlaying = false;
-
-  }
 
   updateSoundUI();
 
 }
 
 
-soundButton.addEventListener(
+// ========================================
+// BGM BUTTON
+// ========================================
+
+musicSoundButton.addEventListener(
   "click",
   toggleBGM
 );
 
 
-settingsSoundButton.addEventListener(
-  "click",
-  toggleBGM
-);
+// ========================================
+// VOLUME
+// ========================================
+
+if (bgm) {
+
+  bgm.volume =
+    Number(
+      musicVolumeSlider.value
+    ) / 100;
+
+}
 
 
-volumeSlider.addEventListener(
+musicVolumeSlider.addEventListener(
   "input",
   function () {
 
@@ -846,17 +1003,53 @@ volumeSlider.addEventListener(
       return;
     }
 
+
     bgm.volume =
       Number(
-        volumeSlider.value
+        musicVolumeSlider.value
       ) / 100;
 
   }
 );
 
 
-updateSoundUI();
+// ========================================
+// MOBILE VOLUME SUPPORT
+// ========================================
 
+if (isIOSDevice()) {
+
+  /*
+    iPhone / iPadでは
+    Webページ側のvolume制御が
+   期待通り動作しないため
+    スライダーを非表示にする。
+  */
+
+  musicVolumeControl.hidden =
+    true;
+
+  iosVolumeMessage.hidden =
+    false;
+
+}
+
+else {
+
+  musicVolumeControl.hidden =
+    false;
+
+  iosVolumeMessage.hidden =
+    true;
+
+}
+
+
+// ========================================
+// INITIAL SOUND UI
+// ========================================
+
+updateSoundUI();
 
 // ========================================
 // PIXEL CAT

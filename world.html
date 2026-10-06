@@ -397,38 +397,126 @@
 
         </div>
 
+      <!-- =====================================
+     MUSIC PANEL
+====================================== -->
 
-        <!-- VOLUME -->
+<section
+  id="musicPanel"
+  class="music-panel"
+  aria-hidden="true"
+>
 
-        <div class="setting-row">
+  <div class="music-panel-header">
 
-          <div class="setting-label">
+    <div>
+      <p class="panel-eyebrow">
+        SOUND
+      </p>
 
-            <strong data-i18n="volume">
-              Volume
-            </strong>
+      <h3>
+        Music
+      </h3>
+    </div>
 
-            <span data-i18n="volumeDescription">
-              Adjust music volume
-            </span>
+    <button
+      id="closeMusic"
+      class="round-button"
+      type="button"
+      aria-label="Close music settings"
+    >
+      ×
+    </button>
 
-          </div>
+  </div>
 
 
-          <input
-            id="volumeSlider"
-            class="volume-slider"
-            type="range"
-            min="0"
-            max="100"
-            value="25"
-            aria-label="BGM volume"
-          >
+  <!-- BGM -->
 
-        </div>
+  <div class="music-setting-row">
 
-      </section>
+    <div class="setting-label">
 
+      <strong>
+        BGM
+      </strong>
+
+      <span>
+        Background music
+      </span>
+
+    </div>
+
+
+    <button
+      id="musicSoundButton"
+      class="toggle-button"
+      type="button"
+    >
+      OFF
+    </button>
+
+  </div>
+
+
+  <!-- VOLUME : PC / supported browsers -->
+
+  <div
+    id="musicVolumeControl"
+    class="music-setting-row"
+  >
+
+    <div class="setting-label">
+
+      <strong>
+        Volume
+      </strong>
+
+      <span>
+        Adjust music volume
+      </span>
+
+    </div>
+
+
+    <input
+      id="musicVolumeSlider"
+      class="volume-slider"
+      type="range"
+      min="0"
+      max="100"
+      value="25"
+      aria-label="BGM volume"
+    >
+
+  </div>
+
+
+  <!-- VOLUME : iPhone / iPad -->
+
+  <div
+    id="iosVolumeMessage"
+    class="ios-volume-message"
+    hidden
+  >
+
+    <span class="ios-volume-icon">
+      ♫
+    </span>
+
+    <div>
+      <strong>
+        Volume
+      </strong>
+
+      <p>
+        端末の音量ボタンで調整してください
+      </p>
+    </div>
+
+  </div>
+
+</section>
 
       <!-- =====================================
            QUEST DOCK

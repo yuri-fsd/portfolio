@@ -748,6 +748,356 @@ body.bgm-playing .sound-off-mark {
   }
 }
 
+/* =========================================================
+   MUSIC PANEL
+========================================================= */
+
+.music-panel {
+  position: fixed;
+
+  left: 50%;
+  bottom: 84px;
+
+  z-index: 900;
+
+  width:
+    min(
+      360px,
+      calc(100vw - 32px)
+    );
+
+  padding: 20px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.72);
+
+  border-radius: 24px;
+
+  background:
+    rgba(239, 244, 255, 0.82);
+
+  box-shadow:
+    0 18px 50px
+    rgba(63, 74, 139, 0.20);
+
+  backdrop-filter:
+    blur(24px)
+    saturate(120%);
+
+  -webkit-backdrop-filter:
+    blur(24px)
+    saturate(120%);
+
+  opacity: 0;
+
+  visibility: hidden;
+
+  pointer-events: none;
+
+  transform:
+    translateX(-50%)
+    translateY(10px)
+    scale(0.97);
+
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease,
+    visibility 0.2s ease;
+}
+
+
+.music-panel.is-open {
+  opacity: 1;
+
+  visibility: visible;
+
+  pointer-events: auto;
+
+  transform:
+    translateX(-50%)
+    translateY(0)
+    scale(1);
+}
+
+
+/* =========================================================
+   MUSIC HEADER
+========================================================= */
+
+.music-panel-header {
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 16px;
+
+  margin-bottom: 14px;
+}
+
+
+.music-panel-header h3 {
+  margin: 0;
+
+  font-size:
+    calc(
+      20px *
+      var(--ui-scale)
+    );
+}
+
+
+/* =========================================================
+   MUSIC ROW
+========================================================= */
+
+.music-setting-row {
+  display: flex;
+
+  align-items: center;
+
+  justify-content:
+    space-between;
+
+  gap: 18px;
+
+  padding: 15px 0;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.58);
+}
+
+
+/* =========================================================
+   MUSIC TOGGLE
+========================================================= */
+
+#musicSoundButton {
+  flex: 0 0 auto;
+
+  min-width: 52px;
+  min-height: 36px;
+
+  padding: 7px 12px;
+
+  border: 0;
+
+  border-radius: 11px;
+
+  background:
+    rgba(79, 81, 116, 0.10);
+
+  color: #555875;
+
+  cursor: pointer;
+
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+
+#musicSoundButton.active {
+  background: #ffffff;
+
+  color: #4c4f70;
+
+  box-shadow:
+    0 3px 10px
+    rgba(55, 56, 90, 0.08);
+}
+
+
+/* =========================================================
+   VOLUME
+========================================================= */
+
+.volume-slider {
+  width: 150px;
+
+  max-width: 42vw;
+
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   IOS VOLUME MESSAGE
+========================================================= */
+
+.ios-volume-message {
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 15px 0 2px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.58);
+}
+
+
+.ios-volume-message:not([hidden]) {
+  display: flex;
+}
+
+
+.ios-volume-icon {
+  display: grid;
+
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  background:
+    rgba(255, 255, 255, 0.42);
+}
+
+
+.ios-volume-message strong {
+  font-size:
+    calc(
+      13px *
+      var(--ui-scale)
+    );
+}
+
+
+.ios-volume-message p {
+  margin: 3px 0 0;
+
+  color: #68708f;
+
+  font-size:
+    calc(
+      10px *
+      var(--ui-scale)
+    );
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   SOUND ICON
+========================================================= */
+
+#soundButton {
+  position: relative;
+}
+
+
+.sound-off-mark {
+  position: absolute;
+
+  left: 50%;
+  top: 50%;
+
+  font-size: 20px;
+
+  line-height: 1;
+
+  transform:
+    translate(-50%, -50%)
+    rotate(-12deg);
+
+  pointer-events: none;
+}
+
+
+body.bgm-playing
+.sound-off-mark {
+  opacity: 0;
+}
+
+
+/* =========================================================
+   PHONE
+========================================================= */
+
+@media (max-width: 600px) {
+
+  .music-panel {
+    bottom:
+      max(
+        72px,
+        calc(
+          env(safe-area-inset-bottom)
+          + 62px
+        )
+      );
+
+    width:
+      calc(
+        100vw - 28px
+      );
+
+    padding: 18px;
+  }
+
+
+  .music-setting-row {
+    gap: 12px;
+  }
+
+
+  .volume-slider {
+    width: min(150px, 38vw);
+  }
+
+}
+
+
+/* =========================================================
+   LANDSCAPE PHONE
+========================================================= */
+
+@media
+(max-height: 520px)
+and
+(orientation: landscape) {
+
+  .music-panel {
+    bottom:
+      max(
+        52px,
+        calc(
+          env(safe-area-inset-bottom)
+          + 45px
+        )
+      );
+
+    width:
+      min(
+        340px,
+        calc(100vw - 28px)
+      );
+
+    padding: 13px 16px;
+
+    border-radius: 18px;
+  }
+
+
+  .music-panel-header {
+    margin-bottom: 8px;
+  }
+
+
+  .music-setting-row {
+    padding: 10px 0;
+  }
+
+}
 
 /* =========================================================
    REDUCED MOTION
