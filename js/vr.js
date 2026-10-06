@@ -1292,12 +1292,16 @@ function animate() {
         true;
 
 
-      window.dispatchEvent(
-        new CustomEvent(
-          "vr-enter-complete"
-        )
+      document.body.classList.add(
+        "vr-blackout"
       );
-
+      setTimeout(
+        function () {
+          window.location.href =
+          "./world.html";
+        },
+        500
+      );
     }
 
   }

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#b8c8ef">
+  <title>YURIA | VR World</title>
+  <link rel="preload" href="./assets/images/world-bg.png" as="image">
+  <link rel="stylesheet" href="./css/world.css">
+</head>
+<body class="world-page world-ui-open">
+  <section
+    id="world"
+    aria-hidden="false"
+  >
+
+    <!-- 昼背景 -->
+    <div class="world-background"></div>
+
+    <!-- VR空間の淡いオーバーレイ -->
+    <div class="world-overlay"></div>
+
+
+    <!-- =====================================
+         QUEST UI
+    ====================================== -->
+
+    <div class="quest-shell">
+
+      <!-- TOP BAR -->
+
+      <header class="quest-topbar">
+
+        <div class="brand-area">
+
+          <p class="brand-small">
+            PORTFOLIO
+          </p>
+
+          <h2
+            class="library-title"
+            data-i18n="library"
+          >
+            Library
+          </h2>
+
+        </div>
+
+
+        <div class="status-area">
+
+  <span
+    id="currentTime"
+    class="current-time"
+  >
+    --:--
+  </span>
+
+  <span
+    class="wifi-icon"
+    aria-label="Wi-Fi"
+  >
+    ◉
+  </span>
+
+  <div
+    class="battery-status"
+    aria-label="Battery"
+  >
+
+    <div class="battery-icon">
+      <div
+        id="batteryLevel"
+        class="battery-level"
+      ></div>
+    </div>
+
+    <span id="batteryText">
+      100%
+    </span>
+
+  </div>
+
+</div>
+
+
+      <!-- =====================================
+           MAIN LIBRARY PANEL
+      ====================================== -->
+
+      <main
+        id="libraryPanel"
+        class="quest-panel library-panel"
+      >
+
+        <div class="panel-heading">
+
+          <div>
+
+            <p
+              class="panel-eyebrow"
+              data-i18n="welcome"
+            >
+              Welcome
+            </p>
+
+            <h3 data-i18n="choose">
+              What would you like to know?
+            </h3>
+
+          </div>
+
+        </div>
+
+
+        <!-- APP GRID -->
+
+        <div class="app-grid">
+
+          <button
+            class="vr-app"
+            data-panel="profile"
+            type="button"
+          >
+
+            <span class="vr-app-icon profile-icon">
+              ♡
+            </span>
+
+            <span
+              class="vr-app-name"
+              data-i18n="profile"
+            >
+              Profile
+            </span>
+
+          </button>
+
+
+          <button
+            class="vr-app"
+            data-panel="skills"
+            type="button"
+          >
+
+            <span class="vr-app-icon skills-icon">
+              &lt;/&gt;
+            </span>
+
+            <span
+              class="vr-app-name"
+              data-i18n="skills"
+            >
+              Skills
+            </span>
+
+          </button>
+
+
+          <button
+            class="vr-app"
+            data-panel="hobby"
+            type="button"
+          >
+
+            <span class="vr-app-icon hobby-icon">
+              ♬
+            </span>
+
+            <span
+              class="vr-app-name"
+              data-i18n="hobby"
+            >
+              Hobby
+            </span>
+
+          </button>
+
+
+          <button
+            class="vr-app"
+            data-panel="game"
+            type="button"
+          >
+
+            <span class="vr-app-icon game-icon">
+              ◇
+            </span>
+
+            <span
+              class="vr-app-name"
+              data-i18n="game"
+            >
+              Game
+            </span>
+
+          </button>
+
+        </div>
+
+      </main>
+
+
+      <!-- =====================================
+           CONTENT WINDOW
+      ====================================== -->
+
+      <section
+        id="contentPanel"
+        class="quest-panel content-panel"
+        aria-hidden="true"
+      >
+
+        <div class="content-header">
+
+          <button
+            id="backButton"
+            class="round-button"
+            type="button"
+            aria-label="Back"
+          >
+            ←
+          </button>
+
+          <div>
+
+            <p class="panel-eyebrow">
+              PORTFOLIO
+            </p>
+
+            <h3 id="contentTitle">
+              Profile
+            </h3>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="contentBody"
+          class="content-body"
+        ></div>
+
+      </section>
+
+
+      <!-- =====================================
+           SETTINGS
+      ====================================== -->
+
+      <section
+        id="settingsPanel"
+        class="settings-panel"
+        aria-hidden="true"
+      >
+
+        <div class="settings-header">
+
+          <div>
+
+            <p class="panel-eyebrow">
+              SYSTEM
+            </p>
+
+            <h3 data-i18n="settings">
+              Settings
+            </h3>
+
+          </div>
+
+
+          <button
+            id="closeSettings"
+            class="round-button"
+            type="button"
+            aria-label="Close settings"
+          >
+            ×
+          </button>
+
+        </div>
+
+
+        <!-- LANGUAGE -->
+
+        <div class="setting-row">
+
+          <div class="setting-label">
+
+            <strong data-i18n="language">
+              Language
+            </strong>
+
+            <span data-i18n="languageDescription">
+              Choose display language
+            </span>
+
+          </div>
+
+
+          <div class="segmented-control">
+
+            <button
+              class="language-button active"
+              data-language="en"
+              type="button"
+            >
+              English
+            </button>
+
+            <button
+              class="language-button"
+              data-language="ja"
+              type="button"
+            >
+              日本語
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- TEXT SIZE -->
+
+        <div class="setting-row">
+
+          <div class="setting-label">
+
+            <strong data-i18n="textSize">
+              Text Size
+            </strong>
+
+            <span data-i18n="textSizeDescription">
+              Change interface text size
+            </span>
+
+          </div>
+
+
+          <div class="segmented-control">
+
+            <button
+              class="text-size-button"
+              data-size="small"
+              type="button"
+            >
+              A
+            </button>
+
+            <button
+              class="text-size-button active"
+              data-size="medium"
+              type="button"
+            >
+              A
+            </button>
+
+            <button
+              class="text-size-button"
+              data-size="large"
+              type="button"
+            >
+              A
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- BGM -->
+
+        <div class="setting-row">
+
+          <div class="setting-label">
+
+            <strong data-i18n="bgm">
+              BGM
+            </strong>
+
+            <span data-i18n="bgmDescription">
+              Background music
+            </span>
+
+          </div>
+
+
+          <button
+            id="settingsSoundButton"
+            class="toggle-button"
+            type="button"
+          >
+            OFF
+          </button>
+
+        </div>
+
+
+        <!-- VOLUME -->
+
+        <div class="setting-row">
+
+          <div class="setting-label">
+
+            <strong data-i18n="volume">
+              Volume
+            </strong>
+
+            <span data-i18n="volumeDescription">
+              Adjust music volume
+            </span>
+
+          </div>
+
+
+          <input
+            id="volumeSlider"
+            class="volume-slider"
+            type="range"
+            min="0"
+            max="100"
+            value="25"
+            aria-label="BGM volume"
+          >
+
+        </div>
+
+      </section>
+
+
+      <!-- =====================================
+           QUEST DOCK
+      ====================================== -->
+
+      <nav
+        class="quest-dock"
+        aria-label="VR menu"
+      >
+
+        <button
+          id="homeButton"
+          class="dock-button active"
+          type="button"
+          aria-label="Home"
+        >
+          <span>⌂</span>
+        </button>
+
+
+        <div class="dock-divider"></div>
+
+
+        <button
+          id="profileShortcut"
+          class="dock-button"
+          type="button"
+          aria-label="Profile"
+        >
+          <span>♡</span>
+        </button>
+
+
+        <button
+          id="settingsButton"
+          class="dock-button"
+          type="button"
+          aria-label="Settings"
+        >
+          <span>⚙</span>
+        </button>
+
+
+        <button
+          id="soundButton"
+          class="dock-button"
+          type="button"
+          aria-label="BGM"
+        >
+          <span id="soundIcon">
+            ♫
+          </span>
+
+          <span
+            id="soundOffMark"
+            class="sound-off-mark"
+          >
+            /
+          </span>
+        </button>
+
+      </nav>
+
+    </div>
+
+
+    <!-- =====================================
+         PIXEL CAT
+    ====================================== -->
+
+    <div
+      id="pixelCat"
+      class="pixel-cat"
+      role="button"
+      tabindex="0"
+      aria-label="Pet the cat"
+    >
+
+      <div class="cat-hearts"></div>
+
+      <div
+        id="catSprite"
+        class="cat-sprite"
+      ></div>
+
+    </div>
+
+  </section>
+
+
+  <audio
+  id="bgm"
+  loop
+  preload="none"
+>
+  <source
+    src="./assets/audio/rewind.mp3"
+    type="audio/mpeg"
+  >
+</audio>
+
+
+  <script src="./js/main.js" defer></script>
+</body>
+</html>

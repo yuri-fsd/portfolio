@@ -68,8 +68,6 @@ const currentTime =
 // STATE
 // ========================================
 
-let transitionStarted = false;
-
 let currentLanguage = "en";
 
 let currentTextSize = "medium";
@@ -131,41 +129,41 @@ const translations = {
     gameTitle: "Game",
 
     profileHTML: `
-  <div class="content-card">
+      <div class="content-card">
 
-    <h4>YURIA MORI</h4>
+        <h4>YURIA MORI</h4>
 
-    <p>
-      Welcome to my portfolio.
-    </p>
+        <p>
+          Welcome to my portfolio.
+        </p>
 
-    <p>
-      I'm interested in technology,
-      interaction design, VR,
-      and creating digital experiences.
-    </p>
+        <p>
+          I'm interested in technology,
+          interaction design, VR,
+          and creating digital experiences.
+        </p>
 
-    <div class="profile-section">
+        <div class="profile-section">
 
-      <span class="profile-section-label">
-        MUSIC
-      </span>
+          <span class="profile-section-label">
+            MUSIC
+          </span>
 
-      <h4>rewind</h4>
+          <h4>rewind</h4>
 
-      <p>
-        Original BGM created by a friend
-        especially for this portfolio.
-      </p>
+          <p>
+            Original BGM created by a friend
+            especially for this portfolio.
+          </p>
 
-      <div class="music-credit">
-        ♫ rewind — Original BGM
+          <div class="music-credit">
+            ♫ rewind — Original BGM
+          </div>
+
+        </div>
+
       </div>
-
-    </div>
-
-  </div>
-`,
+    `,
 
     skillsHTML: `
       <div class="content-card">
@@ -271,41 +269,41 @@ const translations = {
     gameTitle: "ゲーム",
 
     profileHTML: `
-  <div class="content-card">
+      <div class="content-card">
 
-    <h4>森 由璃亜</h4>
+        <h4>森 由璃亜</h4>
 
-    <p>
-      私のポートフォリオへようこそ。
-    </p>
+        <p>
+          私のポートフォリオへようこそ。
+        </p>
 
-    <p>
-      VRやインタラクション、
-      テクノロジーを使った
-      新しい体験づくりに興味があります。
-    </p>
+        <p>
+          VRやインタラクション、
+          テクノロジーを使った
+          新しい体験づくりに興味があります。
+        </p>
 
-    <div class="profile-section">
+        <div class="profile-section">
 
-      <span class="profile-section-label">
-        MUSIC
-      </span>
+          <span class="profile-section-label">
+            MUSIC
+          </span>
 
-      <h4>rewind</h4>
+          <h4>rewind</h4>
 
-      <p>
-        このポートフォリオのために、
-        友人が制作してくれたオリジナルBGMです。
-      </p>
+          <p>
+            このポートフォリオのために、
+            友人が制作してくれたオリジナルBGMです。
+          </p>
 
-      <div class="music-credit">
-        ♫ rewind — Original BGM
+          <div class="music-credit">
+            ♫ rewind — Original BGM
+          </div>
+
+        </div>
+
       </div>
-
-    </div>
-
-  </div>
-`,
+    `,
 
     skillsHTML: `
       <div class="content-card">
@@ -365,117 +363,6 @@ const translations = {
 
 
 // ========================================
-// VR TRANSITION
-// ========================================
-
-window.addEventListener(
-  "vr-enter-start",
-  function () {
-
-    document.body.classList.add(
-      "entering"
-    );
-
-  }
-);
-
-
-window.addEventListener(
-  "vr-enter-complete",
-  function () {
-
-    if (transitionStarted) {
-      return;
-    }
-
-
-    transitionStarted = true;
-
-
-    // 黒へ
-
-    document.body.classList.add(
-      "vr-blackout"
-    );
-
-
-    setTimeout(
-      function () {
-
-        // WORLD準備
-
-        document.body.classList.add(
-          "world-open"
-        );
-
-
-        world.setAttribute(
-          "aria-hidden",
-          "false"
-        );
-
-
-        // 黒から昼背景へ
-
-        setTimeout(
-          function () {
-
-            document.body.classList.add(
-              "vr-reveal"
-            );
-
-          },
-
-          160
-        );
-
-
-        // UI登場
-
-        setTimeout(
-          function () {
-
-            document.body.classList.add(
-              "world-ui-open"
-            );
-
-
-            startCat();
-
-          },
-
-          800
-        );
-
-
-        // 暗転レイヤー掃除
-
-        setTimeout(
-          function () {
-
-            document.body.classList.remove(
-              "vr-blackout"
-            );
-
-            document.body.classList.remove(
-              "vr-reveal"
-            );
-
-          },
-
-          1450
-        );
-
-      },
-
-      420
-    );
-
-  }
-);
-
-
-// ========================================
 // CLOCK
 // ========================================
 
@@ -485,10 +372,8 @@ function updateClock() {
     return;
   }
 
-
   const now =
     new Date();
-
 
   currentTime.textContent =
     now.toLocaleTimeString(
@@ -526,14 +411,11 @@ function setLanguage(language) {
     return;
   }
 
-
   currentLanguage =
     language;
 
-
   document.documentElement.lang =
     language;
-
 
   document
     .querySelectorAll(
@@ -545,10 +427,8 @@ function setLanguage(language) {
         const key =
           element.dataset.i18n;
 
-
         const value =
           translations[language][key];
-
 
         if (value) {
 
@@ -559,7 +439,6 @@ function setLanguage(language) {
 
       }
     );
-
 
   document
     .querySelectorAll(
@@ -576,7 +455,6 @@ function setLanguage(language) {
 
       }
     );
-
 
   updateClock();
 
@@ -617,21 +495,17 @@ function setTextSize(size) {
     large: 1.16
   };
 
-
   if (!scales[size]) {
     return;
   }
 
-
   currentTextSize =
     size;
-
 
   document.body.style.setProperty(
     "--ui-scale",
     scales[size]
   );
-
 
   document
     .querySelectorAll(
@@ -682,7 +556,6 @@ function openContent(type) {
   const language =
     translations[currentLanguage];
 
-
   const contentMap = {
 
     profile: {
@@ -707,42 +580,33 @@ function openContent(type) {
 
   };
 
-
   const content =
     contentMap[type];
-
 
   if (!content) {
     return;
   }
 
-
   closeSettingsPanel();
-
 
   contentTitle.textContent =
     content.title;
 
-
   contentBody.innerHTML =
     content.html;
-
 
   libraryPanel.classList.add(
     "is-hidden"
   );
 
-
   contentPanel.classList.add(
     "is-open"
   );
-
 
   contentPanel.setAttribute(
     "aria-hidden",
     "false"
   );
-
 
   homeButton.classList.remove(
     "active"
@@ -757,20 +621,16 @@ function showLibrary() {
     "is-open"
   );
 
-
   contentPanel.setAttribute(
     "aria-hidden",
     "true"
   );
 
-
   libraryPanel.classList.remove(
     "is-hidden"
   );
 
-
   closeSettingsPanel();
-
 
   homeButton.classList.add(
     "active"
@@ -835,12 +695,10 @@ function openSettingsPanel() {
     "is-open"
   );
 
-
   settingsPanel.setAttribute(
     "aria-hidden",
     "false"
   );
-
 
   settingsButton.classList.add(
     "active"
@@ -855,12 +713,10 @@ function closeSettingsPanel() {
     "is-open"
   );
 
-
   settingsPanel.setAttribute(
     "aria-hidden",
     "true"
   );
-
 
   settingsButton.classList.remove(
     "active"
@@ -910,12 +766,10 @@ function updateSoundUI() {
     bgmPlaying
   );
 
-
   settingsSoundButton.textContent =
     bgmPlaying
       ? "ON"
       : "OFF";
-
 
   settingsSoundButton.classList.toggle(
     "active",
@@ -931,7 +785,6 @@ async function toggleBGM() {
     return;
   }
 
-
   if (bgmPlaying) {
 
     bgm.pause();
@@ -944,7 +797,6 @@ async function toggleBGM() {
 
   }
 
-
   try {
 
     bgm.volume =
@@ -952,9 +804,7 @@ async function toggleBGM() {
         volumeSlider.value
       ) / 100;
 
-
     await bgm.play();
-
 
     bgmPlaying = true;
 
@@ -967,11 +817,9 @@ async function toggleBGM() {
       error
     );
 
-
     bgmPlaying = false;
 
   }
-
 
   updateSoundUI();
 
@@ -997,7 +845,6 @@ volumeSlider.addEventListener(
     if (!bgm) {
       return;
     }
-
 
     bgm.volume =
       Number(
@@ -1056,13 +903,11 @@ let nextCatTimer = null;
 function chooseCat() {
 
   // 5% ribbon
-
   if (Math.random() < 0.05) {
 
     return "ribbon";
 
   }
-
 
   return normalCats[
     Math.floor(
@@ -1084,7 +929,6 @@ function setCatDesign(catName) {
     return;
   }
 
-
   catSprite.style.backgroundImage =
     `url("./assets/cats/${catName}.png")`;
 
@@ -1105,7 +949,6 @@ function startCat() {
     return;
   }
 
-
   if (
     window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -1119,9 +962,7 @@ function startCat() {
 
   }
 
-
   catWalking = true;
-
 
   if (nextCatTimer) {
 
@@ -1133,19 +974,15 @@ function startCat() {
 
   }
 
-
   setCatDesign(
     chooseCat()
   );
 
-
   pixelCat.style.transform =
     "translateX(0px)";
 
-
   const travelDistance =
     window.innerWidth + 260;
-
 
   catAnimation =
     pixelCat.animate(
@@ -1169,7 +1006,6 @@ function startCat() {
       }
     );
 
-
   catAnimation.onfinish =
     function () {
 
@@ -1177,21 +1013,17 @@ function startCat() {
 
       catAnimation = null;
 
-
       pixelCat.classList.remove(
         "is-petted"
       );
 
-
       pixelCat.style.transform =
         "translateX(0px)";
-
 
       const nextDelay =
         200 +
         Math.random() *
         400;
-
 
       nextCatTimer =
         setTimeout(
@@ -1214,41 +1046,33 @@ function createHeart() {
     return;
   }
 
-
   const heart =
     document.createElement(
       "img"
     );
 
-
   heart.className =
     "cat-heart";
-
 
   heart.src =
     "./assets/cats/heart.png";
 
-
   heart.alt =
     "";
-
 
   const randomX =
     Math.floor(
       Math.random() * 55
     ) - 27;
 
-
   heart.style.setProperty(
     "--heart-x",
     `${randomX}px`
   );
 
-
   catHearts.appendChild(
     heart
   );
-
 
   setTimeout(
     function () {
@@ -1277,22 +1101,17 @@ function petCat() {
     return;
   }
 
-
   createHeart();
-
 
   pixelCat.classList.add(
     "is-petted"
   );
 
-
   catAnimation.pause();
-
 
   clearTimeout(
     catPetTimer
   );
-
 
   catPetTimer =
     setTimeout(
@@ -1301,7 +1120,6 @@ function petCat() {
         pixelCat.classList.remove(
           "is-petted"
         );
-
 
         if (catAnimation) {
 
@@ -1365,3 +1183,5 @@ setLanguage(
 setTextSize(
   currentTextSize
 );
+
+startCat();
