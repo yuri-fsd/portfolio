@@ -1182,12 +1182,12 @@ function startCat() {
       [
         {
           transform:
-            "translateX(0px)"
+            "translateX(-120px)"
         },
 
         {
           transform:
-            `translateX(-${travelDistance}px)`
+            `translateX(${travelDistance}px)`
         }
       ],
       {

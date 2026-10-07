@@ -1024,18 +1024,10 @@ body.world-ui-open .quest-shell {
 ========================================================= */
 
 .quest-dock {
-  position: fixed;
+  position: absolute;
 
   left: 50%;
-  bottom: 24px;
 
-  z-index: 100;
-
-  transform: translateX(-50%);
-  /*
-    中央パネルとは独立しているけど、
-    画面下端から一定距離を維持
-  */
   bottom:
     max(
       5dvh,
@@ -1145,10 +1137,12 @@ body.bgm-playing .sound-off-mark {
 ========================================================= */
 
 .pixel-cat {
-  position: fixed;
+  position: absolute;
 
   left: 0;
-  bottom: 18px;
+
+  /* 猫を少し上へ */
+  bottom: 45px;
 
   z-index: 30;
 
@@ -1189,6 +1183,8 @@ body.world-ui-open .pixel-cat {
     0.55s
     steps(4)
     infinite;
+  
+  transform: scaleX(-1);
 }
 
 @keyframes cat-sprite-walk {
