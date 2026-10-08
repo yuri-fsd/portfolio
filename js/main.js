@@ -112,7 +112,7 @@ const translations = {
     welcome: "Welcome",
 
     choose:
-      "What would you like to know?",
+      "Applications",
 
     profile: "Profile",
 
@@ -252,7 +252,7 @@ const translations = {
     welcome: "ようこそ",
 
     choose:
-      "何について知りたいですか？",
+      "アプリケーション",
 
     profile: "自己紹介",
 
