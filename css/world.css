@@ -1117,19 +1117,6 @@ body.world-ui-open .quest-shell {
     rgba(69, 71, 101, 0.18);
 }
 
-.sound-off-mark {
-  position: absolute;
-
-  font-size: 25px;
-
-  transform: rotate(-35deg);
-
-  opacity: 0.8;
-}
-
-body.bgm-playing .sound-off-mark {
-  display: none;
-}
 
 
 /* =========================================================
