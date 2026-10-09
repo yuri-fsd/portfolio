@@ -1465,30 +1465,68 @@ body.world-page .pixel-cat {
   }
 }
 
-/* =========================================
-   DOCK POSITION
-   パネルの少し下に配置
-========================================= */
 
-.quest-dock {
+/* =========================================================
+   HOME LAYOUT: panel and Dock share one flow layout.
+   No viewport-relative Dock positioning.
+========================================================= */
+.home-layout {
   position: absolute;
-  top: calc(50% + 150px);
-  bottom: auto;
   left: 50%;
-  transform: translateX(-50%);
-
-
-/* =========================================
-   MOBILE DOCK POSITION FIX
-========================================= */
-
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(68vw, 760px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  z-index: 35;
+  max-height: calc(100dvh - 115px);
+}
+.home-layout > .library-panel {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+  width: 100%;
+  max-height: none;
+  flex: 0 0 auto;
+}
+.home-layout > .library-panel.is-hidden {
+  transform: none;
+}
+.home-layout > .quest-dock {
+  position: relative;
+  top: auto;
+  bottom: auto;
+  left: auto;
+  right: auto;
+  transform: none;
+  flex: 0 0 auto;
+  margin: 0;
+  transition: opacity .2s ease, visibility .2s ease;
+}
+/* Hide the home layout when a detail panel opens. */
+.quest-shell:has(.content-panel.is-open) .home-layout {
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+}
 @media (max-width: 700px) {
-
-  .quest-dock {
-    top: calc(50% + 230px);
-    bottom: auto;
-    left: 50%;
-    transform: translateX(-50%);
+  .home-layout {
+    width: calc(100vw - 32px);
+    gap: 18px;
+    max-height: calc(100dvh - 110px);
   }
-
+  .home-layout > .library-panel {
+    width: 100%;
+    padding: clamp(16px, 5vw, 22px);
+  }
+}
+@media (max-height: 520px) and (orientation: landscape) {
+  .home-layout {
+    width: min(72vw, 700px);
+    gap: 10px;
+    max-height: calc(100dvh - 45px);
+  }
 }
