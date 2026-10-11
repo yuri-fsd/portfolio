@@ -1,94 +1,135 @@
 /* =========================================================
+
    RESET
+
 ========================================================= */
 
 * {
+
   margin: 0;
+
   padding: 0;
+
   box-sizing: border-box;
+
 }
 
 html,
+
 body {
+
   width: 100%;
+
   height: 100%;
+
 }
 
 html {
+
   background: #101329;
+
 }
 
 body {
+
   --ui-scale: 1;
 
   width: 100%;
+
   height: 100dvh;
+
   overflow: hidden;
 
   font-family:
+
     -apple-system,
+
     BlinkMacSystemFont,
+
     "Helvetica Neue",
+
     Arial,
+
     sans-serif;
 
   color: #353754;
+
   background: #101329;
 
   -webkit-font-smoothing: antialiased;
+
 }
 
-
 /* =========================================================
+
    WORLD
+
 ========================================================= */
 
 #world {
+
   position: fixed;
+
   inset: 0;
 
   z-index: 100;
 
   width: 100%;
+
   height: 100dvh;
 
   overflow: hidden;
 
   visibility: hidden;
+
   opacity: 0;
 
   pointer-events: none;
 
   background: #b8c8ef;
+
 }
 
 body.world-open #world {
+
   visibility: visible;
+
   opacity: 1;
 
   pointer-events: auto;
+
 }
 
 body.world-open #entrance {
+
   visibility: hidden;
+
   pointer-events: none;
+
 }
 
-
 /* =========================================================
+
    WORLD BACKGROUND
+
 ========================================================= */
 
 .world-background {
+
   position: absolute;
+
   inset: -2%;
 
   z-index: 0;
 
   background:
+
     #b8c8ef
+
     url("../assets/images/world-bg.png")
+
     center center / cover
+
     no-repeat;
 
   image-rendering: pixelated;
@@ -98,84 +139,119 @@ body.world-open #entrance {
   transform: scale(1.04);
 
   transition:
+
     opacity 1s ease,
+
     transform 1.6s ease;
+
 }
 
 body.world-open .world-background {
+
   opacity: 1;
+
   transform: scale(1);
+
 }
 
 .world-overlay {
+
   position: absolute;
+
   inset: 0;
 
   z-index: 1;
 
   background:
+
     linear-gradient(
+
       180deg,
+
       rgba(65, 71, 117, 0.03),
+
       rgba(68, 64, 108, 0.09)
+
     );
 
   pointer-events: none;
+
 }
 
-
 /* =========================================================
+
    QUEST SHELL
 
    Ã¢Ëœâ€¦ Ã£Ââ€œÃ£Ââ€œÃ£ÂÅ’Ã¤Â»Å Ã¥â€ºÅ¾Ã£ÂÂ®Ã©â€¡ÂÃ¨Â¦ÂÃ©Æ’Â¨Ã¥Ë†â€ 
+
    Topbar / Panel / Dock Ã£â€šâ€™Ã¥â€¦Â¨Ã©Æ’Â¨Ã£Ââ€œÃ£ÂÂ®Ã¤Â¸Â­Ã£ÂÂ§Ã§Â®Â¡Ã§Ââ€ Ã£Ââ„¢Ã£â€šâ€¹
+
 ========================================================= */
 
 .quest-shell {
+
   position: absolute;
+
   inset: 0;
 
   z-index: 20;
 
   width: 100%;
+
   height: 100%;
 
   opacity: 0;
 
   transform:
+
     translateY(12px)
+
     scale(0.985);
 
   filter: blur(5px);
 
   transition:
+
     opacity 0.75s ease,
+
     transform 0.85s ease,
+
     filter 0.85s ease;
+
 }
 
 body.world-ui-open .quest-shell {
+
   opacity: 1;
 
   transform:
+
     translateY(0)
+
     scale(1);
 
   filter: blur(0);
+
 }
 
-
 /* =========================================================
+
    TOP BAR
+
 ========================================================= */
 
 .quest-topbar {
+
   position: absolute;
 
   top:
+
     max(
+
       4dvh,
+
       calc(env(safe-area-inset-top) + 14px)
+
     );
 
   left: 50%;
@@ -185,47 +261,63 @@ body.world-ui-open .quest-shell {
   display: flex;
 
   align-items: center;
+
   justify-content: space-between;
 
   transform: translateX(-50%);
+
 }
 
 .brand-small {
+
   margin-bottom: 4px;
 
   color: #4f5274;
 
   font-size:
+
     calc(
+
       clamp(8px, 0.65vw, 11px)
+
       * var(--ui-scale)
+
     );
 
   font-weight: 800;
 
   letter-spacing: 0.18em;
+
 }
 
 .library-title {
+
   color: #30324f;
 
   font-size:
+
     calc(
+
       clamp(21px, 1.8vw, 30px)
+
       * var(--ui-scale)
+
     );
 
   font-weight: 650;
 
   line-height: 1;
+
 }
 
-
 /* =========================================================
+
    STATUS
+
 ========================================================= */
 
 .status-area {
+
   display: flex;
 
   align-items: center;
@@ -235,53 +327,71 @@ body.world-ui-open .quest-shell {
   padding: 7px 12px;
 
   border:
+
     1px solid
+
     rgba(255, 255, 255, 0.68);
 
   border-radius: 999px;
 
   background:
+
     rgba(255, 255, 255, 0.48);
 
   backdrop-filter: blur(18px);
+
   -webkit-backdrop-filter: blur(18px);
 
   color: #353754;
 
   font-size:
+
     calc(
+
       11px
+
       * var(--ui-scale)
+
     );
 
   font-weight: 650;
 
   box-shadow:
+
     0 8px 24px
+
     rgba(42, 43, 75, 0.08);
+
 }
 
 .current-time {
+
   min-width: 35px;
+
 }
 
-
 /* =========================================================
+
    BATTERY
+
 ========================================================= */
 
 .battery-status {
+
   display: flex;
 
   align-items: center;
 
   gap: 6px;
+
 }
 
 .battery-icon {
+
   position: relative;
 
   width: 25px;
+
   height: 13px;
 
   padding: 2px;
@@ -289,107 +399,155 @@ body.world-ui-open .quest-shell {
   border: 2px solid #454765;
 
   border-radius: 4px;
+
 }
 
 .battery-icon::after {
+
   content: "";
 
   position: absolute;
 
   top: 3px;
+
   right: -5px;
 
   width: 3px;
+
   height: 5px;
 
   border-radius:
+
     0 2px 2px 0;
 
   background: #454765;
+
 }
 
 .battery-level {
+
   width: 100%;
+
   height: 100%;
 
   border-radius: 1px;
 
   background: #454765;
+
 }
 
 #batteryText {
+
   font-size: 10px;
+
   font-weight: 800;
+
 }
 
-
 /* =========================================================
+
    MAIN QUEST WINDOW
 
    Ã¢Ëœâ€¦ top/bottomÃ¦Å’â€¡Ã¥Â®Å¡Ã£â€šâ€™Ã£â€šâ€žÃ£â€šÂÃ£ÂÂ¦
+
      Ã¥Â®Å’Ã¥â€¦Â¨Ã£ÂÂ«Ã§â€Â»Ã©ÂÂ¢Ã¤Â¸Â­Ã¥Â¤Â®Ã¥Å¸ÂºÃ¦Âºâ€“
+
 ========================================================= */
 
 .quest-panel {
+
   position: absolute;
 
   top: 50dvh;
+
   left: 50%;
 
   width:
+
     min(
+
       68vw,
+
       760px
+
     );
 
   max-height:
+
     min(
+
       52dvh,
+
       410px
+
     );
 
   padding:
+
     clamp(20px, 2.3vw, 32px);
 
   border:
+
     1px solid
+
     rgba(255, 255, 255, 0.68);
 
   border-radius:
+
     clamp(22px, 2vw, 30px);
 
   background:
+
     linear-gradient(
+
       135deg,
+
       rgba(255, 255, 255, 0.48),
+
       rgba(228, 226, 246, 0.28)
+
     );
 
   backdrop-filter:
+
     blur(22px)
+
     saturate(115%);
 
   -webkit-backdrop-filter:
+
     blur(22px)
+
     saturate(115%);
 
   box-shadow:
+
     0 20px 55px
+
     rgba(40, 42, 78, 0.13),
+
     inset
+
     0 1px 0
+
     rgba(255, 255, 255, 0.65);
 
   transform:
+
     translate(-50%, -50%);
 
   transition:
+
     opacity 0.3s ease,
+
     transform 0.35s ease,
+
     visibility 0.3s ease;
+
 }
 
 .quest-panel.is-hidden {
+
   opacity: 0;
 
   visibility: hidden;
@@ -397,34 +555,47 @@ body.world-ui-open .quest-shell {
   pointer-events: none;
 
   transform:
+
     translate(-50%, -48%)
+
     scale(0.97);
+
 }
 
-
 /* =========================================================
+
    PANEL HEADING
+
 ========================================================= */
 
 .panel-heading {
+
   display: flex;
 
   align-items: center;
+
   justify-content: space-between;
 
   margin-bottom:
+
     clamp(18px, 2.5dvh, 28px);
+
 }
 
 .panel-eyebrow {
+
   margin-bottom: 5px;
 
   color: #5c5f80;
 
   font-size:
+
     calc(
+
       9px
+
       * var(--ui-scale)
+
     );
 
   font-weight: 800;
@@ -432,38 +603,53 @@ body.world-ui-open .quest-shell {
   letter-spacing: 0.16em;
 
   text-transform: uppercase;
+
 }
 
 .panel-heading h3,
+
 .content-header h3,
+
 .settings-header h3 {
+
   color: #30324f;
 
   font-size:
+
     calc(
+
       clamp(18px, 1.6vw, 25px)
+
       * var(--ui-scale)
+
     );
 
   font-weight: 650;
+
 }
 
-
 /* =========================================================
+
    APP GRID
+
 ========================================================= */
 
 .app-grid {
+
   display: grid;
 
   grid-template-columns:
+
     repeat(4, minmax(0, 1fr));
 
   gap:
+
     clamp(16px, 2vw, 27px);
+
 }
 
 .vr-app {
+
   min-width: 0;
 
   border: 0;
@@ -477,13 +663,19 @@ body.world-ui-open .quest-shell {
   font: inherit;
 
   text-align: center;
+
 }
 
 .vr-app-icon {
+
   width:
+
     min(
+
       100%,
+
       100px
+
     );
 
   aspect-ratio: 1 / 1;
@@ -493,48 +685,71 @@ body.world-ui-open .quest-shell {
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   border:
+
     1px solid
+
     rgba(255, 255, 255, 0.75);
 
   border-radius:
+
     clamp(17px, 1.6vw, 24px);
 
   background:
+
     linear-gradient(
+
       145deg,
+
       rgba(255, 255, 255, 0.63),
+
       rgba(225, 219, 247, 0.34)
+
     );
 
   box-shadow:
+
     0 12px 28px
+
     rgba(47, 46, 87, 0.12),
+
     inset
+
     0 1px 0
+
     rgba(255, 255, 255, 0.75);
 
   backdrop-filter: blur(15px);
+
   -webkit-backdrop-filter: blur(15px);
 
   color: #ffffff;
 
   font-size:
+
     clamp(24px, 2.4vw, 37px);
 
   text-shadow:
+
     0 2px 8px
+
     rgba(71, 70, 116, 0.22);
 
   transition:
+
     transform 0.25s ease,
+
     background 0.25s ease,
+
     box-shadow 0.25s ease;
+
 }
 
 .vr-app-name {
+
   display: block;
 
   margin-top: 8px;
@@ -544,9 +759,13 @@ body.world-ui-open .quest-shell {
   color: #353754;
 
   font-size:
+
     calc(
+
       clamp(10px, 0.8vw, 13px)
+
       * var(--ui-scale)
+
     );
 
   font-weight: 750;
@@ -556,35 +775,49 @@ body.world-ui-open .quest-shell {
   text-overflow: ellipsis;
 
   white-space: nowrap;
+
 }
 
 @media (hover: hover) and (pointer: fine) {
 
   .vr-app:hover .vr-app-icon {
+
     transform:
+
       translateY(-6px)
+
       scale(1.04);
 
     background:
+
       linear-gradient(
+
         145deg,
+
         rgba(255, 255, 255, 0.78),
+
         rgba(234, 225, 255, 0.45)
+
       );
 
     box-shadow:
+
       0 18px 40px
+
       rgba(47, 46, 87, 0.18);
+
   }
 
 }
 
-
 /* =========================================================
+
    CONTENT PANEL
+
 ========================================================= */
 
 .content-panel {
+
   opacity: 0;
 
   visibility: hidden;
@@ -592,17 +825,21 @@ body.world-ui-open .quest-shell {
   pointer-events: none;
 
   overflow: hidden;
+
 }
 
 .content-panel.is-open {
+
   opacity: 1;
 
   visibility: visible;
 
   pointer-events: auto;
+
 }
 
 .content-header {
+
   display: flex;
 
   align-items: center;
@@ -610,93 +847,131 @@ body.world-ui-open .quest-shell {
   gap: 14px;
 
   margin-bottom: 17px;
+
 }
 
 .content-body {
+
   max-height:
+
     min(
+
       31dvh,
+
       255px
+
     );
 
-  overflow-y: auto;
+  overflow: visible;
 
-  padding-right: 5px;
+  padding-right: 0;
 
   color: #3d3f5e;
 
   font-size:
+
     calc(
+
       clamp(12px, 0.95vw, 15px)
+
       * var(--ui-scale)
+
     );
 
   line-height: 1.7;
 
   scrollbar-width: thin;
+
 }
 
 .content-body::-webkit-scrollbar {
+
   width: 5px;
+
 }
 
 .content-body::-webkit-scrollbar-track {
+
   background: transparent;
+
 }
 
 .content-body::-webkit-scrollbar-thumb {
+
   border-radius: 999px;
 
   background:
+
     rgba(79, 81, 116, 0.28);
+
 }
 
 .content-card {
+
   padding:
+
     clamp(16px, 1.8vw, 23px);
 
   border:
+
     1px solid
+
     rgba(255, 255, 255, 0.7);
 
   border-radius: 20px;
 
   background:
+
     rgba(255, 255, 255, 0.50);
+
 }
 
 .content-card h4 {
+
   margin-bottom: 10px;
 
   color: #30324f;
 
   font-size:
+
     calc(
+
       18px
+
       * var(--ui-scale)
+
     );
+
 }
 
 .content-card p + p {
+
   margin-top: 9px;
+
 }
 
-
 /* =========================================================
+
    PROFILE / MUSIC
+
 ========================================================= */
 
 .profile-section {
+
   margin-top: 18px;
 
   padding-top: 16px;
 
   border-top:
+
     1px solid
+
     rgba(70, 72, 105, 0.18);
+
 }
 
 .profile-section-label {
+
   display: block;
 
   margin-bottom: 6px;
@@ -708,9 +983,11 @@ body.world-ui-open .quest-shell {
   font-weight: 800;
 
   letter-spacing: 0.18em;
+
 }
 
 .music-credit {
+
   display: inline-flex;
 
   align-items: center;
@@ -720,12 +997,15 @@ body.world-ui-open .quest-shell {
   padding: 7px 12px;
 
   border:
+
     1px solid
+
     rgba(79, 81, 116, 0.15);
 
   border-radius: 999px;
 
   background:
+
     rgba(255, 255, 255, 0.55);
 
   color: #555875;
@@ -733,14 +1013,17 @@ body.world-ui-open .quest-shell {
   font-size: 11px;
 
   font-weight: 700;
+
 }
 
-
 /* =========================================================
+
    SKILL CHIPS
+
 ========================================================= */
 
 .skill-chips {
+
   display: flex;
 
   flex-wrap: wrap;
@@ -748,54 +1031,71 @@ body.world-ui-open .quest-shell {
   gap: 8px;
 
   margin-top: 15px;
+
 }
 
 .skill-chip {
+
   padding: 7px 11px;
 
   border:
+
     1px solid
+
     rgba(79, 81, 116, 0.15);
 
   border-radius: 999px;
 
   background:
+
     rgba(255, 255, 255, 0.5);
 
   color: #555875;
 
   font-size:
+
     calc(
+
       11px
+
       * var(--ui-scale)
+
     );
 
   font-weight: 650;
+
 }
 
-
 /* =========================================================
+
    ROUND BUTTON
+
 ========================================================= */
 
 .round-button {
+
   flex: 0 0 auto;
 
   width: 40px;
+
   height: 40px;
 
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   border:
+
     1px solid
+
     rgba(255, 255, 255, 0.75);
 
   border-radius: 50%;
 
   background:
+
     rgba(255, 255, 255, 0.55);
 
   color: #454765;
@@ -805,59 +1105,83 @@ body.world-ui-open .quest-shell {
   font-size: 19px;
 
   box-shadow:
+
     0 5px 15px
+
     rgba(48, 49, 80, 0.08);
+
 }
 
-
 /* =========================================================
+
    SETTINGS
+
 ========================================================= */
 
 .settings-panel {
+
   position: absolute;
 
   top: 50%;
+
   left: 50%;
 
   z-index: 100;
 
   width:
+
     min(
+
       580px,
+
       78vw
+
     );
 
   max-height:
+
     min(
+
       76dvh,
+
       600px
+
     );
 
   overflow-y: auto;
 
   padding:
+
     clamp(20px, 2.4vw, 30px);
 
   border:
+
     1px solid
+
     rgba(255, 255, 255, 0.8);
 
   border-radius: 28px;
 
   background:
+
     rgba(239, 238, 249, 0.88);
 
   backdrop-filter:
+
     blur(30px)
+
     saturate(120%);
 
   -webkit-backdrop-filter:
+
     blur(30px)
+
     saturate(120%);
 
   box-shadow:
+
     0 28px 90px
+
     rgba(28, 29, 58, 0.22);
 
   color: #353754;
@@ -869,16 +1193,23 @@ body.world-ui-open .quest-shell {
   pointer-events: none;
 
   transform:
+
     translate(-50%, -47%)
+
     scale(0.97);
 
   transition:
+
     opacity 0.3s ease,
+
     transform 0.3s ease,
+
     visibility 0.3s ease;
+
 }
 
 .settings-panel.is-open {
+
   opacity: 1;
 
   visibility: visible;
@@ -886,25 +1217,33 @@ body.world-ui-open .quest-shell {
   pointer-events: auto;
 
   transform:
+
     translate(-50%, -50%)
+
     scale(1);
+
 }
 
 .settings-header {
+
   display: flex;
 
   align-items: center;
+
   justify-content: space-between;
 
   margin-bottom: 16px;
+
 }
 
 .setting-row {
+
   min-width: 0;
 
   display: flex;
 
   align-items: center;
+
   justify-content: space-between;
 
   gap: 22px;
@@ -912,11 +1251,15 @@ body.world-ui-open .quest-shell {
   padding: 15px 0;
 
   border-top:
+
     1px solid
+
     rgba(70, 72, 105, 0.12);
+
 }
 
 .setting-label {
+
   min-width: 0;
 
   display: flex;
@@ -924,29 +1267,43 @@ body.world-ui-open .quest-shell {
   flex-direction: column;
 
   gap: 4px;
+
 }
 
 .setting-label strong {
+
   color: #353754;
 
   font-size:
+
     calc(
+
       13px
+
       * var(--ui-scale)
+
     );
+
 }
 
 .setting-label span {
+
   color: #676985;
 
   font-size:
+
     calc(
+
       10px
+
       * var(--ui-scale)
+
     );
+
 }
 
 .segmented-control {
+
   flex: 0 0 auto;
 
   display: flex;
@@ -956,12 +1313,17 @@ body.world-ui-open .quest-shell {
   border-radius: 14px;
 
   background:
+
     rgba(79, 81, 116, 0.10);
+
 }
 
 .segmented-control button,
+
 .toggle-button {
+
   min-width: 48px;
+
   min-height: 36px;
 
   padding: 7px 12px;
@@ -979,162 +1341,267 @@ body.world-ui-open .quest-shell {
   font: inherit;
 
   font-size:
+
     calc(
+
       11px
+
       * var(--ui-scale)
+
     );
+
 }
 
 .segmented-control button.active,
+
 .toggle-button.active {
+
   background: #ffffff;
 
   color: #4c4f70;
 
   box-shadow:
+
     0 3px 10px
+
     rgba(55, 56, 90, 0.08);
+
 }
 
 .text-size-button:nth-child(1) {
+
   font-size: 10px;
+
 }
 
 .text-size-button:nth-child(2) {
+
   font-size: 14px;
+
 }
 
 .text-size-button:nth-child(3) {
+
   font-size: 18px;
+
 }
 
 .volume-slider {
+
   width:
+
     min(
+
       180px,
+
       30vw
+
     );
 
   accent-color: #77799a;
+
 }
 
-
 /* =========================================================
+
    MUSIC PANEL / VOLUME HINT
+
 ========================================================= */
 
 .music-panel {
+
   position: absolute;
+
   top: 50%;
+
   left: 50%;
+
   z-index: 110;
+
   width: min(440px, calc(100vw - 32px));
+
   max-height: min(76dvh, 600px);
+
   overflow-y: auto;
+
   padding: clamp(18px, 2.4vw, 26px);
+
   border: 1px solid rgba(255, 255, 255, 0.8);
+
   border-radius: 24px;
+
   background: rgba(239, 238, 249, 0.92);
+
   backdrop-filter: blur(24px);
+
   -webkit-backdrop-filter: blur(24px);
+
   box-shadow: 0 28px 90px rgba(28, 29, 58, 0.2);
+
   color: #353754;
+
   opacity: 0;
+
   visibility: hidden;
+
   pointer-events: none;
+
   transform: translate(-50%, -47%);
+
   transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+
 }
 
 .music-panel.is-open {
+
   opacity: 1;
+
   visibility: visible;
+
   pointer-events: auto;
+
   transform: translate(-50%, -50%);
+
 }
 
 .music-panel-header {
+
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
+
   gap: 12px;
+
   margin-bottom: 16px;
+
 }
 
 .music-panel-header h3 {
+
   color: #30324f;
+
   font-size: calc(clamp(18px, 1.6vw, 25px) * var(--ui-scale));
+
   font-weight: 650;
+
 }
 
 .music-setting-row {
+
   display: flex;
+
   justify-content: space-between;
+
   align-items: center;
+
   gap: 16px;
+
   padding: 14px 0;
+
   border-top: 1px solid rgba(70, 72, 105, 0.12);
+
 }
 
 .ios-volume-message {
+
   display: flex;
+
   align-items: center;
+
   gap: 8px;
+
   color: #676985;
+
   font-size: calc(11px * var(--ui-scale));
+
   line-height: 1.6;
+
 }
 
 /* Keep the music-note icon clean even when a mute overlay exists. */
+
 .sound-off-mark,
+
 .ios-volume-icon::before,
+
 .ios-volume-icon::after {
+
   display: none !important;
+
 }
 
 [hidden] {
+
   display: none !important;
+
 }
 
 /* =========================================================
+
    QUEST DOCK
+
 ========================================================= */
 
 /* Dock keeps one consistent size across viewport widths. */
+
 .quest-dock {
+
   position: absolute;
+
   left: 50%;
+
   bottom: max(2dvh, env(safe-area-inset-bottom));
+
   z-index: 120;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
+
   flex-wrap: nowrap;
+
   gap: 6px;
+
   padding: 6px;
+
   width: max-content;
+
   max-width: calc(100% - 20px);
 
   border: 1px solid rgba(255, 255, 255, 0.7);
+
   border-radius: 999px;
+
   background: rgba(255, 255, 255, 0.58);
+
   backdrop-filter: blur(25px);
+
   -webkit-backdrop-filter: blur(25px);
+
   box-shadow: 0 12px 35px rgba(39, 39, 72, 0.13);
+
   transform: translateX(-50%);
+
 }
 
 .dock-button {
+
   position: relative;
+
   flex: 0 0 42px;
 
   width: 42px;
+
   height: 42px;
 
   display: flex;
 
   align-items: center;
+
   justify-content: center;
 
   border: 0;
@@ -1150,54 +1617,71 @@ body.world-ui-open .quest-shell {
   font-size: 18px;
 
   transition:
+
     background 0.2s ease,
+
     transform 0.2s ease;
+
 }
 
 .dock-button.active {
+
   background:
+
     rgba(255, 255, 255, 0.68);
+
 }
 
 @media (hover: hover) and (pointer: fine) {
 
   .dock-button:hover {
+
     background:
+
       rgba(255, 255, 255, 0.6);
 
     transform: translateY(-2px);
+
   }
 
 }
 
 .dock-divider {
+
   flex: 0 0 1px;
+
   width: 1px;
+
   height: 24px;
 
   margin: 0 2px;
 
   background:
+
     rgba(69, 71, 101, 0.18);
+
 }
 
-
-
 /* =========================================================
+
    PIXEL CAT
+
 ========================================================= */
 
 .pixel-cat {
+
   position: absolute;
 
   left: 0;
 
   /* Ã§Å’Â«Ã£â€šâ€™Ã¥Â°â€˜Ã£Ââ€”Ã¤Â¸Å Ã£ÂÂ¸ */
+
   bottom: 45px;
 
   z-index: 30;
 
   width: 96px;
+
   height: 82px;
 
   visibility: hidden;
@@ -1207,74 +1691,101 @@ body.world-ui-open .quest-shell {
   user-select: none;
 
   touch-action: manipulation;
+
 }
 
 body.world-ui-open .pixel-cat {
+
   visibility: visible;
+
 }
 
 .cat-sprite {
+
   position: absolute;
 
   left: 16px;
+
   bottom: 0;
 
   width: 64px;
+
   height: 64px;
 
   background:
+
     url("../assets/cats/white.png")
+
     0 0 / 256px 64px
+
     no-repeat;
 
   image-rendering: pixelated;
 
   animation:
+
     cat-sprite-walk
+
     0.55s
+
     steps(4)
+
     infinite;
-  
+
   transform: scaleX(-1);
+
 }
 
 @keyframes cat-sprite-walk {
 
   from {
+
     background-position: 0 0;
+
   }
 
   to {
+
     background-position: -256px 0;
+
   }
 
 }
 
 .pixel-cat.is-petted .cat-sprite {
+
   animation-play-state: paused;
+
 }
 
 .cat-hearts {
+
   position: absolute;
 
   left: 8px;
+
   top: -18px;
 
   z-index: 10;
 
   width: 80px;
+
   height: 75px;
 
   pointer-events: none;
+
 }
 
 .cat-heart {
+
   position: absolute;
 
   left: 50%;
+
   bottom: 0;
 
   width: 32px;
+
   height: 32px;
 
   object-fit: contain;
@@ -1284,286 +1795,505 @@ body.world-ui-open .pixel-cat {
   pointer-events: none;
 
   animation:
+
     cat-heart-pop
+
     1s
+
     ease-out
+
     forwards;
+
 }
 
 @keyframes cat-heart-pop {
 
   0% {
+
     opacity: 0;
 
     transform:
+
       translate(-50%, 0)
+
       scale(0);
+
   }
 
   20% {
+
     opacity: 1;
 
     transform:
+
       translate(-50%, -8px)
+
       scale(1.3);
+
   }
 
   70% {
+
     opacity: 1;
 
     transform:
+
       translate(
+
         calc(-50% + var(--heart-x)),
+
         -42px
+
       )
+
       scale(1);
+
   }
 
   100% {
+
     opacity: 0;
 
     transform:
+
       translate(
+
         calc(-50% + var(--heart-x)),
+
         -72px
+
       )
+
       scale(0.7);
+
   }
 
 }
 
 /* =========================================================
+
    STANDALONE WORLD PAGE
+
    Base layout above is the single source of truth.
+
 ========================================================= */
 
 body.world-page {
+
   background: #b8c8ef;
+
 }
 
 body.world-page #world {
+
   visibility: visible;
+
   opacity: 1;
+
   pointer-events: auto;
+
 }
 
 body.world-page .world-background {
+
   opacity: 1;
+
   transform: scale(1);
+
 }
 
 body.world-page .quest-shell {
+
   opacity: 1;
+
   transform: translateY(0) scale(1);
+
   filter: blur(0);
+
 }
 
 body.world-page .pixel-cat {
+
   visibility: visible;
+
 }
 
-
 /* =========================================================
+
    RESPONSIVE
+
    Keep the same centered layout on every device.
+
    Only dimensions change.
+
 ========================================================= */
 
 @media (max-width: 700px) {
 
   .quest-topbar {
+
     top: max(18px, calc(env(safe-area-inset-top) + 10px));
+
     width: calc(100vw - 32px);
+
   }
 
   .quest-panel {
+
     width: calc(100vw - 32px);
+
     max-height: 58dvh;
+
     padding: clamp(16px, 5vw, 22px);
+
   }
 
   .app-grid {
+
     grid-template-columns: repeat(2, minmax(0, 1fr));
+
     gap: 14px 18px;
+
   }
 
   .vr-app-icon {
+
     width: clamp(62px, 20vw, 82px);
+
   }
 
   .settings-panel {
+
     width: calc(100vw - 32px);
+
     max-height: 78dvh;
+
   }
 
-
-  
 }
-
 
 @media (max-height: 520px) and (orientation: landscape) {
 
   .quest-topbar {
+
     top: max(8px, env(safe-area-inset-top));
+
     width: min(88vw, 900px);
+
   }
 
   .brand-small {
+
     margin-bottom: 2px;
+
   }
 
   .library-title {
+
     font-size: calc(clamp(17px, 1.8vw, 23px) * var(--ui-scale));
+
   }
 
   .status-area {
+
     padding: 5px 9px;
+
   }
 
   .quest-panel {
+
     width: min(72vw, 700px);
+
     max-height: 60dvh;
+
     padding: 12px 18px;
+
   }
 
   .panel-heading {
+
     margin-bottom: 9px;
+
   }
 
   .app-grid {
+
     grid-template-columns: repeat(4, minmax(0, 1fr));
+
     gap: 10px 14px;
+
   }
 
   .vr-app-icon {
+
     width: clamp(48px, 14dvh, 64px);
+
   }
 
   .vr-app-name {
+
     margin-top: 3px;
+
   }
 
   .content-body {
+
     max-height: 38dvh;
+
   }
+
 }
 
-
-
 /* =========================================================
+
    REDUCED MOTION
+
 ========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
+
   *::before,
+
   *::after {
+
     scroll-behavior: auto !important;
+
     animation-duration: 0.01ms !important;
+
     animation-iteration-count: 1 !important;
+
     transition-duration: 0.01ms !important;
+
   }
+
+}
+
+/* =========================================================
+
+   HOME LAYOUT: panel and Dock share one flow layout.
+
+   No viewport-relative Dock positioning.
+
+========================================================= */
+
+.home-layout {
+
+  position: absolute;
+
+  left: 50%;
+
+  top: 50%;
+
+  transform: translate(-50%, -50%);
+
+  width: min(68vw, 760px);
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 20px;
+
+  z-index: 35;
+
+  max-height: calc(100dvh - 115px);
+
+}
+
+.home-layout > .library-panel {
+
+  position: relative;
+
+  top: auto;
+
+  left: auto;
+
+  transform: none;
+
+  width: 100%;
+
+  max-height: none;
+
+  flex: 0 0 auto;
+
+}
+
+.home-layout > .library-panel.is-hidden {
+
+  transform: none;
+
+}
+
+.home-layout > .quest-dock {
+
+  position: relative;
+
+  top: auto;
+
+  bottom: auto;
+
+  left: auto;
+
+  right: auto;
+
+  transform: none;
+
+  flex: 0 0 auto;
+
+  margin: 0;
+
+  transition: opacity .2s ease, visibility .2s ease;
+
+}
+
+/* Hide the home layout when a detail panel opens. */
+
+.quest-shell:has(.content-panel.is-open) .home-layout {
+
+  visibility: hidden;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+}
+
+@media (max-width: 700px) {
+
+  .home-layout {
+
+    width: calc(100vw - 32px);
+
+    gap: 18px;
+
+    max-height: calc(100dvh - 110px);
+
+  }
+
+  .home-layout > .library-panel {
+
+    width: 100%;
+
+    padding: clamp(16px, 5vw, 22px);
+
+  }
+
+}
+
+@media (max-height: 520px) and (orientation: landscape) {
+
+  .home-layout {
+
+    width: min(72vw, 700px);
+
+    gap: 10px;
+
+    max-height: calc(100dvh - 45px);
+
+  }
+
+}
+
+/* アプリ画像アイコン */
+
+.vr-app-icon img {
+
+  display: block;
+
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: contain;
+
+}
+
+/* 既存のガラス背景を消して画像を表示 */
+
+.vr-app-icon:has(img) {
+
+  background: transparent;
+
+  border: none;
+
+  box-shadow: none;
+
+}
+
+/* =========================================
+
+   APP ICON GLASS BACKGROUND REMOVE
+
+========================================= */
+
+/* 画像アイコンの周りの白い枠を消す */
+
+.app-grid .vr-app:has(img) .vr-app-icon {
+
+  background: transparent !important;
+
+  border: none !important;
+
+  box-shadow: none !important;
+
+  backdrop-filter: none !important;
+
+  -webkit-backdrop-filter: none !important;
+
+}
+
+/* アイコン画像だけ表示 */
+
+.app-grid .vr-app-icon img {
+
+  display: block;
+
+  width: 100%;
+
+  height: 100%;
+
+  object-fit: contain;
+
 }
 
 
 /* =========================================================
-   HOME LAYOUT: panel and Dock share one flow layout.
-   No viewport-relative Dock positioning.
+   DETAIL PANEL: NATURAL HEIGHT, NO INNER SCROLL
+   The content panel grows to fit its text. Only exceptionally
+   short screens scroll the whole panel, never the text card.
 ========================================================= */
-.home-layout {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+
+.content-panel {
   width: min(68vw, 760px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  z-index: 35;
-  max-height: calc(100dvh - 115px);
+  height: auto;
+  max-height: calc(100dvh - 100px);
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
 }
-.home-layout > .library-panel {
-  position: relative;
-  top: auto;
-  left: auto;
-  transform: none;
-  width: 100%;
+
+.content-panel .content-body {
+  height: auto;
   max-height: none;
-  flex: 0 0 auto;
+  overflow: visible;
+  padding-right: 0;
 }
-.home-layout > .library-panel.is-hidden {
-  transform: none;
-}
-.home-layout > .quest-dock {
-  position: relative;
-  top: auto;
-  bottom: auto;
-  left: auto;
-  right: auto;
-  transform: none;
-  flex: 0 0 auto;
-  margin: 0;
-  transition: opacity .2s ease, visibility .2s ease;
-}
-/* Hide the home layout when a detail panel opens. */
-.quest-shell:has(.content-panel.is-open) .home-layout {
-  visibility: hidden;
-  pointer-events: none;
-  opacity: 0;
-}
+
 @media (max-width: 700px) {
-  .home-layout {
+  .content-panel {
     width: calc(100vw - 32px);
-    gap: 18px;
     max-height: calc(100dvh - 110px);
   }
-  .home-layout > .library-panel {
-    width: 100%;
-    padding: clamp(16px, 5vw, 22px);
-  }
 }
+
 @media (max-height: 520px) and (orientation: landscape) {
-  .home-layout {
+  .content-panel {
     width: min(72vw, 700px);
-    gap: 10px;
     max-height: calc(100dvh - 45px);
   }
-}
-
-/* アプリ画像アイコン */
-.vr-app-icon img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* 既存のガラス背景を消して画像を表示 */
-.vr-app-icon:has(img) {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-}
-
-/* =========================================
-   APP ICON GLASS BACKGROUND REMOVE
-========================================= */
-
-/* 画像アイコンの周りの白い枠を消す */
-.app-grid .vr-app:has(img) .vr-app-icon {
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-/* アイコン画像だけ表示 */
-.app-grid .vr-app-icon img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
 }
