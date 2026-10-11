@@ -176,8 +176,7 @@ const translations = {
           <h4>rewind</h4>
 
           <p>
-            Original BGM created by a friend
-            especially for this portfolio.
+            This original BGM was composed by a friend who drew inspiration from me💗
           </p>
 
           <div class="music-credit">
@@ -272,12 +271,12 @@ const translations = {
     textSize: "文字サイズ",
 
     textSizeDescription:
-      "UIの文字サイズを変更します",
+      "文字サイズを変更します",
 
     bgm: "BGM",
 
     bgmDescription:
-      "背景音楽のON / OFF",
+      "BGMのON / OFF",
 
     volume: "音量",
 
@@ -316,8 +315,7 @@ const translations = {
           <h4>rewind</h4>
 
           <p>
-            このポートフォリオのために、
-            友人が制作してくれたオリジナルBGMです。
+            友人が私をイメージして制作してくれたオリジナルBGMです。
           </p>
 
           <div class="music-credit">
