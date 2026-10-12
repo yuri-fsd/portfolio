@@ -2352,3 +2352,17 @@ body.world-page .pixel-cat {
   line-height: 1.4;
   white-space: nowrap;
 }
+
+.project-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.project-title-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.35em;
+}

@@ -92,7 +92,7 @@ const currentTime =
 // STATE
 // ========================================
 
-let currentLanguage = "en";
+let currentLanguage = "ja";
 
 let currentTextSize = "medium";
 
@@ -441,7 +441,10 @@ profileHTML: `
         <div class="projects-list">
 
           <article class="project-item">
-            <h5>01. VR Research Environment</h5>
+            <h5 class="project-title">
+            <span class="project-title-icon">🥽</span>
+            VR Research Environment
+            </h5>
             <p>
               Built a VR experiment environment to investigate
               how voice changers affect self-perception and
@@ -459,7 +462,10 @@ profileHTML: `
           </article>
 
           <article class="project-item">
-            <h5>02. AWS Cloud System Development</h5>
+            <h5 class="project-title">
+            <span class="project-title-icon">☁️</span>
+            AWS Cloud System Development
+            </h5>
             <p>
               Developed a cloud-based system using AWS.
               Designed and implemented a system integrating
@@ -475,7 +481,10 @@ profileHTML: `
           </article>
 
           <article class="project-item">
-            <h5>03. IoT × Cloud System Development</h5>
+            <h5 class="project-title">
+            <span class="project-title-icon">🌡️</span>
+            IoT × Cloud System Development
+            </h5>
             <p>
               Worked from requirements definition to build a virtual
               factory environment on AWS. Connected temperature data
@@ -494,7 +503,10 @@ profileHTML: `
           </article>
 
           <article class="project-item">
-            <h5>04. React Web Development</h5>
+            <h5 class="project-title">
+            <span class="project-title-icon">💻</span>
+            React Web Development
+            </h5>
             <p>
               Developed a website using React. Gained experience
               in frontend development through component-based UI
@@ -509,7 +521,10 @@ profileHTML: `
           </article>
 
           <article class="project-item">
-            <h5>05. This Website & Lab Website</h5>
+            <h5 class="project-title">
+            <span class="project-title-icon">🌐</span>
+            This Website & Lab Website
+            </h5>
             <p>
               Created this VR-inspired personal portfolio using
               HTML, CSS, JavaScript, and Three.js, including
@@ -829,8 +844,7 @@ profileHTML: `
     <div class="content-card projects-content-card">
         <h4>プロジェクト</h4>
         <p>研究・開発に取り組んだプロジェクトを紹介します．</p>
-
-        <style>
+<style>
           .projects-list {
             display: grid;
             gap: 10px;
@@ -879,13 +893,15 @@ profileHTML: `
         <div class="projects-list">
 
           <article class="project-item">
-            <h5>01. VR Research Environment</h5>
+            <h5 class="project-title">
+            <span class="project-title-icon">🥽</span>
+            VR実験環境の構築
+            </h5>
             <p>
               Voice Changerが仮想環境における自己認識や対人行動に
               与える影響を検証するため，VR実験環境を構築しました．
-              音声変換とVRを組み合わせ，自己開示，Ultimatum Game，
-              対話距離の測定など，複数の実験タスクを実施できる
-              環境を整備しました．
+              音声変換とVRを組み合わせ，自己開示，最後通牒ゲーム，
+              対話距離の測定などの複数の実験タスクを実施しました．
             </p>
             <div class="project-tags">
               <span>Python</span>
@@ -897,7 +913,10 @@ profileHTML: `
           </article>
 
           <article class="project-item">
-            <h5>02. AWS Cloud System Development</h5>
+            <h5 class="project-title">
+              <span class="project-title-icon">☁️</span>
+              AWSを用いたクラウドシステム開発
+            </h5>
             <p>
               AWSを活用したクラウドシステムの開発に取り組みました．
               複数のAWSサービスを連携させるシステムを設計・実装し，
@@ -913,10 +932,12 @@ profileHTML: `
           </article>
 
           <article class="project-item">
-            <h5>03. IoT × Cloud System Development</h5>
+            <h5 class="project-title">
+              <span class="project-title-icon">🏭</span>
+              IoTとクラウドを活用したシステム開発
+            </h5>
             <p>
-              要件定義から取り組み，AWS上に仮想的な工場環境を
-              構築しました．実際のセンサーから取得した温度データを
+              要件定義から取り組み，AWS上に仮想的な工場環境を構築しました．実際のセンサーから取得した温度データを
               クラウド環境に連携し，取得したデータに応じて
               空調の設定温度を自動調整するシステムを開発しました．
               要件の整理からシステム構成の検討，データ連携，
@@ -931,7 +952,10 @@ profileHTML: `
           </article>
 
           <article class="project-item">
-            <h5>04. React Web Development</h5>
+            <h5 class="project-title">
+              <span class="project-title-icon">⚛️</span>
+               Reactを用いたWebサイト開発
+            </h5>
             <p>
               Reactを使用したWebサイトの開発に取り組みました．
               コンポーネントを活用した画面構築やUIの実装を通して，
@@ -947,7 +971,10 @@ profileHTML: `
           </article>
 
           <article class="project-item">
-            <h5>05. This Website & Lab Website</h5>
+            <h5 class="project-title">
+              <span class="project-title-icon">🌐</span>
+              ポートフォリオ・研究室Webサイト
+            </h5>
             <p>
               HTML，CSS，JavaScript，Three.jsを使用して，
               VR空間をモチーフにした個人ポートフォリオサイトを
