@@ -267,23 +267,35 @@ const translations = {
             </p>
           </div>
 
+          
           <div class="skills-item">
             <div class="skills-item-header">
-              <span class="skills-item-name">C / C++ / C# / Java / Processing</span>
+              <span class="skills-item-name">C / C++ / C#</span>
               <span class="skills-item-years">6 months each</span>
             </div>
             <p class="skills-item-description">
-              Learned fundamental syntax and developed small applications through coursework.
+              Used for VR experiment environment development in research.
             </p>
           </div>
 
           <div class="skills-item">
             <div class="skills-item-header">
-              <span class="skills-item-name">MATLAB / R</span>
+              <span class="skills-item-name">Java / Processing / MongoDB/ R</span>
+              <span class="skills-item-years">Coursework</span>
+            </div>
+            <p class="skills-item-description">
+              Learned programming and database fundamentals through university coursework.
+            </p>
+          </div>
+
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">MATLAB</span>
               <span class="skills-item-years">1 year</span>
             </div>
             <p class="skills-item-description">
-              Used for statistical analysis and data visualization.
+              Used for statistical analysis and data visualization in coursework and research.
             </p>
           </div>
 
@@ -533,21 +545,31 @@ const translations = {
 
           <div class="skills-item">
             <div class="skills-item-header">
-              <span class="skills-item-name">C / C++ / C# / Java / Processing</span>
+              <span class="skills-item-name">C / C++ / C#</span>
               <span class="skills-item-years">各半年</span>
             </div>
             <p class="skills-item-description">
-              講義や課題を通じて基礎構文を学び，簡単なアプリケーションを制作
+              研究におけるVR実験環境の構築に使用
             </p>
           </div>
 
           <div class="skills-item">
             <div class="skills-item-header">
-              <span class="skills-item-name">MATLAB / R</span>
+              <span class="skills-item-name">Java / Processing / MongoDB/ R</span>
+              <span class="skills-item-years">講義で使用</span>
+            </div>
+            <p class="skills-item-description">
+              大学の講義でプログラミングやデータベースの基礎を学習
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">MATLAB</span>
               <span class="skills-item-years">1年</span>
             </div>
             <p class="skills-item-description">
-              統計解析やデータの可視化に使用
+              講義と研究で統計解析やデータの可視化に使用
             </p>
           </div>
 
