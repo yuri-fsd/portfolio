@@ -118,7 +118,8 @@ const translations = {
 
     skills: "Skills",
 
-    hobby: "Hobby",
+    hobby: "Projects",
+    projectsTitle: "Projects",
 
     game: "Game",
 
@@ -148,7 +149,7 @@ const translations = {
 
     skillsTitle: "Skills",
 
-    hobbyTitle: "Hobby",
+    projectsTitle: "Projects",
 
     gameTitle: "Game",
 
@@ -386,28 +387,147 @@ profileHTML: `
     `,
 
 
-    hobbyHTML: `
-      <div class="content-card">
-        <h4>Hobby</h4>
-        <p>I enjoy music, games, and movies.</p>
+    projectsHTML: `
+    <div class="content-card projects-content-card">
+        <h4>Projects</h4>
+        <p>Selected research and development projects.</p>
 
-        <div class="profile-section">
-          <span class="profile-section-label">
-            INSTRUMENTS
-          </span>
+        <style>
+          .projects-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+          }
 
-          <p>Instruments I can play</p>
+          .project-item {
+            padding: 12px 14px;
+            border: 1px solid rgba(145,160,210,.22);
+            border-radius: 13px;
+            background: rgba(255,255,255,.08);
+            min-width: 0;
+          }
 
-          <p>
-            Electone / Piano / Organ /
-            Trumpet / Cornet /
-            Piccolo Trumpet / Flugelhorn /
-            Koto / Acoustic Guitar /
-            Electric Guitar / Ukulele
-          </p>
+          .project-item h5 {
+            margin: 0 0 7px;
+            font-size: .96em;
+            font-weight: 700;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
+          }
+
+          .project-item p {
+            margin: 0;
+            font-size: .88em;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+          }
+
+          .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+          }
+
+          .project-tags span {
+            padding: 3px 9px;
+            border-radius: 999px;
+            background: rgba(145,160,210,.18);
+            font-size: .75em;
+            line-height: 1.5;
+          }
+        </style>
+
+        <div class="projects-list">
+
+          <article class="project-item">
+            <h5>01. VR Research Environment</h5>
+            <p>
+              Built a VR experiment environment to investigate
+              how voice changers affect self-perception and
+              interpersonal behavior. Integrated voice conversion
+              with VR to conduct self-disclosure tasks, an
+              Ultimatum Game, and interpersonal distance measurements.
+            </p>
+            <div class="project-tags">
+              <span>Python</span>
+              <span>Unity</span>
+              <span>Photon</span>
+              <span>VR</span>
+              <span>Voice Changer</span>
+            </div>
+          </article>
+
+          <article class="project-item">
+            <h5>02. AWS Cloud System Development</h5>
+            <p>
+              Developed a cloud-based system using AWS.
+              Designed and implemented a system integrating
+              multiple AWS services, verified individual functions,
+              and tested the overall system. Completed a functional
+              system capable of executing an end-to-end workflow.
+            </p>
+            <div class="project-tags">
+              <span>AWS</span>
+              <span>Cloud Computing</span>
+              <span>System Development</span>
+            </div>
+          </article>
+
+          <article class="project-item">
+            <h5>03. IoT × Cloud System Development</h5>
+            <p>
+              Worked from requirements definition to build a virtual
+              factory environment on AWS. Connected temperature data
+              from physical sensors to the cloud and developed a
+              system that automatically adjusts air-conditioning
+              settings based on the data. Experienced requirements
+              analysis, architecture planning, data integration,
+              and control logic implementation.
+            </p>
+            <div class="project-tags">
+              <span>AWS</span>
+              <span>IoT</span>
+              <span>Sensor Data</span>
+              <span>Requirements Definition</span>
+            </div>
+          </article>
+
+          <article class="project-item">
+            <h5>04. React Web Development</h5>
+            <p>
+              Developed a website using React. Gained experience
+              in frontend development through component-based UI
+              implementation and learned about React application
+              structure and component design.
+            </p>
+            <div class="project-tags">
+              <span>React</span>
+              <span>JavaScript</span>
+              <span>Frontend Development</span>
+            </div>
+          </article>
+
+          <article class="project-item">
+            <h5>05. This Website & Lab Website</h5>
+            <p>
+              Created this VR-inspired personal portfolio using
+              HTML, CSS, JavaScript, and Three.js, including
+              interactive UI elements and animations.
+              Also updated the research laboratory website.
+            </p>
+            <div class="project-tags">
+              <span>HTML</span>
+              <span>CSS</span>
+              <span>JavaScript</span>
+              <span>Three.js</span>
+              <span>Docker</span>
+            </div>
+          </article>
+
         </div>
       </div>
-    `,
+    `,  
 
     gameHTML: `
       <div class="content-card">
@@ -440,7 +560,8 @@ profileHTML: `
 
     skills: "スキル",
 
-    hobby: "趣味",
+    projects: "プロジェクト",
+    projectsTitle: "プロジェクト",
 
     game: "ゲーム",
 
@@ -470,7 +591,7 @@ profileHTML: `
 
     skillsTitle: "スキル",
 
-    hobbyTitle: "趣味",
+    projectsTitle: "プロジェクト",
 
     gameTitle: "ゲーム",
 
@@ -704,28 +825,148 @@ profileHTML: `
       </div>
     `,
 
-    hobbyHTML: `
-    <div class="content-card">
-      <h4>Hobby</h4>
-      <p>音楽，ゲーム，映画が好きです．</p>
+    projectsHTML: `
+    <div class="content-card projects-content-card">
+        <h4>プロジェクト</h4>
+        <p>研究・開発に取り組んだプロジェクトを紹介します．</p>
 
-      <div class="profile-section">
-        <span class="profile-section-label">
-          INSTRUMENTS
-        </span>
+        <style>
+          .projects-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+          }
 
-        <p>演奏できる楽器</p>
+          .project-item {
+            padding: 12px 14px;
+            border: 1px solid rgba(145,160,210,.22);
+            border-radius: 13px;
+            background: rgba(255,255,255,.08);
+            min-width: 0;
+          }
 
-        <p>
-          エレクトーン / ピアノ / オルガン /
-          トランペット / コルネット /
-          ピッコロトランペット / フリューゲルホルン /
-          箏 / アコースティックギター /
-          エレキギター / ウクレレ
-        </p>
+          .project-item h5 {
+            margin: 0 0 7px;
+            font-size: .96em;
+            font-weight: 700;
+            line-height: 1.4;
+            overflow-wrap: anywhere;
+          }
+
+          .project-item p {
+            margin: 0;
+            font-size: .88em;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+          }
+
+          .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+          }
+
+          .project-tags span {
+            padding: 3px 9px;
+            border-radius: 999px;
+            background: rgba(145,160,210,.18);
+            font-size: .75em;
+            line-height: 1.5;
+          }
+        </style>
+
+        <div class="projects-list">
+
+          <article class="project-item">
+            <h5>01. VR Research Environment</h5>
+            <p>
+              Voice Changerが仮想環境における自己認識や対人行動に
+              与える影響を検証するため，VR実験環境を構築しました．
+              音声変換とVRを組み合わせ，自己開示，Ultimatum Game，
+              対話距離の測定など，複数の実験タスクを実施できる
+              環境を整備しました．
+            </p>
+            <div class="project-tags">
+              <span>Python</span>
+              <span>Unity</span>
+              <span>Photon</span>
+              <span>VR</span>
+              <span>Voice Changer</span>
+            </div>
+          </article>
+
+          <article class="project-item">
+            <h5>02. AWS Cloud System Development</h5>
+            <p>
+              AWSを活用したクラウドシステムの開発に取り組みました．
+              複数のAWSサービスを連携させるシステムを設計・実装し，
+              機能ごとの動作確認やシステム全体の検証を行いました．
+              クラウドサービス間の連携を通して，一連の処理を
+              実行できるシステムを完成させました．
+            </p>
+            <div class="project-tags">
+              <span>AWS</span>
+              <span>Cloud Computing</span>
+              <span>System Development</span>
+            </div>
+          </article>
+
+          <article class="project-item">
+            <h5>03. IoT × Cloud System Development</h5>
+            <p>
+              要件定義から取り組み，AWS上に仮想的な工場環境を
+              構築しました．実際のセンサーから取得した温度データを
+              クラウド環境に連携し，取得したデータに応じて
+              空調の設定温度を自動調整するシステムを開発しました．
+              要件の整理からシステム構成の検討，データ連携，
+              制御処理の実装まで，一連の開発工程を経験しました．
+            </p>
+            <div class="project-tags">
+              <span>AWS</span>
+              <span>IoT</span>
+              <span>Sensor Data</span>
+              <span>Requirements Definition</span>
+            </div>
+          </article>
+
+          <article class="project-item">
+            <h5>04. React Web Development</h5>
+            <p>
+              Reactを使用したWebサイトの開発に取り組みました．
+              コンポーネントを活用した画面構築やUIの実装を通して，
+              フロントエンド開発を経験しました．
+              ReactによるWebアプリケーションの構成や，
+              保守性を意識したコンポーネント設計について学びました．
+            </p>
+            <div class="project-tags">
+              <span>React</span>
+              <span>JavaScript</span>
+              <span>Frontend Development</span>
+            </div>
+          </article>
+
+          <article class="project-item">
+            <h5>05. This Website & Lab Website</h5>
+            <p>
+              HTML，CSS，JavaScript，Three.jsを使用して，
+              VR空間をモチーフにした個人ポートフォリオサイトを
+              制作しました．インタラクティブなUIやアニメーションを
+              実装しました．また，研究室Webサイトの更新も
+              担当しました．
+            </p>
+            <div class="project-tags">
+              <span>HTML</span>
+              <span>CSS</span>
+              <span>JavaScript</span>
+              <span>Three.js</span>
+              <span>Docker</span>
+            </div>
+          </article>
+
+        </div>
       </div>
-    </div>
-  `,
+    `,
 
     gameHTML: `
       <div class="content-card">
@@ -954,9 +1195,9 @@ function openContent(type) {
       html: language.skillsHTML
     },
 
-    hobby: {
-      title: language.hobbyTitle,
-      html: language.hobbyHTML
+    projects: {
+      title: language.projectsTitle,
+      html: language.projectsHTML
     },
 
     game: {
