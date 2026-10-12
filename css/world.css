@@ -2297,3 +2297,58 @@ body.world-page .pixel-cat {
     max-height: calc(100dvh - 45px);
   }
 }
+
+
+/* ========================================
+   PROFILE
+======================================== */
+
+.profile-card-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.profile-detail-card {
+  padding: 12px 14px;
+  border: 1px solid rgba(145, 160, 210, .22);
+  border-radius: 13px;
+  background: rgba(255, 255, 255, .08);
+}
+
+.profile-detail-card .profile-section-label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.profile-detail-card p {
+  margin: 5px 0;
+  font-size: .88em;
+  line-height: 1.55;
+}
+
+.profile-detail-card h4 {
+  margin: 4px 0 8px;
+}
+
+/* ========================================
+   INSTRUMENT TAGS
+======================================== */
+
+.instrument-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.instrument-tags span {
+  display: inline-block;
+  padding: 5px 11px;
+  border: 1px solid rgba(145, 160, 210, .35);
+  border-radius: 999px;
+  background: rgba(145, 160, 210, .15);
+  font-size: .82em;
+  line-height: 1.4;
+  white-space: nowrap;
+}

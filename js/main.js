@@ -152,41 +152,83 @@ const translations = {
 
     gameTitle: "Game",
 
-    profileHTML: `
-      <div class="content-card">
-
+    
+profileHTML: `
+      <div class="content-card profile-content-card">
         <h4>YURIA MORI</h4>
 
         <p>
-          Welcome to my portfolio.
+          I am a graduate student at Ritsumeikan University,
+          researching how voice changers affect
+          self-perception and interpersonal behavior
+          in virtual environments.
         </p>
 
-        <p>
-          I'm interested in technology,
-          interaction design, VR,
-          and creating digital experiences.
-        </p>
+        <div class="profile-card-list">
 
-        <div class="profile-section">
+          <div class="profile-detail-card">
+            <span class="profile-section-label">
+              ACADEMIC PRESENTATIONS
+            </span>
 
-          <span class="profile-section-label">
-            MUSIC
-          </span>
+            <p>Mar 2025 | IPSJ National Convention</p>
+            <p>Jan 2026 | IEICE HCS Research Meeting</p>
+            <p>Mar 2026 | IEICE General Conference</p>
+          </div>
 
-          <h4>rewind</h4>
+          <div class="profile-detail-card">
+            <span class="profile-section-label">
+              MUSIC & AWARDS
+            </span>
 
-          <p>
-            This original BGM was composed by a friend who drew inspiration from me💗
-          </p>
+            <p>YPC Encouragement Award</p>
+            <p>CD production in Yamaha Junior Specialized Course</p>
+            <p>Yamaha Music Grade 6</p>
+            <p>Two awards in Electone group performances</p>
+          </div>
 
-          <div class="music-credit">
-            ♫ rewind — Original BGM
+          <div class="profile-detail-card">
+            <span class="profile-section-label">
+              INSTRUMENTS
+            </span>
+
+            <div class="instrument-tags">
+              <span>Electone</span>
+              <span>Piano</span>
+              <span>Organ</span>
+              <span>Trumpet</span>
+              <span>Cornet</span>
+              <span>Piccolo Trumpet</span>
+              <span>Flugelhorn</span>
+              <span>Koto</span>
+              <span>Acoustic Guitar</span>
+              <span>Electric Guitar</span>
+              <span>Ukulele</span>
+            </div>
+          </div>
+
+          <div class="profile-detail-card">
+            <span class="profile-section-label">
+              ORIGINAL BGM
+            </span>
+
+            <h4>rewind</h4>
+
+            <p>
+              This original BGM was composed by a friend
+              who drew inspiration from me 👶💗
+            </p>
+
+            <div class="music-credit">
+              ♫ rewind — Original BGM
+            </div>
           </div>
 
         </div>
-
       </div>
     `,
+
+
     skillsHTML: `
       <div class="content-card skills-content-card">
         <h4>Skills</h4>
@@ -347,17 +389,23 @@ const translations = {
     hobbyHTML: `
       <div class="content-card">
         <h4>Hobby</h4>
+        <p>I enjoy music, games, and movies.</p>
 
-        <p>
-          Music, games and creating things
-          are some of my favorite ways to
-          spend my time.
-        </p>
+        <div class="profile-section">
+          <span class="profile-section-label">
+            INSTRUMENTS
+          </span>
 
-        <p>
-          More content will be added here
-          as this world grows.
-        </p>
+          <p>Instruments I can play</p>
+
+          <p>
+            Electone / Piano / Organ /
+            Trumpet / Cornet /
+            Piccolo Trumpet / Flugelhorn /
+            Koto / Acoustic Guitar /
+            Electric Guitar / Ukulele
+          </p>
+        </div>
       </div>
     `,
 
@@ -426,43 +474,82 @@ const translations = {
 
     gameTitle: "ゲーム",
 
-    profileHTML: `
-      <div class="content-card">
-
+    
+    
+profileHTML: `
+      <div class="content-card profile-content-card">
         <h4>森 由璃亜</h4>
 
         <p>
-          私のポートフォリオへようこそ。
+          立命館大学大学院 情報理工学研究科に所属し，
+          音声変換が仮想環境における自己認識や
+          対人行動に与える影響について研究しています．
         </p>
 
-        <p>
-          VRやインタラクション、
-          テクノロジーを使った
-          新しい体験づくりに興味があります。
-        </p>
+        <div class="profile-card-list">
 
-        <div class="profile-section">
+          <div class="profile-detail-card">
+            <span class="profile-section-label">
+              ACADEMIC PRESENTATIONS
+            </span>
 
-          <span class="profile-section-label">
-            MUSIC
-          </span>
+            <p>2025.03｜情報処理学会 第87回全国大会</p>
+            <p>2026.01｜電子情報通信学会 HCS研究会</p>
+            <p>2026.03｜電子情報通信学会 総合大会</p>
+          </div>
 
-          <h4>rewind</h4>
+          <div class="profile-detail-card">
+            <span class="profile-section-label">
+              MUSIC & AWARDS
+            </span>
 
-          <p>
-            友人が私をイメージして制作してくれたオリジナルBGMです。
-          </p>
+            <p>YPC 奨励賞</p>
+            <p>ヤマハ ジュニア専門コースでCD制作</p>
+            <p>ヤマハグレード6級取得</p>
+            <p>エレクトーングループ演奏で2回受賞</p>
+          </div>
 
-          <div class="music-credit">
-            ♫ rewind — Original BGM
+          <div class="profile-detail-card">
+            <span class="profile-section-label">
+              INSTRUMENTS
+            </span>
+
+            <div class="instrument-tags">
+              <span>エレクトーン</span>
+              <span>ピアノ</span>
+              <span>オルガン</span>
+              <span>トランペット</span>
+              <span>コルネット</span>
+              <span>ピッコロトランペット</span>
+              <span>フリューゲルホルン</span>
+              <span>箏</span>
+              <span>アコースティックギター</span>
+              <span>エレキギター</span>
+              <span>ウクレレ</span>
+            </div>
+          </div>
+
+          <div class="profile-detail-card">
+            <span class="profile-section-label">
+              ORIGINAL BGM
+            </span>
+
+            <h4>rewind</h4>
+            <p>
+              友人が私をイメージして制作してくれた
+              オリジナルBGMです👶🩷
+            </p>
+
+            <div class="music-credit">
+              ♫ rewind — Original BGM
+            </div>
           </div>
 
         </div>
-
       </div>
     `,
 
-    
+        
     skillsHTML: `
       <div class="content-card skills-content-card">
         <h4>Skills</h4>
@@ -618,20 +705,27 @@ const translations = {
     `,
 
     hobbyHTML: `
-      <div class="content-card">
-        <h4>趣味</h4>
+    <div class="content-card">
+      <h4>Hobby</h4>
+      <p>音楽，ゲーム，映画が好きです．</p>
+
+      <div class="profile-section">
+        <span class="profile-section-label">
+          INSTRUMENTS
+        </span>
+
+        <p>演奏できる楽器</p>
 
         <p>
-          音楽やゲーム、ものづくりなどが
-          好きです。
-        </p>
-
-        <p>
-          この世界と一緒に、これから
-          コンテンツも増やしていく予定です。
+          エレクトーン / ピアノ / オルガン /
+          トランペット / コルネット /
+          ピッコロトランペット / フリューゲルホルン /
+          箏 / アコースティックギター /
+          エレキギター / ウクレレ
         </p>
       </div>
-    `,
+    </div>
+  `,
 
     gameHTML: `
       <div class="content-card">
