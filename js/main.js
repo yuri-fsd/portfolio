@@ -187,27 +187,150 @@ const translations = {
 
       </div>
     `,
-
     skillsHTML: `
-      <div class="content-card">
+      <div class="content-card skills-content-card">
         <h4>Skills</h4>
+        <p>Technologies and tools I have experience with.</p>
 
-        <p>
-          Technologies and tools I have
-          experience with.
-        </p>
+        <style>
+          .skills-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+          }
 
-        <div class="skill-chips">
-          <span class="skill-chip">HTML</span>
-          <span class="skill-chip">CSS</span>
-          <span class="skill-chip">JavaScript</span>
-          <span class="skill-chip">Three.js</span>
-          <span class="skill-chip">Unity</span>
-          <span class="skill-chip">C#</span>
-          <span class="skill-chip">Git / GitHub</span>
+          .skills-item {
+            padding: 12px 14px;
+            border: 1px solid rgba(145,160,210,.22);
+            border-radius: 13px;
+            background: rgba(255,255,255,.08);
+          }
+
+          .skills-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+          }
+
+          .skills-item-name {
+            font-size: .96em;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+          }
+
+          .skills-item-years {
+            flex-shrink: 0;
+            padding: 3px 9px;
+            border-radius: 999px;
+            background: rgba(145,160,210,.18);
+            font-size: .78em;
+            white-space: nowrap;
+          }
+
+          .skills-item-description {
+            margin: 6px 0 0;
+            font-size: .88em;
+            line-height: 1.55;
+          }
+        </style>
+
+        <div class="skills-list">
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">Python</span>
+              <span class="skills-item-years">5.5 years</span>
+            </div>
+            <p class="skills-item-description">
+              Built voice conversion systems, analyzed data with pandas and scikit-learn, and integrated VR experiments.
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">HTML / CSS / JavaScript</span>
+              <span class="skills-item-years">4 years</span>
+            </div>
+            <p class="skills-item-description">
+              Developed websites, user interfaces, and interactive web content.
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">React</span>
+              <span class="skills-item-years">1 year</span>
+            </div>
+            <p class="skills-item-description">
+              Built websites using React.
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">C / C++ / C# / Java / Processing</span>
+              <span class="skills-item-years">6 months each</span>
+            </div>
+            <p class="skills-item-description">
+              Learned fundamental syntax and developed small applications through coursework.
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">MATLAB / R</span>
+              <span class="skills-item-years">1 year</span>
+            </div>
+            <p class="skills-item-description">
+              Used for statistical analysis and data visualization.
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">Unity</span>
+              <span class="skills-item-years">6 months</span>
+            </div>
+            <p class="skills-item-description">
+              Built VR experiment environments and controlled avatars.
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">Photon</span>
+              <span class="skills-item-years">6 months</span>
+            </div>
+            <p class="skills-item-description">
+              Built multi-user VR environments with Unity.
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">Docker</span>
+              <span class="skills-item-years">3 years</span>
+            </div>
+            <p class="skills-item-description">
+              Used for containerizing, setting up, and sharing development environments.
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">AWS</span>
+              <span class="skills-item-years">2 months</span>
+            </div>
+            <p class="skills-item-description">
+              Learned AWS fundamentals during an internship and practiced cloud infrastructure setup using EC2, VPC, and NAT Gateway.
+            </p>
+          </div>
+
         </div>
       </div>
     `,
+
 
     hobbyHTML: `
       <div class="content-card">
@@ -327,22 +450,147 @@ const translations = {
       </div>
     `,
 
+    
     skillsHTML: `
-      <div class="content-card">
+      <div class="content-card skills-content-card">
         <h4>Skills</h4>
+        <p>使用経験のある技術・ツールです。</p>
 
-        <p>
-          使用経験のある技術・ツールです。
-        </p>
+        <style>
+          .skills-list {
+            display: grid;
+            gap: 10px;
+            margin-top: 14px;
+          }
 
-        <div class="skill-chips">
-          <span class="skill-chip">HTML</span>
-          <span class="skill-chip">CSS</span>
-          <span class="skill-chip">JavaScript</span>
-          <span class="skill-chip">Three.js</span>
-          <span class="skill-chip">Unity</span>
-          <span class="skill-chip">C#</span>
-          <span class="skill-chip">Git / GitHub</span>
+          .skills-item {
+            padding: 12px 14px;
+            border: 1px solid rgba(145,160,210,.22);
+            border-radius: 13px;
+            background: rgba(255,255,255,.08);
+          }
+
+          .skills-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+          }
+
+          .skills-item-name {
+            font-size: .96em;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+          }
+
+          .skills-item-years {
+            flex-shrink: 0;
+            padding: 3px 9px;
+            border-radius: 999px;
+            background: rgba(145,160,210,.18);
+            font-size: .78em;
+            white-space: nowrap;
+          }
+
+          .skills-item-description {
+            margin: 6px 0 0;
+            font-size: .88em;
+            line-height: 1.55;
+          }
+        </style>
+
+        <div class="skills-list">
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">Python</span>
+              <span class="skills-item-years">5年半</span>
+            </div>
+            <p class="skills-item-description">
+              音声変換システムの構築，pandasやscikit-learnを用いたデータ分析，VR実験環境との連携に使用
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">HTML / CSS / JavaScript</span>
+              <span class="skills-item-years">4年</span>
+            </div>
+            <p class="skills-item-description">
+              WebサイトやUIの設計・開発，インタラクティブなWebコンテンツの制作に使用
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">React</span>
+              <span class="skills-item-years">1年</span>
+            </div>
+            <p class="skills-item-description">
+              Reactを用いたWebサイトの制作を経験
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">C / C++ / C# / Java / Processing</span>
+              <span class="skills-item-years">各半年</span>
+            </div>
+            <p class="skills-item-description">
+              講義や課題を通じて基礎構文を学び，簡単なアプリケーションを制作
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">MATLAB / R</span>
+              <span class="skills-item-years">1年</span>
+            </div>
+            <p class="skills-item-description">
+              統計解析やデータの可視化に使用
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">Unity</span>
+              <span class="skills-item-years">半年</span>
+            </div>
+            <p class="skills-item-description">
+              VR実験環境の構築やアバター制御に使用
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">Photon</span>
+              <span class="skills-item-years">半年</span>
+            </div>
+            <p class="skills-item-description">
+              Unityを用いたマルチユーザーVR環境の構築に使用
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">Docker</span>
+              <span class="skills-item-years">3年</span>
+            </div>
+            <p class="skills-item-description">
+              開発環境の構築・コンテナ化，環境の共有に使用
+            </p>
+          </div>
+
+          <div class="skills-item">
+            <div class="skills-item-header">
+              <span class="skills-item-name">AWS</span>
+              <span class="skills-item-years">2ヶ月</span>
+            </div>
+            <p class="skills-item-description">
+              独学でAWSの勉強を行い，インターンシップはEC2，VPC，NAT Gatewayなどの基礎を学び，クラウド環境の構築を経験
+            </p>
+          </div>
+
         </div>
       </div>
     `,
