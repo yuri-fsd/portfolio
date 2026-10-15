@@ -832,7 +832,7 @@ profileHTML: `
               <span class="skills-item-years">2ヶ月</span>
             </div>
             <p class="skills-item-description">
-              独学でAWSの勉強を行い，インターンシップはEC2，VPC，NAT Gatewayなどの基礎を学び，クラウド環境の構築を経験
+              独学でAWSの勉強を行い，インターンシップではEC2，VPC，NAT Gatewayなどの基礎を学び，クラウド環境の構築とサービスの開発を経験
             </p>
           </div>
 
