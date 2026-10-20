@@ -147,7 +147,7 @@ const translations = {
 
     profileTitle: "Profile",
 
-    skillsTitle: "Skills",
+    skillsTitle: "Programming Skills",
 
     projectsTitle: "Projects",
 
@@ -604,7 +604,7 @@ profileHTML: `
 
     profileTitle: "自己紹介",
 
-    skillsTitle: "スキル",
+    skillsTitle: "プログラミングスキル",
 
     projectsTitle: "プロジェクト",
 
