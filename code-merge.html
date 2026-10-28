@@ -1,36 +1,1003 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#a9d8ff">
   <title>CODE MERGE</title>
   <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #c5dcff;
+      color: #172554;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      margin: 0;
       min-height: 100dvh;
+      margin: 0;
       display: grid;
       place-items: center;
-      background: #b8c8ef;
-      color: #353754;
-      font-family: sans-serif;
-      text-align: center;
+      padding: 24px 16px;
+      overflow-x: hidden;
+      background:
+        radial-gradient(ellipse at 12% 18%, rgb(45 212 191 / 54%), transparent 32%),
+        radial-gradient(ellipse at 88% 16%, rgb(168 85 247 / 35%), transparent 34%),
+        radial-gradient(ellipse at 72% 88%, rgb(59 130 246 / 30%), transparent 34%),
+        linear-gradient(135deg, #c2f3ff 0%, #dce5ff 48%, #f1d8ff 100%);
+      background-attachment: fixed;
+    }
+
+    body::before {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background-image:
+        linear-gradient(rgb(255 255 255 / 15%) 1px, transparent 1px),
+        linear-gradient(90deg, rgb(255 255 255 / 15%) 1px, transparent 1px);
+      background-size: 44px 44px;
+      content: "";
+      mask-image: linear-gradient(to bottom, transparent, #000 35%, #000);
+      pointer-events: none;
+    }
+
+    button {
+      color: inherit;
+      font: inherit;
+    }
+
+    .game {
+      position: relative;
+      z-index: 1;
+      width: min(100%, 760px);
+    }
+
+    .topbar,
+    .title-row,
+    .stats,
+    .tile-preview {
+      display: flex;
+      align-items: center;
+    }
+
+    .topbar {
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+
+    .back-link {
+      color: #4b5e83;
+      font-size: 13px;
+      text-decoration: none;
+      transition: color 150ms ease;
+    }
+
+    .back-link:hover {
+      color: #243b70;
+    }
+
+    .eyebrow {
+      margin: 0;
+      color: #3956a7;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.18em;
+    }
+
+    .title-row {
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
     }
 
     h1 {
-      font-size: clamp(32px, 6vw, 60px);
+      margin: 3px 0 0;
+      font-size: clamp(26px, 7vw, 36px);
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 1;
     }
 
-    a {
-      color: inherit;
+    .play-area {
+      display: grid;
+      grid-template-columns: minmax(150px, 0.72fr) minmax(0, 1.6fr);
+      align-items: start;
+      gap: 16px;
+    }
+
+    .evolution-panel {
+      padding: 14px 12px;
+      border: 1px solid rgb(255 255 255 / 90%);
+      border-radius: 17px;
+      background: rgb(255 255 255 / 62%);
+      box-shadow: 0 12px 30px rgb(60 79 150 / 12%);
+      backdrop-filter: blur(14px);
+    }
+
+    .evolution-title {
+      margin: 0;
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .evolution-subtitle {
+      margin: 4px 0 12px;
+      color: #647397;
+      font-size: 10px;
+    }
+
+    .evolution-list {
+      display: grid;
+      gap: 3px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .evolution-step {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      align-items: center;
+      gap: 6px;
+      min-height: 34px;
+      padding: 4px 7px;
+      border: 1px solid rgb(118 144 205 / 22%);
+      border-radius: 11px;
+      background: rgb(255 255 255 / 55%);
+      transition: border-color 150ms ease, background 150ms ease, box-shadow 150ms ease;
+    }
+
+    .evolution-step.active {
+      border-color: #7497ff;
+      background: rgb(235 242 255 / 96%);
+      box-shadow: 0 0 14px rgb(92 125 238 / 24%);
+    }
+
+    .evolution-step.completed {
+      border-color: rgb(45 180 135 / 38%);
+      background: rgb(229 250 242 / 82%);
+    }
+
+    .evolution-logo {
+      width: 23px;
+      max-height: 25px;
+      justify-self: center;
+      object-fit: contain;
+    }
+
+    .evolution-name {
+      display: grid;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .evolution-name strong {
+      overflow: hidden;
+      font-size: 10px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .evolution-name span {
+      color: #647397;
+      font-size: 9px;
+    }
+
+    .evolution-arrow {
+      color: #7185b8;
+      font-size: 9px;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .play-main {
+      min-width: 0;
+    }
+
+    .restart {
+      flex: 0 0 auto;
+      padding: 9px 13px;
+      border: 1px solid rgb(255 255 255 / 90%);
+      border-radius: 10px;
+      background: rgb(255 255 255 / 72%);
+      color: #304474;
+      box-shadow: 0 5px 16px rgb(70 91 158 / 13%);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 150ms ease, border-color 150ms ease;
+    }
+
+    .restart:hover {
+      border-color: #7699ff;
+      background: #fff;
+    }
+
+    .stat {
+      min-width: 0;
+      flex: 1;
+      padding: 10px 13px;
+      border: 1px solid rgb(255 255 255 / 90%);
+      border-radius: 14px;
+      background: rgb(255 255 255 / 68%);
+      box-shadow: 0 8px 22px rgb(60 79 150 / 10%);
+      backdrop-filter: blur(14px);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .stat-current {
+      border-color: rgb(51 102 230 / 40%);
+      background: rgb(255 255 255 / 83%);
+    }
+
+    .stat-best {
+      border-color: rgb(168 85 247 / 35%);
+    }
+
+    .stat-label {
+      display: block;
+      margin-bottom: 3px;
+      color: #56668b;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      display: block;
+      font-size: 19px;
+      font-weight: 850;
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .stat-merges {
+      min-width: 78px;
+      text-align: center;
+    }
+
+    .stat-merges .stat-value {
+      font-size: 17px;
+    }
+
+    .tile-preview {
+      justify-content: space-between;
+      min-height: 68px;
+      margin-bottom: 12px;
+      padding: 10px 14px;
+      border: 1px solid rgb(255 255 255 / 90%);
+      border-radius: 14px;
+      background: rgb(255 255 255 / 64%);
+      box-shadow: 0 8px 22px rgb(60 79 150 / 10%);
+      backdrop-filter: blur(14px);
+    }
+
+    .preview-pieces {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .current-piece,
+    .preview-next {
+      display: grid;
+      min-width: 76px;
+      justify-items: center;
+      gap: 6px;
+      padding: 9px 10px;
+      border: 1px solid #77a2ff;
+      border-radius: 12px;
+      background: rgb(237 244 255 / 84%);
+      color: #304474;
+      box-shadow: 0 5px 16px rgb(58 92 190 / 13%);
+      text-align: center;
+    }
+
+    .piece-label {
+      color: #4368c4;
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      line-height: 1;
+    }
+
+    .current-piece .tile {
+      width: 58px;
+      height: 58px;
+      border-radius: 11px;
+    }
+
+    .current-piece .tile-logo {
+      width: 27px;
+    }
+
+    .current-piece .tile-name {
+      font-size: 9px;
+    }
+
+    .preview-next {
+      min-width: 70px;
+      border-color: rgb(114 133 176 / 38%);
+      background: rgb(255 255 255 / 52%);
+      color: #68789b;
+    }
+
+    .preview-next .piece-label {
+      color: #69799b;
+    }
+
+    .preview-next .tile {
+      width: 44px;
+      height: 44px;
+      border-radius: 9px;
+      opacity: 0.82;
+    }
+
+    .preview-next .tile-logo {
+      width: 19px;
+    }
+
+    .preview-next .tile-name {
+      font-size: 7px;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-auto-rows: 1fr;
+      gap: clamp(3px, 1vw, 6px);
+    }
+
+    .board-wrap {
+      position: relative;
+      padding: 8px;
+      overflow: hidden;
+      border: 1px solid rgb(255 255 255 / 90%);
+      border-radius: 17px;
+      background: rgb(232 241 255 / 68%);
+      box-shadow: 0 20px 55px rgb(60 79 150 / 20%), inset 0 0 24px rgb(255 255 255 / 55%);
+      backdrop-filter: blur(16px);
+    }
+
+    .board {
+      aspect-ratio: 1;
+    }
+
+    .cell {
+      display: grid;
+      position: relative;
+      min-width: 0;
+      min-height: 0;
+      place-items: center;
+      padding: 2px;
+      overflow: hidden;
+      border: 1px solid rgb(109 139 190 / 22%);
+      border-radius: clamp(5px, 1.4vw, 9px);
+      background: rgb(96 132 202 / 12%);
+      cursor: pointer;
+      transition: background 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .cell:hover:enabled,
+    .cell:focus-visible {
+      border-color: #668bff;
+      background: rgb(104 139 255 / 26%);
+      box-shadow: inset 0 0 12px rgb(86 122 255 / 20%), 0 0 10px rgb(76 110 245 / 25%);
+      outline: none;
+    }
+
+    .cell:disabled {
+      cursor: default;
+    }
+
+    .cell.falling {
+      z-index: 2;
+      overflow: visible;
+    }
+
+    .cell.falling .tile {
+      animation: drop-fall 620ms cubic-bezier(0.18, 0.72, 0.28, 1) both;
+    }
+
+    .cell:focus-visible,
+    .restart:focus-visible {
+      outline: 2px solid #93c5fd;
+      outline-offset: 2px;
+    }
+
+    .cell.clearing {
+      animation: clear-pop 520ms ease-in-out both;
+    }
+
+    .tile {
+      display: grid;
+      width: 100%;
+      height: 100%;
+      min-width: 0;
+      min-height: 0;
+      aspect-ratio: 1;
+      align-content: center;
+      justify-items: center;
+      gap: 2px;
+      border: 1px solid rgb(255 255 255 / 27%);
+      border-radius: clamp(4px, 1vw, 8px);
+      color: #fff;
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / 20%), 0 3px 8px rgb(0 0 0 / 16%);
+    }
+
+    .tile-logo {
+      display: block;
+      width: clamp(18px, 58%, 34px);
+      height: clamp(18px, 58%, 34px);
+      object-fit: contain;
+    }
+
+    .tile-name {
+      font-size: clamp(5px, 1.45vw, 9px);
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .tile-1 {
+      background: #ce4bb1;
+    }
+
+    .tile-2 {
+      background: #26b7be;
+    }
+
+    .tile-3 {
+      background: #4384db;
+    }
+
+    .tile-4 {
+      background: #f29b38;
+    }
+
+    .tile-5 {
+      background: #8b5cf6;
+      box-shadow: inset 0 1px 0 rgb(255 255 255 / 30%), 0 0 18px rgb(167 139 250 / 75%);
+    }
+
+    .message {
+      min-height: 23px;
+      margin: 11px 0 0;
+      color: #3956a7;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .help {
+      margin: 5px 0 0;
+      color: #56668b;
+      font-size: 11px;
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .game-over {
+      position: absolute;
+      inset: 8px;
+      z-index: 1;
+      display: grid;
+      align-content: center;
+      justify-items: center;
+      gap: 8px;
+      border-radius: 11px;
+      background: rgb(224 234 255 / 93%);
+      color: #172554;
+      text-align: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .game-over[hidden] {
+      display: none;
+    }
+
+    .game-over strong {
+      font-size: 26px;
+    }
+
+    .game-over span {
+      color: #56668b;
+      font-size: 13px;
+    }
+
+    @keyframes drop-fall {
+      from { opacity: 0.65; transform: translateY(calc(-1 * var(--fall-distance, 700%))); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes clear-pop {
+      0% { transform: scale(1); filter: brightness(1); }
+      45% { transform: scale(1.16); filter: brightness(1.7); }
+      100% { transform: scale(0.35); opacity: 0; }
+    }
+
+    @media (max-width: 620px) {
+      body {
+        padding-inline: 10px;
+      }
+
+      .play-area {
+        grid-template-columns: minmax(90px, 0.72fr) minmax(0, 1.6fr);
+        gap: 8px;
+      }
+
+      .evolution-panel {
+        padding: 11px 8px;
+      }
+
+      .evolution-step {
+        grid-template-columns: 25px 1fr;
+        gap: 5px;
+        padding-inline: 5px;
+      }
+
+      .evolution-logo {
+        width: 20px;
+      }
+
+      .evolution-name strong {
+        font-size: 9px;
+      }
+
+      .evolution-name span {
+        font-size: 8px;
+      }
+
+      .board-wrap {
+        padding: 6px;
+      }
+
+      .game-over {
+        inset: 6px;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .play-area {
+        grid-template-columns: minmax(76px, 0.68fr) minmax(0, 1.6fr);
+        gap: 6px;
+      }
+
+      .evolution-panel {
+        padding: 9px 6px;
+      }
+
+      .evolution-title {
+        font-size: 11px;
+      }
+
+      .evolution-step {
+        grid-template-columns: 20px 1fr;
+        gap: 4px;
+        min-height: 38px;
+        padding: 4px;
+      }
+
+      .evolution-logo {
+        width: 17px;
+      }
+
+      .evolution-name strong {
+        font-size: 8px;
+      }
+
+      .evolution-name span {
+        font-size: 7px;
+      }
+
+      .current-piece,
+      .preview-next {
+        min-width: 0;
+        padding-inline: 7px;
+      }
+
+      .current-piece .tile {
+        width: 48px;
+        height: 48px;
+      }
+
+      .preview-next .tile {
+        width: 40px;
+        height: 40px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
 <body>
-  <main>
-    <h1>🎮 CODE MERGE</h1>
-    <p>パズルゲーム準備中...</p>
-    <a href="./world.html">← ホームに戻る</a>
+  <main class="game">
+    <header class="topbar">
+      <a class="back-link" href="./world.html">← ホームに戻る</a>
+      <p class="eyebrow">VR CODE WORLD</p>
+    </header>
+
+    <div class="title-row">
+      <h1>CODE MERGE<span aria-hidden="true">.</span></h1>
+      <button class="restart" id="restart" type="button">↻ はじめから</button>
+    </div>
+
+    <section class="stats" aria-label="ゲームの記録">
+      <div class="stat stat-current">
+        <span class="stat-label">今回の記録</span>
+        <span class="stat-value" id="score">0</span>
+      </div>
+      <div class="stat stat-best">
+        <span class="stat-label">最高記録</span>
+        <span class="stat-value" id="best">0</span>
+      </div>
+      <div class="stat stat-merges">
+        <span class="stat-label">合体</span>
+        <span class="stat-value" id="merges">0</span>
+      </div>
+    </section>
+
+    <div class="play-area">
+      <aside class="evolution-panel" aria-label="言語の進化ルート">
+        <h2 class="evolution-title">進化ルート</h2>
+        <p class="evolution-subtitle">同じアイコンを合体！</p>
+        <ol class="evolution-list" id="evolution-list"></ol>
+      </aside>
+
+      <div class="play-main">
+        <section class="tile-preview" aria-label="ブロック">
+          <div class="preview-pieces">
+            <div class="current-piece">
+              <span class="piece-label">NOW</span>
+              <div id="current-tile" aria-label="今置くブロック"></div>
+            </div>
+            <div class="preview-next">
+              <span class="piece-label">NEXT</span>
+              <div id="next-tile" aria-label="次のタイル"></div>
+            </div>
+          </div>
+        </section>
+
+        <div class="board-wrap">
+          <div class="board" id="board" role="grid" aria-label="4行4列のゲーム盤"></div>
+          <div class="game-over" id="game-over" role="status" hidden>
+            <strong>おつかれさま！</strong>
+            <span>盤面がいっぱいです。もう一度遊んでみよう。</span>
+          </div>
+        </div>
+
+        <p class="message" id="message" aria-live="polite">置きたいマスを選んで、Lv.10を目指そう！</p>
+        <p class="help">盤面のどこを押しても、その列の一番下へ落ちます。<br>最高記録はこのブラウザーに保存されます。</p>
+      </div>
+    </div>
   </main>
+
+  <script>
+    const SIZE = 4;
+    const ICONS_URL = "https://cdn.jsdelivr.net/gh/devicons/devicon@v2.17.0/icons";
+    const LEVELS = [
+      { logo: `${ICONS_URL}/python/python-original.svg`, name: "Python" },
+      { logo: `${ICONS_URL}/javascript/javascript-original.svg`, name: "JavaScript" },
+      { logo: `${ICONS_URL}/java/java-original.svg`, name: "Java" },
+      { logo: `${ICONS_URL}/csharp/csharp-original.svg`, name: "C#" },
+      { logo: `${ICONS_URL}/go/go-original.svg`, name: "Go" },
+      { logo: `${ICONS_URL}/rust/rust-original.svg`, name: "Rust" },
+      { logo: `${ICONS_URL}/php/php-original.svg`, name: "PHP" },
+      { logo: `${ICONS_URL}/ruby/ruby-original.svg`, name: "Ruby" },
+      { logo: `${ICONS_URL}/kotlin/kotlin-original.svg`, name: "Kotlin" },
+      { logo: `${ICONS_URL}/swift/swift-original.svg`, name: "Swift" }
+    ];
+
+    const boardElement = document.querySelector("#board");
+    const evolutionListElement = document.querySelector("#evolution-list");
+    const scoreElement = document.querySelector("#score");
+    const mergesElement = document.querySelector("#merges");
+    const bestElement = document.querySelector("#best");
+    const currentTileElement = document.querySelector("#current-tile");
+    const nextTileElement = document.querySelector("#next-tile");
+    const messageElement = document.querySelector("#message");
+    const gameOverElement = document.querySelector("#game-over");
+    const restartButton = document.querySelector("#restart");
+
+    let cells = [];
+    let score = 0;
+    let mergeCount = 0;
+    let currentLevel = 1;
+    let nextLevel = 1;
+    let resolving = false;
+    let best = Number(localStorage.getItem("code-merge-best") || 0);
+
+    function randomLevel() {
+      return Math.floor(Math.random() * 3) + 1;
+    }
+
+    function tileMarkup(level) {
+      const language = LEVELS[level - 1];
+      return `<span class="tile tile-${level}" aria-label="レベル${level} ${language.name}">
+        <img class="tile-logo" src="${language.logo}" alt="" loading="eager">
+        <span class="tile-name">${language.name}</span>
+      </span>`;
+    }
+
+    function renderEvolution() {
+      evolutionListElement.innerHTML = "";
+      LEVELS.forEach((language, index) => {
+        if (index > 0) {
+          const arrow = document.createElement("li");
+          arrow.className = "evolution-arrow";
+          arrow.setAttribute("aria-hidden", "true");
+          arrow.textContent = "↓";
+          evolutionListElement.append(arrow);
+        }
+
+        const step = document.createElement("li");
+        step.className = "evolution-step";
+        step.dataset.level = String(index + 1);
+        step.innerHTML = `<img class="evolution-logo" src="${language.logo}" alt="" loading="eager">
+          <span class="evolution-name">
+            <strong>${language.name}</strong>
+            <span>Lv.${index + 1}${index === LEVELS.length - 1 ? " ・最終進化" : ""}</span>
+          </span>`;
+        evolutionListElement.append(step);
+      });
+    }
+
+    function updateEvolution() {
+      evolutionListElement.querySelectorAll(".evolution-step").forEach((step) => {
+        const level = Number(step.dataset.level);
+        step.classList.toggle("active", level === currentLevel);
+        step.classList.toggle("completed", level < currentLevel);
+      });
+    }
+
+    function render(falling = null) {
+      boardElement.innerHTML = "";
+      const fallingMoves = new Map();
+      if (typeof falling === "number") {
+        fallingMoves.set(falling, null);
+      } else if (falling) {
+        falling.forEach(({ index, rows }) => fallingMoves.set(index, rows));
+      }
+      const rowGap = Number.parseFloat(getComputedStyle(boardElement).rowGap) || 0;
+      const rowStep = (boardElement.clientHeight + rowGap) / SIZE;
+
+      cells.forEach((level, index) => {
+        const cell = document.createElement("button");
+        const row = Math.floor(index / SIZE) + 1;
+        const column = (index % SIZE) + 1;
+        cell.className = "cell";
+        cell.type = "button";
+        if (fallingMoves.has(index)) {
+          cell.classList.add("falling");
+          const rows = fallingMoves.get(index);
+          if (rows !== null) {
+            cell.style.setProperty("--fall-distance", `${rows * rowStep}px`);
+          }
+        }
+        cell.setAttribute("role", "gridcell");
+        cell.setAttribute("aria-label", level
+          ? `(${row}, ${column}) レベル${level} ${LEVELS[level - 1].name}。この列にブロックを落とす`
+          : `(${row}, ${column}) 空きマス。この列にブロックを落とす`);
+        cell.disabled = resolving;
+        if (level !== null) cell.innerHTML = tileMarkup(level);
+        cell.addEventListener("click", () => placeTile(index));
+        boardElement.append(cell);
+      });
+
+      scoreElement.textContent = score.toLocaleString("ja-JP");
+      mergesElement.textContent = mergeCount.toLocaleString("ja-JP");
+      bestElement.textContent = best.toLocaleString("ja-JP");
+      currentTileElement.innerHTML = tileMarkup(currentLevel);
+      nextTileElement.innerHTML = tileMarkup(nextLevel);
+      updateEvolution();
+      gameOverElement.hidden = cells.some((level) => level === null);
+    }
+
+    function settleBoard(trackedIndex = null) {
+      let settledTrackedIndex = null;
+      const fallingIndices = [];
+
+      for (let column = 0; column < SIZE; column += 1) {
+        const stack = [];
+        for (let row = SIZE - 1; row >= 0; row -= 1) {
+          const index = row * SIZE + column;
+          if (cells[index] !== null) stack.push({ level: cells[index], oldIndex: index });
+          cells[index] = null;
+        }
+
+        stack.forEach(({ level, oldIndex }, offset) => {
+          const index = (SIZE - 1 - offset) * SIZE + column;
+          cells[index] = level;
+          if (oldIndex === trackedIndex) settledTrackedIndex = index;
+          if (oldIndex !== index) {
+            const oldRow = Math.floor(oldIndex / SIZE);
+            const newRow = Math.floor(index / SIZE);
+            fallingIndices.push({ index, rows: newRow - oldRow });
+          }
+        });
+      }
+
+      return { trackedIndex: settledTrackedIndex, fallingIndices };
+    }
+
+    function connectedGroup(startIndex, level) {
+      const group = [];
+      const pending = [startIndex];
+      const visited = new Set([startIndex]);
+
+      while (pending.length > 0) {
+        const index = pending.pop();
+        group.push(index);
+        const neighbors = [
+          index - SIZE,
+          index + SIZE,
+          ...(index % SIZE > 0 ? [index - 1] : []),
+          ...(index % SIZE < SIZE - 1 ? [index + 1] : [])
+        ];
+
+        for (const neighbor of neighbors) {
+          if (
+            neighbor >= 0 &&
+            neighbor < cells.length &&
+            !visited.has(neighbor) &&
+            cells[neighbor] === level
+          ) {
+            visited.add(neighbor);
+            pending.push(neighbor);
+          }
+        }
+      }
+
+      return group;
+    }
+
+    function findMergeGroup(preferredIndex) {
+      if (preferredIndex !== null && cells[preferredIndex] !== null) {
+        const preferredGroup = connectedGroup(preferredIndex, cells[preferredIndex]);
+        if (preferredGroup.length > 1) {
+          return { index: preferredIndex, cells: preferredGroup };
+        }
+      }
+
+      for (let index = cells.length - 1; index >= 0; index -= 1) {
+        if (cells[index] === null) continue;
+        const group = connectedGroup(index, cells[index]);
+        if (group.length > 1) {
+          return { index, cells: group };
+        }
+      }
+
+      return null;
+    }
+
+    function addScore(points) {
+      score += points;
+      if (score > best) {
+        best = score;
+        localStorage.setItem("code-merge-best", String(best));
+      }
+    }
+
+    function pause(milliseconds) {
+      return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+    }
+
+    async function placeTile(selectedIndex) {
+      if (resolving) return;
+      const column = selectedIndex % SIZE;
+      let activeIndex = null;
+      for (let row = SIZE - 1; row >= 0; row -= 1) {
+        const index = row * SIZE + column;
+        if (cells[index] === null) {
+          activeIndex = index;
+          break;
+        }
+      }
+      if (activeIndex === null) {
+        messageElement.textContent = "このレーンはいっぱい！別のレーンを選んでね。";
+        return;
+      }
+
+      resolving = true;
+      cells[activeIndex] = currentLevel;
+      currentLevel = nextLevel;
+      nextLevel = randomLevel();
+      messageElement.textContent = "ブロックが落ちてきたよ！";
+      render(activeIndex);
+      await pause(620);
+
+      let merged = false;
+      let completedFinalEvolution = false;
+      let mergeGroup = findMergeGroup(activeIndex);
+      while (mergeGroup !== null) {
+        activeIndex = mergeGroup.index;
+        const level = cells[activeIndex];
+        merged = true;
+        mergeCount += 1;
+        mergeGroup.cells.forEach((cellIndex) => {
+          cells[cellIndex] = null;
+        });
+
+        if (level === LEVELS.length) {
+          completedFinalEvolution = true;
+          cells[activeIndex] = level;
+          messageElement.textContent = `✨ Lv.${level} ${LEVELS[level - 1].name}完成！ボーナス！`;
+          addScore(500);
+          render();
+          await pause(520);
+          cells[activeIndex] = null;
+          const settled = settleBoard();
+          render(settled.fallingIndices);
+          await pause(620);
+          activeIndex = null;
+          mergeGroup = findMergeGroup(activeIndex);
+          continue;
+        }
+
+        cells[activeIndex] = level + 1;
+        addScore(level * 20);
+        messageElement.textContent = `Lv.${level + 1} ${LEVELS[level].name}にレベルアップ！`;
+        const settled = settleBoard(activeIndex);
+        activeIndex = settled.trackedIndex;
+        render(settled.fallingIndices);
+        await pause(620);
+        mergeGroup = findMergeGroup(activeIndex);
+      }
+
+      resolving = false;
+      if (!merged) {
+        messageElement.textContent = "同じアイコンを隣り合わせて合体させよう。";
+      } else if (completedFinalEvolution) {
+        messageElement.textContent = `🎉 Lv.10 ${LEVELS[LEVELS.length - 1].name}完成！500ポイント！`;
+      } else if (cells[activeIndex] === null) {
+        messageElement.textContent = "ナイスコード！次の合体を狙おう。";
+      }
+      render();
+    }
+
+    function startGame() {
+      cells = Array(SIZE * SIZE).fill(null);
+      score = 0;
+      mergeCount = 0;
+      currentLevel = randomLevel();
+      nextLevel = randomLevel();
+      resolving = false;
+      messageElement.textContent = "置きたいマスを選んで、Lv.10を目指そう！";
+      render();
+    }
+
+    document.addEventListener("keydown", (event) => {
+      if (/^[1-4]$/.test(event.key) && !event.repeat) {
+        const column = Number(event.key) - 1;
+        placeTile(column);
+      }
+    });
+
+    restartButton.addEventListener("click", startGame);
+    renderEvolution();
+    startGame();
+  </script>
 </body>
 </html>
